@@ -28,7 +28,9 @@ export default function RegisterPage() {
       <Register></Register>
 
       <Typography>Already have an account?</Typography>
-      <Link href="/login">Login</Link>
+      <Typography variant="body1">
+        <Link href="/login">Login</Link>
+      </Typography>
     </Container>
   );
 }

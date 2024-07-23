@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import TransactionList from "@/app/components/split/TransactionList";
+import TransactionTable from "@/app/components/split/transactions/TransactionTable";
 import SplitterIndex from "@/app/components/split/splitters/Index";
 
 import { transactionsTestData } from "@/app/utils/testData";
@@ -32,15 +32,13 @@ export default function SplitPage() {
   let totalSpent = deriveTotalSpending(transactionList);
 
   return (
-    <Box>
+    <Stack direction="column">
       <Typography>Welcome back, user.</Typography>
-      <Stack direction="row">
-        <SplitterIndex></SplitterIndex>
-        <Container sx={{ bgcolor: "yellow" }}>
-          <Typography>Your group has spent ${totalSpent}</Typography>
-          <TransactionList transactions={transactionList}></TransactionList>
-        </Container>
-      </Stack>
-    </Box>
+      <SplitterIndex></SplitterIndex>
+      <Container>
+        <Typography>Your group has spent ${totalSpent}</Typography>
+        <TransactionTable transactions={transactionList}></TransactionTable>
+      </Container>
+    </Stack>
   );
 }

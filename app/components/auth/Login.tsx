@@ -108,7 +108,9 @@ export default function Login() {
             />
           </FormControl>
 
-          <Link href="/split">Forgot password?</Link>
+          <Typography variant="body1">
+            <Link href="/split">Forgot password?</Link>
+          </Typography>
         </Box>
 
         <Button type="submit" fullWidth variant="contained">

@@ -1,7 +1,7 @@
 interface Transaction {
   id: number;
-  dateAdded: Date;
-  dateIncurred: Date;
+  dateAdded: string;
+  dateIncurred: string;
   name: string;
   location: string;
   amount: number;

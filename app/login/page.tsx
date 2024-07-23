@@ -27,8 +27,10 @@ export default function LoginPage() {
 
       <Login></Login>
 
-      <Typography>Don't have an account?</Typography>
-      <Link href="/register">Register</Link>
+      <Typography variant="body1">Don't have an account?</Typography>
+      <Typography variant="body1">
+        <Link href="/register">Register</Link>
+      </Typography>
     </Container>
   );
 }
