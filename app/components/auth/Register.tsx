@@ -4,71 +4,123 @@ import {
   Box,
   Button,
   Container,
-  Grid,
+  FormControl,
+  InputLabel,
+  InputAdornment,
+  Link,
+  OutlinedInput,
   TextField,
+  Typography,
 } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import { Visibility, VisibilityOff } from "@mui/icons-material/";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [edited, setEdited] = useState({ email: false, password: false });
+  const [registerDetails, setRegisterDetails] = useState<loginDetails>({
+    email: "",
+    password: "",
+  });
+
+  const router = useRouter();
+
+  function toggleShowPassword() {
+    setShowPassword((prev) => !prev);
+    console.log(showPassword);
+  }
+
+  function handleRegisterChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    identifier: string
+  ) {
+    setRegisterDetails((prev) => ({
+      ...prev,
+      [identifier]: event.target.value,
+    }));
+  }
+
+  function handleRegister(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+    console.log(registerDetails);
+    router.push("/split");
+  }
 
   return (
     <Container component="main" maxWidth="xs">
       <Box
+        component="form"
+        onSubmit={handleRegister}
+        noValidate
         sx={{
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          gap: 4,
         }}
       >
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="new-password"
-            />
-
-            <TextField
-              required
-              fullWidth
-              name="confirm-password"
-              label="Confirm Password"
-              type="password"
-              id="confirm-password"
-            />
-          </Grid>
-
-          <Button
-            type="submit"
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <TextField
+            margin="none"
+            required
             fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign Up
-          </Button>
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            onChange={(event) => handleRegisterChange(event, "email")}
+          />
+
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password *
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={toggleShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              onChange={(event) => handleRegisterChange(event, "password")}
+              label="Password"
+              autoComplete="password"
+              required
+            />
+          </FormControl>
+
+          <TextField
+            margin="none"
+            required
+            fullWidth
+            id="confirm-password"
+            label="Confirm Password"
+            name="confirm-password"
+          />
         </Box>
+
+        <Button type="submit" fullWidth variant="contained">
+          Register
+        </Button>
       </Box>
     </Container>
   );

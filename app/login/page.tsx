@@ -13,7 +13,7 @@ export default function LoginPage() {
         justifyContent: "center",
         alignItems: "center",
         marginTop: 10,
-        gap: 2
+        gap: 2,
       }}
     >
       <Image
@@ -28,7 +28,7 @@ export default function LoginPage() {
       <Login></Login>
 
       <Typography>Don't have an account?</Typography>
-      <Link href="/register">Register here.</Link>
+      <Link href="/register">Register</Link>
     </Container>
   );
 }
