@@ -1,10 +1,15 @@
 "use client";
-import { Button, FormControl, InputLabel, OutlinedInput, InputAdornment, Stack, TextField, Typography } from "@mui/material";
-import IconButton from '@mui/material/IconButton';
-import { Visibility, VisibilityOff } from '@mui/icons-material/';
 
-import Link from "next/link";
-import Image from "next/image";
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import { Visibility, VisibilityOff } from "@mui/icons-material/";
 
 import { useState } from "react";
 
@@ -17,47 +22,60 @@ export default function Login() {
     console.log(showPassword);
   }
 
-  function login(loginDetails: loginDetails) {
-    console.log(loginDetails)
+  function handleLogin() {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      console.log({
+        email: data.get("email"),
+        password: data.get("password"),
+      });
+    };
   }
 
   return (
-    <Stack
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      spacing={2}
-    >
-      <Typography>Login</Typography>
-
-      <Typography>Username</Typography>
-      <TextField
-        variant="outlined"
-        sx={{ bgcolor: "white", borderRadius: 2 }}
-      ></TextField>
-
-      <Typography>Password</Typography>
-      <FormControl sx={{ m: 1, width: "25ch", bgcolor: "white", borderRadius: 2 }} variant="outlined">
-        <OutlinedInput
-          id="outlined-adornment-password"
-          type={showPassword ? "text" : "password"}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={toggleShowPassword}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-
-      <Link href="/split">
-        <Button variant="contained">Login</Button>
-      </Link>
-    </Stack>
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          <Link href="/split" variant="body2">
+            Forgot password?
+          </Link>
+        </Box>
+      </Box>
+    </Container>
   );
 }

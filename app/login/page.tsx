@@ -1,16 +1,21 @@
-"use client";
-import { Button, Container, TextField, Typography } from "@mui/material";
+import { Container, Link, Typography } from "@mui/material";
 
 import Login from "@/app/components/auth/Login";
 
-import Link from "next/link";
 import Image from "next/image";
-
-import { useState } from "react";
 
 export default function LoginPage() {
   return (
-    <Container sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', border: 1 , alignItems: 'center' }}>
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 10,
+        gap: 2
+      }}
+    >
       <Image
         src="/images/SpendSplitLogo.png"
         alt="Spendsplit Logo"
@@ -18,14 +23,12 @@ export default function LoginPage() {
         height={100}
       />
 
+      <Typography variant="h5">Log In</Typography>
+
       <Login></Login>
 
-      <Typography>
-        Don't have an account?{" "}
-        <Link href="/register">
-          <Typography>Register here.</Typography>
-        </Link>
-      </Typography>
+      <Typography>Don't have an account?</Typography>
+      <Link href="/register">Register here.</Link>
     </Container>
   );
 }

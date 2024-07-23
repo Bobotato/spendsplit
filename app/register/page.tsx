@@ -1,18 +1,34 @@
-"use client";
+import { Container, Link, Typography } from "@mui/material";
 
-import Link from "next/link";
+import Register from "@/app/components/auth/Register";
 
-import { useState } from "react";
+import Image from "next/image";
 
-export default function Login() {
-  const [registrationDetails, setRegistrationDetails] = useState({});
-
+export default function RegisterPage() {
   return (
-    <div className="flex flex-col">
-      <p>Login</p>
-      <Link href="/split">
-        <button>Press Here</button>
-      </Link>
-    </div>
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 10,
+        gap: 2,
+      }}
+    >
+      <Image
+        src="/images/SpendSplitLogo.png"
+        alt="Spendsplit Logo"
+        width={400}
+        height={100}
+      />
+
+      <Typography variant="h5">Register</Typography>
+
+      <Register></Register>
+
+      <Typography>Already have an account?</Typography>
+      <Link href="/login">Login here.</Link>
+    </Container>
   );
 }
