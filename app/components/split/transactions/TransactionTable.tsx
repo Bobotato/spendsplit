@@ -76,6 +76,7 @@ export default function TransactionTable({
               ))}
             </TableRow>
           </TableHead>
+          
           <TableBody>
             {transactions
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

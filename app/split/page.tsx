@@ -2,15 +2,9 @@
 
 import { useState } from "react";
 
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  Link,
-  TextField,
-  Typography,
-} from "@mui/material";
+import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 import TransactionTable from "@/app/components/split/transactions/TransactionTable";
 import SplitterIndex from "@/app/components/split/splitters/Index";
@@ -34,11 +28,11 @@ export default function SplitPage() {
   return (
     <Stack direction="column">
       <Typography>Welcome back, user.</Typography>
-      <SplitterIndex></SplitterIndex>
       <Container>
         <Typography>Your group has spent ${totalSpent}</Typography>
         <TransactionTable transactions={transactionList}></TransactionTable>
       </Container>
+      <SplitterIndex></SplitterIndex>
     </Stack>
   );
 }
