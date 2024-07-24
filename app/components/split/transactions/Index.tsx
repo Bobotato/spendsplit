@@ -5,3 +5,4 @@ import type { ReactElement } from "react";
 export default function TransactionIndex(): ReactElement {
   return <TransactionTable></TransactionTable>;
 }
+f

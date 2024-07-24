@@ -1,15 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  Link,
-  TextField,
-  Typography,
-} from "@mui/material";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
 import AddSplitterForm from "@/app/components/split/splitters/AddSplitterForm";
 import SplitterList from "@/app/components/split/splitters/SplitterList";
