@@ -32,6 +32,8 @@ export default function SplitPage() {
       <AppBar></AppBar>
 
       <Stack maxWidth="md" spacing={4} direction="column" sx={{ py: 4 }}>
+        <Typography variant="h3">Group name here.</Typography>
+
         <Typography
           variant="h4"
           color="primary"

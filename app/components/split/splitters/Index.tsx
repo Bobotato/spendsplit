@@ -29,7 +29,7 @@ export default function SplitterIndex() {
       <SplitterList splitterList={splitterList}></SplitterList>
 
       <Typography>Add a new splitter:</Typography>
-      <AddSplitterForm></AddSplitterForm>
+      <AddSplitterForm handleAddSplitter={handleAddSplitter}></AddSplitterForm>
     </Stack>
   );
 }

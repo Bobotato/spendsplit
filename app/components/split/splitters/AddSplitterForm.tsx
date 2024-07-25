@@ -3,36 +3,27 @@
 import { useForm } from "react-hook-form";
 import { TextFieldElement, AutocompleteElement } from "react-hook-form-mui";
 
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 
-import type { ReactElement } from "react";
+import { splitterColours } from "@/app/utils/colourList";
+
+import type { ReactElement, FormEvent } from "react";
 import type { Splitter } from "@/app/types/UserTypes";
 
-export default function AddSplitterForm(): ReactElement {
+interface AddSplitterFormProps {
+  handleAddSplitter: (splitter: Splitter) => void;
+}
+
+export default function AddSplitterForm({
+  handleAddSplitter,
+}: AddSplitterFormProps): ReactElement {
   const { control, handleSubmit } = useForm({
     defaultValues: {
       name: "",
-      auto: "",
     },
   });
-  const options = [
-    { id: "one", label: "One" },
-    { id: "two", label: "Two" },
-    { id: "three", label: "Three" },
-  ];
-
-  function handleAddNewSplitter() {
-    console.log("Submit");
-  }
 
   return (
     <Box
@@ -52,8 +43,8 @@ export default function AddSplitterForm(): ReactElement {
         spacing={2}
         sx={{ width: "100%" }}
       >
-        <form onSubmit={handleSubmit((data) => console.log(data))} noValidate>
-          <Stack spacing={2}>
+        <form onSubmit={handleSubmit(handleAddSplitter)} noValidate>
+          <Stack spacing={2} direction="row">
             <TextFieldElement
               name={"name"}
               label={"Name"}
@@ -61,16 +52,11 @@ export default function AddSplitterForm(): ReactElement {
               required
               fullWidth
             />
-            <AutocompleteElement
-              name={"auto"}
-              label={"Autocomplete"}
-              control={control}
-              options={options}
-            />
-            <Button type={"submit"} variant="contained" color={"primary"}>
-              Add
-            </Button>
           </Stack>
+
+          <Button type="submit" variant="contained" color={"primary"}>
+            Add
+          </Button>
         </form>
       </Stack>
     </Box>

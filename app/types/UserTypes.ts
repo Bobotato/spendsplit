@@ -1,6 +1,5 @@
 interface Splitter {
   name: string;
-  colour: string;
 }
 
 interface SplitterColour {
