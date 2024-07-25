@@ -31,11 +31,15 @@ export default function SplitPage() {
     >
       <AppBar></AppBar>
 
-      <Stack maxWidth="md" direction="column">
-        <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
+      <Stack maxWidth="md" spacing={4} direction="column" sx={{ py: 4 }}>
+        <Typography
+          variant="h4"
+          color="primary"
+          sx={{ fontWeight: "bold", px: 4 }}
+        >
           Welcome back, user.
         </Typography>
-        <Container maxWidth="md" sx={{ mt: 6 }}>
+        <Container maxWidth="md">
           <SummaryCard transactionList={transactionList}></SummaryCard>
         </Container>
         <Container>

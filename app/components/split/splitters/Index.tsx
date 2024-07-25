@@ -18,10 +18,13 @@ export default function SplitterIndex() {
   }
 
   return (
-    <Stack sx={{ maxWidth: "md" }}>
+    <Stack>
       <Typography>
         Your group currently consists of{" "}
-        {splitterList.length === 0 ? "0" : splitterList.length} people.
+        <Typography component="span" sx={{ fontWeight: "bold" }}>
+          {splitterList.length === 0 ? "0" : splitterList.length}
+        </Typography>{" "}
+        people.
       </Typography>
       <SplitterList splitterList={splitterList}></SplitterList>
 
