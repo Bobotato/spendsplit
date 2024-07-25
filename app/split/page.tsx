@@ -10,33 +10,46 @@ import Typography from "@mui/material/Typography";
 import AppBar from "@/app/components/split/AppBar";
 import TransactionTable from "@/app/components/split/transactions/TransactionTable";
 import SplitterIndex from "@/app/components/split/splitters/Index";
+import SummaryCard from "@/app/components/split/SummaryCard";
 
 import { transactionsTestData } from "@/app/utils/testData";
 
 import type { Transaction } from "@/app/types/TransactionTypes";
 
-function deriveTotalSpending(transactions: Transaction[]) {
-  let totalSpent: number = 0;
-  transactions.forEach((transaction) => (totalSpent += transaction.amount));
-  return totalSpent;
-}
-
 export default function SplitPage() {
   const [transactionList, setTransactionList] =
     useState<Transaction[]>(transactionsTestData);
 
-  let totalSpent = deriveTotalSpending(transactionList);
-
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <AppBar></AppBar>
-      <Stack direction="column">
-        <Typography>Welcome back, user.</Typography>
+
+      <Stack maxWidth="md" direction="column">
+        <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
+          Welcome back, user.
+        </Typography>
+        <Container maxWidth="md" sx={{ mt: 6 }}>
+          <SummaryCard transactionList={transactionList}></SummaryCard>
+        </Container>
         <Container>
-          <Typography>Your group has spent ${totalSpent}</Typography>
+          <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
+            Transactions:
+          </Typography>
           <TransactionTable transactions={transactionList}></TransactionTable>
         </Container>
-        <SplitterIndex></SplitterIndex>
+        <Container>
+          <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
+            Splitters:
+          </Typography>
+          <SplitterIndex></SplitterIndex>
+        </Container>
       </Stack>
     </Box>
   );

@@ -67,9 +67,7 @@ export default function AddSplitterForm(): ReactElement {
             value="None"
             onChange={(event) => handleChange(event, "colour")}
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            <MenuItem value="None">None</MenuItem>
           </Select>
         </FormControl>
 
