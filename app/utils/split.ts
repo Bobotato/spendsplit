@@ -1,4 +1,5 @@
 import { Transaction } from "@/app/types/TransactionTypes";
+import { Splitter } from "@/app/types/UserTypes";
 
 function deriveTotalFromTransactions(transactionList: Transaction[]): number {
   if (!transactionList || transactionList.length === 0) {
@@ -33,4 +34,12 @@ function deriveLargestTransaction(transactionList: Transaction[]): Transaction {
   return largestTransaction;
 }
 
-export { deriveLargestTransaction, deriveTotalFromTransactions };
+function isNameUsed(splitterList: Splitter[], name: string): void {
+    splitterList.forEach((splitter) => {
+        if (splitter.name === name ) {
+            throw new Error("Name is already used, please try another.")
+        }
+    })
+}
+
+export { deriveLargestTransaction, deriveTotalFromTransactions, isNameUsed };
