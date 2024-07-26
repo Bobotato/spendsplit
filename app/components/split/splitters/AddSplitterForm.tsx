@@ -1,80 +1,64 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { TextFieldElement, AutocompleteElement } from "react-hook-form-mui";
 
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  Link,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 
-import type { SelectChangeEvent } from "@mui/material";
+import { splitterColours } from "@/app/utils/colourList";
 
-import type { ReactElement } from "react";
+import type { ReactElement, FormEvent } from "react";
 import type { Splitter } from "@/app/types/UserTypes";
 
-export default function AddSplitterForm(): ReactElement {
-  const [newSplitter, setNewSplitter] = useState<Splitter>({
-    name: "",
-    colour: "",
+interface AddSplitterFormProps {
+  handleAddSplitter: (splitter: Splitter) => void;
+}
+
+export default function AddSplitterForm({
+  handleAddSplitter,
+}: AddSplitterFormProps): ReactElement {
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      name: "",
+    },
   });
 
-  function handleChange(
-    event:
-      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | SelectChangeEvent<unknown>,
-    identifier: string
-  ) {
-    setNewSplitter((prev) => ({
-      ...prev,
-      [identifier]: event.target.value,
-    }));
-  }
   return (
-    <Stack>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          alignItems: "center",
-          width: "100%",
-        }}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        alignItems: "center",
+        width: "100%",
+        border: 2,
+        borderColor: "red",
+      }}
+    >
+      <Stack
+        direction="row"
+        justifyContent="center"
+        spacing={2}
+        sx={{ width: "100%" }}
       >
-        <TextField
-          margin="none"
-          required
-          fullWidth
-          id="name"
-          label="Name"
-          name="name"
-          onChange={(event) => handleChange(event, "name")}
-        />
+        <form onSubmit={handleSubmit(handleAddSplitter)} noValidate>
+          <Stack spacing={2} direction="row">
+            <TextFieldElement
+              name={"name"}
+              label={"Name"}
+              control={control}
+              required
+              fullWidth
+            />
+          </Stack>
 
-        <FormControl fullWidth>
-          <InputLabel id="colour-select-label">Colour</InputLabel>
-          <Select
-            labelId="colour-select-label"
-            id="colour-select"
-            label="Colour"
-            value="None"
-            onChange={(event) => handleChange(event, "colour")}
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Button>Add New Splitter</Button>
-      </Box>
-    </Stack>
+          <Button type="submit" variant="contained" color={"primary"}>
+            Add
+          </Button>
+        </form>
+      </Stack>
+    </Box>
   );
 }
