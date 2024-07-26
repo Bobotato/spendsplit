@@ -1,4 +1,6 @@
-import { Container, Link, Typography } from "@mui/material";
+import Container from "@mui/material/Container";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 
 import Register from "@/app/components/auth/Register";
 
@@ -28,7 +30,9 @@ export default function RegisterPage() {
       <Register></Register>
 
       <Typography>Already have an account?</Typography>
-      <Link href="/login">Login</Link>
+      <Typography variant="body1">
+        <Link href="/login">Login</Link>
+      </Typography>
     </Container>
   );
 }

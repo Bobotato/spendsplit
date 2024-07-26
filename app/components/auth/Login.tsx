@@ -1,17 +1,14 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  InputLabel,
-  InputAdornment,
-  Link,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import Link from "@mui/material/Link";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import { Visibility, VisibilityOff } from "@mui/icons-material/";
 
@@ -108,7 +105,9 @@ export default function Login() {
             />
           </FormControl>
 
-          <Link href="/split">Forgot password?</Link>
+          <Link variant="body1" href="/split">
+            Forgot password?
+          </Link>
         </Box>
 
         <Button type="submit" fullWidth variant="contained">
