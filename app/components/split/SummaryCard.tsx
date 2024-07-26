@@ -18,7 +18,7 @@ export default function Summary({ transactionList }: SummaryProps) {
 
   return (
     <Card
-      color="primary"
+      color="primary.main"
       sx={{ border: 2, borderColor: "primary.main", borderRadius: 2, p: 4 }}
     >
       <Stack direction="column" spacing={2}>
