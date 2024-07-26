@@ -1,5 +1,5 @@
-interface loginDetails {
-    username?: string
+interface loginCredentials {
+    email?: string
     password?: string
 }
 
@@ -8,4 +8,4 @@ interface registerDetails {
     password?: string
 }
 
-export type { loginDetails, registerDetails };
+export type { loginCredentials, registerDetails };

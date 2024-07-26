@@ -1,4 +1,4 @@
-import type { SplitterColour } from "@/app/types/UserTypes";
+import type { SplitterColour } from "@/types/UserTypes";
 
 const splitterColours: SplitterColour[] = [
   { label: "Red", colourHex: "#FF0000" },
@@ -8,4 +8,4 @@ const splitterColours: SplitterColour[] = [
   { label: "Purple", colourHex: "#800080" },
 ];
 
-export { splitterColours }
+export { splitterColours };

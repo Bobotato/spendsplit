@@ -1,4 +1,4 @@
-import type { Splitter } from "@/app/types/UserTypes";
+import type { Splitter } from "@/types/UserTypes";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

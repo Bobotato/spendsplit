@@ -1,4 +1,4 @@
-import { Transaction } from "@/app/types/TransactionTypes";
+import { Transaction } from "@/types/TransactionTypes";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import {
   deriveLargestTransaction,
   deriveTotalFromTransactions,
-} from "@/app/utils/split";
+} from "@/utils/split";
 
 interface SummaryProps {
   transactionList: Transaction[];

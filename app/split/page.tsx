@@ -7,14 +7,14 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import AppBar from "@/app/components/split/AppBar";
-import TransactionTable from "@/app/components/split/transactions/TransactionTable";
-import SplitterIndex from "@/app/components/split/splitters/Index";
-import SummaryCard from "@/app/components/split/SummaryCard";
+import AppBar from "@/components/split/AppBar";
+import TransactionTable from "@/components/split/transactions/TransactionTable";
+import SplitterIndex from "@/components/split/splitters/Index";
+import SummaryCard from "@/components/split/SummaryCard";
 
-import { transactionsTestData } from "@/app/utils/testData";
+import { transactionsTestData } from "@/utils/testData";
 
-import type { Transaction } from "@/app/types/TransactionTypes";
+import type { Transaction } from "@/types/TransactionTypes";
 
 export default function SplitPage() {
   const [transactionList, setTransactionList] =

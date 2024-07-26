@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import useAlert from "@/app/hooks/useAlert";
+import useAlert from "@/hooks/useAlert";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import AddSplitterForm from "@/app/components/split/splitters/AddSplitterForm";
-import SplitterList from "@/app/components/split/splitters/SplitterList";
+import AddSplitterForm from "@/components/split/splitters/AddSplitterForm";
+import SplitterList from "@/components/split/splitters/SplitterList";
 
-import { isNameUsed } from "@/app/utils/split";
+import { isNameUsed } from "@/utils/split";
 
-import type { Splitter } from "@/app/types/UserTypes";
+import type { Splitter } from "@/types/UserTypes";
 
 export default function SplitterIndex() {
   const [splitterList, setSplitterList] = useState<Splitter[]>([]);

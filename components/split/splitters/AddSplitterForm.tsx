@@ -7,10 +7,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
-import { splitterColours } from "@/app/utils/colourList";
+import { splitterColours } from "@/utils/colourList";
 
 import type { ReactElement, FormEvent } from "react";
-import type { Splitter } from "@/app/types/UserTypes";
+import type { Splitter } from "@/types/UserTypes";
 
 interface AddSplitterFormProps {
   handleAddSplitter: (splitter: Splitter) => void;

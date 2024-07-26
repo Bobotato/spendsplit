@@ -1,4 +1,4 @@
-import type { Transaction } from "@/app/types/TransactionTypes";
+import type { Transaction } from "@/types/TransactionTypes";
 
 const transactionsTestData: Transaction[] = [
   {

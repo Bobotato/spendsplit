@@ -1,16 +1,16 @@
 import { useState } from "react";
 
-import Container from "@mui/material/Container"
-import Table from "@mui/material/Table"
-import TableBody from "@mui/material/TableBody"
-import TableCell from "@mui/material/TableCell"
-import TableContainer from "@mui/material/TableContainer"
-import TableHead from "@mui/material/TableHead"
-import TablePagination from "@mui/material/TablePagination"
-import TableRow from "@mui/material/TableRow"
+import Container from "@mui/material/Container";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
 
 import type { ReactElement } from "react";
-import type { Transaction } from "@/app/types/TransactionTypes";
+import type { Transaction } from "@/types/TransactionTypes";
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -74,7 +74,7 @@ export default function TransactionTable({
               ))}
             </TableRow>
           </TableHead>
-          
+
           <TableBody>
             {transactions
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

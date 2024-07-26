@@ -8,9 +8,8 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-import AppBar from "@/app/components/home/Homebar";
-import { subtitles } from "@/app/utils/heroSubtitle";
-
+import AppBar from "@/components/home/Homebar";
+import { subtitles } from "@/utils/heroSubtitle";
 
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
