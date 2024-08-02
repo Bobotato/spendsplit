@@ -31,7 +31,7 @@ export default function SplitterIndex() {
       console.error(e);
       showAlert(
         "Failed to add new splitter!",
-        `${splitter.name} was not added to the group.`,
+        `A splitter called ${splitter.name} is already in the group, try another name!`,
         "error"
       );
     }
