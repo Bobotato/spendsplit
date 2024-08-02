@@ -18,23 +18,53 @@ import SummaryCard from "@/components/split/SummaryCard";
 
 import { transactionsTestData } from "@/utils/testData";
 
-import type { ReactNode } from "react";
 import type { Transaction } from "@/types/TransactionTypes";
 
 export default function SplitPage() {
   const [transactionList, setTransactionList] =
     useState<Transaction[]>(transactionsTestData);
 
-  const { openModal, closeModal, ModalComponent } = useModal();
+  const { openModal, closeModal, ModalComponent } = useModal({
+    children: (
+      <>
+        <DialogTitle sx={{ px: 4, pt: 4 }}>Warning</DialogTitle>
+        <DialogContent sx={{ p: 4 }}>
+          <Stack direction="column" spacing={3}>
+            <Typography variant="body1">
+              You are about to delete all transactions. This process is{" "}
+              <Typography component="span" sx={{ fontWeight: "bold" }}>
+                irreversible
+              </Typography>
+              .
+            </Typography>
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{ justifyContent: "center" }}
+            >
+              <Button variant="contained" onClick={handleResetTransactions}>
+                Acknowledge and Confirm
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleCancelResetTransactions}
+              >
+                Cancel
+              </Button>
+            </Stack>
+          </Stack>
+        </DialogContent>
+      </>
+    ),
+  });
 
-  function handleResetTransactionClick() {
-    console.log("clicked");
-    openModal();
+  function handleResetTransactions() {
+    setTransactionList([]);
+    closeModal();
   }
 
-  function resetTransactions() {
-    openModal();
-    setTransactionList([]);
+  function handleCancelResetTransactions() {
+    closeModal();
   }
 
   return (
@@ -82,11 +112,7 @@ export default function SplitPage() {
             <Button type="submit" variant="contained" color={"primary"}>
               Delete Group
             </Button>
-            <Button
-              variant="contained"
-              color={"primary"}
-              onClick={handleResetTransactionClick}
-            >
+            <Button variant="contained" color={"primary"} onClick={openModal}>
               Reset Transactions
             </Button>
           </Container>

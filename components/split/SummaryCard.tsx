@@ -14,7 +14,39 @@ interface SummaryProps {
 
 export default function Summary({ transactionList }: SummaryProps) {
   const total = deriveTotalFromTransactions(transactionList);
-  const largestTransaction = deriveLargestTransaction(transactionList);
+
+  const largestTransactionSummary = () => {
+    if (transactionList.length > 0) {
+      const largestTransaction = deriveLargestTransaction(transactionList);
+
+      return (
+        <Typography variant="body1">
+          The biggest expense is: ${largestTransaction.amount} by{" "}
+          <Typography
+            variant="body1"
+            component="span"
+            sx={{ fontWeight: "bold" }}
+          >
+            {largestTransaction.addedBy}
+          </Typography>{" "}
+          on{" "}
+          <Typography
+            variant="body1"
+            component="span"
+            sx={{ fontWeight: "bold" }}
+          >
+            {largestTransaction.name}.
+          </Typography>
+        </Typography>
+      );
+    } else {
+      return (
+        <Typography variant="body1">
+          There are currently no transactions.
+        </Typography>
+      );
+    }
+  };
 
   return (
     <Card
@@ -35,24 +67,7 @@ export default function Summary({ transactionList }: SummaryProps) {
             ${total}
           </Typography>
         </Typography>
-        <Typography variant="body1">
-          The biggest expense is: ${largestTransaction.amount} by{" "}
-          <Typography
-            variant="body1"
-            component="span"
-            sx={{ fontWeight: "bold" }}
-          >
-            {largestTransaction.addedBy}
-          </Typography>{" "}
-          on{" "}
-          <Typography
-            variant="body1"
-            component="span"
-            sx={{ fontWeight: "bold" }}
-          >
-            {largestTransaction.name}.
-          </Typography>
-        </Typography>
+        {largestTransactionSummary()}
       </Stack>
     </Card>
   );

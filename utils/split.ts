@@ -3,7 +3,7 @@ import { Splitter } from "@/types/UserTypes";
 
 function deriveTotalFromTransactions(transactionList: Transaction[]): number {
   if (!transactionList || transactionList.length === 0) {
-    throw new Error("Transaction list cannot be empty.");
+    return 0;
   }
 
   let total: number = 0;
@@ -16,7 +16,7 @@ function deriveTotalFromTransactions(transactionList: Transaction[]): number {
 
 function deriveLargestTransaction(transactionList: Transaction[]): Transaction {
   if (!transactionList || transactionList.length === 0) {
-    throw new Error("Transaction list cannot be empty.");
+    throw new Error("Transaction list is empty.");
   }
 
   if (transactionList.length === 1) {

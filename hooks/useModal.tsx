@@ -13,7 +13,7 @@ export interface ModalProps {
   children: ReactNode;
 }
 
-export default function useModal() {
+export default function useModal({ children }: ModalProps) {
   const [open, setOpen] = useState(false);
 
   function openModal() {
@@ -25,32 +25,7 @@ export default function useModal() {
   }
 
   function ModalComponent(): ReactNode {
-    return (
-      <Dialog open={open}>
-        <>
-          <DialogTitle sx={{ px: 4, pt: 4 }}>Warning</DialogTitle>
-          <DialogContent sx={{ p: 4 }}>
-            <Stack direction="column" spacing={3}>
-              <Typography variant="body1">
-                You are about to delete all transactions. This process is{" "}
-                <Typography component="span" sx={{ fontWeight: "bold" }}>
-                  irreversible
-                </Typography>
-                .
-              </Typography>
-              <Stack direction="row" spacing={2} sx={{ justifyContent: "center" }}>
-                <Button variant="contained" onClick={closeModal}>
-                  Acknowledge and Confirm
-                </Button>
-                <Button variant="contained" onClick={closeModal}>
-                  Cancel
-                </Button>
-              </Stack>
-            </Stack>
-          </DialogContent>
-        </>
-      </Dialog>
-    );
+    return <Dialog open={open}>{children}</Dialog>;
   }
 
   return { openModal, closeModal, ModalComponent };
