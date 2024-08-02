@@ -22,6 +22,7 @@ export default function AddSplitterForm({
   const { control, handleSubmit } = useForm({
     defaultValues: {
       name: "",
+      colour: ""
     },
   });
 
@@ -33,8 +34,6 @@ export default function AddSplitterForm({
         gap: 2,
         alignItems: "center",
         width: "100%",
-        border: 2,
-        borderColor: "red",
       }}
     >
       <Stack
@@ -44,7 +43,11 @@ export default function AddSplitterForm({
         sx={{ width: "100%" }}
       >
         <form onSubmit={handleSubmit(handleAddSplitter)} noValidate>
-          <Stack spacing={2} direction="row">
+          <Stack
+            spacing={2}
+            direction="row"
+            sx={{ justifyContent: "spread-between" }}
+          >
             <TextFieldElement
               name={"name"}
               label={"Name"}
@@ -52,11 +55,19 @@ export default function AddSplitterForm({
               required
               fullWidth
             />
-          </Stack>
 
-          <Button type="submit" variant="contained" color={"primary"}>
-            Add
-          </Button>
+            <TextFieldElement
+              name={"colour"}
+              label={"Colour"}
+              control={control}
+              required
+              fullWidth
+            />
+
+            <Button type="submit" variant="contained" color={"primary"}>
+              Add
+            </Button>
+          </Stack>
         </form>
       </Stack>
     </Box>

@@ -12,6 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 
 import AppBar from "@/components/split/AppBar";
+import AddTransactionForm from "@/components/split/transactions/AddTransactionForm";
 import TransactionTable from "@/components/split/transactions/TransactionTable";
 import SplitterIndex from "@/components/split/splitters/Index";
 import SummaryCard from "@/components/split/SummaryCard";
@@ -19,8 +20,10 @@ import SummaryCard from "@/components/split/SummaryCard";
 import { transactionsTestData } from "@/utils/testData";
 
 import type { Transaction } from "@/types/TransactionTypes";
+import type { Splitter } from "@/types/UserTypes";
 
 export default function SplitPage() {
+  const [splitterList, setSplitterList] = useState<Splitter[]>([]);
   const [transactionList, setTransactionList] =
     useState<Transaction[]>(transactionsTestData);
 
@@ -58,6 +61,10 @@ export default function SplitPage() {
     ),
   });
 
+  function handleAddTransaction() {
+    console.log("added");
+  }
+
   function handleResetTransactions() {
     setTransactionList([]);
     closeModal();
@@ -94,28 +101,84 @@ export default function SplitPage() {
           <SummaryCard transactionList={transactionList}></SummaryCard>
         </Container>
         <Container>
-          <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h4"
+            color="primary"
+            sx={{ fontWeight: "bold", mb: 2 }}
+          >
             Transactions:
           </Typography>
-          <TransactionTable transactions={transactionList}></TransactionTable>
+          <Stack spacing={4}>
+            <TransactionTable transactions={transactionList}></TransactionTable>
+            <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+              Add a new transaction:
+            </Typography>
+            <AddTransactionForm
+              splitters={splitterList}
+              handleAddTransaction={handleAddTransaction}
+            ></AddTransactionForm>
+          </Stack>
         </Container>
         <Container>
-          <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h4"
+            color="primary"
+            sx={{ fontWeight: "bold", mb: 2 }}
+          >
             Splitters:
           </Typography>
           <SplitterIndex></SplitterIndex>
+        </Container>
 
-          <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
+        <Container>
+          <Typography
+            variant="h4"
+            color="primary"
+            sx={{ fontWeight: "bold", mb: 2 }}
+          >
             Admin:
           </Typography>
-          <Container>
-            <Button type="submit" variant="contained" color={"primary"}>
-              Delete Group
-            </Button>
-            <Button variant="contained" color={"primary"} onClick={openModal}>
-              Reset Transactions
-            </Button>
-          </Container>
+          <Stack
+            direction="column"
+            spacing={2}
+            sx={{ justifyContent: "space-between" }}
+          >
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{ justifyContent: "space-between" }}
+            >
+              <Stack direction="column">
+                <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                  Delete Group
+                </Typography>
+                <Typography variant="body1">
+                  Delete the group, all transactions and all users permanently.
+                </Typography>
+              </Stack>
+              <Button type="submit" variant="contained" color={"primary"}>
+                Delete Group
+              </Button>
+            </Stack>
+
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{ justifyContent: "space-between" }}
+            >
+              <Stack direction="column">
+                <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                  Delete Group
+                </Typography>
+                <Typography variant="body1">
+                  Delete all transactions permanently.
+                </Typography>
+              </Stack>
+              <Button variant="contained" color={"primary"} onClick={openModal}>
+                Reset Transactions
+              </Button>
+            </Stack>
+          </Stack>
         </Container>
       </Stack>
     </Box>

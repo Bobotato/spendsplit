@@ -50,7 +50,7 @@ export default function SplitterIndex() {
         </Typography>
         <SplitterList splitterList={splitterList}></SplitterList>
 
-        <Typography>Add a new splitter:</Typography>
+        <Typography sx={{ mb: 2 }}>Add a new splitter:</Typography>
         <AddSplitterForm
           handleAddSplitter={handleAddSplitter}
         ></AddSplitterForm>
