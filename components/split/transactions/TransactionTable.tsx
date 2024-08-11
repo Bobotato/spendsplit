@@ -9,11 +9,13 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
+import { useTransactionListStore } from "@/app/context/splitContext";
+
 import type { ReactElement } from "react";
 import type { Transaction } from "@/types/TransactionTypes";
 
 interface TransactionListProps {
-  transactions: Transaction[];
+  transactions?: Transaction[];
 }
 
 interface TransactionTableColumn {
@@ -40,11 +42,11 @@ const transactionTableColumns: TransactionTableColumn[] = [
   { id: "addedBy", label: "Added By", minWidth: 170 },
 ];
 
-export default function TransactionTable({
-  transactions,
-}: TransactionListProps): ReactElement {
+export default function TransactionTable(): ReactElement {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+
+  const transactions = useTransactionListStore((state) => state.transactions);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);

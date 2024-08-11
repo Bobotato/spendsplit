@@ -17,6 +17,10 @@ export default function TransactionIndex({
   transactionList,
   splitterList,
 }: TransactionIndexProps) {
+  function handleAddTransaction() {
+    console.log("add");
+  }
+
   return (
     <Container>
       <Typography
@@ -33,7 +37,7 @@ export default function TransactionIndex({
             using the add transaction form below.
           </Typography>
         ) : (
-          <TransactionTable transactions={transactionList}></TransactionTable>
+          <TransactionTable></TransactionTable>
         )}
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>
           Add a new transaction:
