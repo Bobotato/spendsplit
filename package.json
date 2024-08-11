@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.16.5",
     "@mui/material": "^5.16.4",
     "@mui/material-nextjs": "^5.16.4",
+    "@mui/x-charts": "^7.12.1",
     "@mui/x-date-pickers": "^7.11.0",
     "axios": "^1.7.2",
     "better-sqlite3": "^11.1.2",

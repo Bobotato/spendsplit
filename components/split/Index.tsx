@@ -14,7 +14,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Header from "@/components/split/Header";
 import DashboardIndex from "@/components/split/dashboard/Index";
 import SplitterIndex from "@/components/split/splitters/Index";
-import TransactionsIndex from "@/components/transactions/Index";
+import TransactionIndex from "@/components/split/transactions/Index";
 
 import useModal from "@/hooks/useModal";
 
@@ -115,10 +115,13 @@ export default function SplitIndex(): ReactElement {
           <DashboardIndex transactionList={transactionList}></DashboardIndex>
         </TabPanel>
         <TabPanel value={activeTab} index={1}>
-          Splitters
+          <SplitterIndex splitterList={splitterList}></SplitterIndex>
         </TabPanel>
         <TabPanel value={activeTab} index={2}>
-          Transactions
+          <TransactionIndex
+            splitterList={splitterList}
+            transactionList={transactionList}
+          ></TransactionIndex>
         </TabPanel>
       </Box>
     </Stack>

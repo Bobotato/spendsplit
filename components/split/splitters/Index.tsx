@@ -14,8 +14,11 @@ import { isNameUsed } from "@/utils/split";
 
 import type { Splitter } from "@/types/UserTypes";
 
-export default function SplitterIndex() {
-  const [splitterList, setSplitterList] = useState<Splitter[]>([]);
+interface SplitterIndexProps {
+  splitterList: Splitter[];
+}
+
+export default function SplitterIndex({ splitterList }: SplitterIndexProps) {
   const { AlertComponent, showAlert } = useAlert();
 
   function handleAddSplitter(splitter: Splitter) {
