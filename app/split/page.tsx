@@ -87,7 +87,7 @@ export default function SplitPage() {
 
       <ModalComponent></ModalComponent>
 
-      <Stack maxWidth="md" spacing={4} direction="column" sx={{ py: 4 }}>
+      <Stack maxWidth="md" spacing={6} direction="column" sx={{ py: 4 }}>
         <Typography variant="h3">Group name here.</Typography>
 
         <Typography
@@ -109,7 +109,16 @@ export default function SplitPage() {
             Transactions:
           </Typography>
           <Stack spacing={4}>
-            <TransactionTable transactions={transactionList}></TransactionTable>
+            {!transactionList || transactionList.length === 0 ? (
+              <Typography variant="body1">
+                There are currently no transactions to show. Add some
+                transactions using the add transaction form below.
+              </Typography>
+            ) : (
+              <TransactionTable
+                transactions={transactionList}
+              ></TransactionTable>
+            )}
             <Typography variant="body1" sx={{ fontWeight: "bold" }}>
               Add a new transaction:
             </Typography>

@@ -1,3 +1,4 @@
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
@@ -30,10 +31,18 @@ export default function LoginPage() {
 
       <Login></Login>
 
-      <Typography variant="body1">Don't have an account?</Typography>
-      <Typography variant="body1">
-        <Link href="/register">Register</Link>
-      </Typography>
+      <Container maxWidth="xs">
+        <Button href="/split" variant="contained" fullWidth>
+          Try as Guest
+        </Button>
+      </Container>
+
+      <Container maxWidth="xs" sx={{ textAlign: 'center', mt: 4 }}>
+        <Typography variant="body1">Don't have an account?</Typography>
+        <Typography variant="body1">
+          <Link href="/register">Register</Link>
+        </Typography>
+      </Container>
     </Container>
   );
 }

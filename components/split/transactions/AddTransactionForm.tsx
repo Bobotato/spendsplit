@@ -1,5 +1,6 @@
 "use client";
 import * as dayjs from "dayjs";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { TextFieldElement, AutocompleteElement } from "react-hook-form-mui";
 
@@ -10,15 +11,22 @@ import Stack from "@mui/material/Stack";
 import type { ReactElement } from "react";
 import type { Splitter } from "@/types/UserTypes";
 import type { Transaction } from "@/types/TransactionTypes";
+import { Preview } from "@mui/icons-material";
 
 interface AddSplitterFormProps {
   splitters: Splitter[];
   handleAddTransaction: (transaction: Transaction) => void;
 }
 
+interface SplitterOption {
+  id: number;
+  label: string;
+}
+
 export default function AddTransactionForm({
   handleAddTransaction,
 }: AddSplitterFormProps): ReactElement {
+  const [splitterOptions, setSplitterOptions] = useState<SplitterOption[]>([]);
   const { control, handleSubmit } = useForm({
     defaultValues: {
       name: "",
@@ -26,6 +34,23 @@ export default function AddTransactionForm({
       amount: 0,
     },
   });
+
+  function generateSplitterOptionList(splitterList: Splitter[]) {
+    splitterList.forEach((splitter) => {
+      setSplitterOptions((prev) => [
+        ...prev,
+        {
+          id: 1,
+          label: splitter.name,
+        },
+      ]);
+    });
+  }
+
+  useEffect(() => {
+    generateSplitterOptionList;
+    console.log(splitterOptions)
+  }, [splitterOptions]);
 
   return (
     <Box
@@ -73,6 +98,21 @@ export default function AddTransactionForm({
               fullWidth
             />
 
+            <AutocompleteElement
+              name={"amount"}
+              label={"Amount"}
+              options={splitterOptions}
+              control={control}
+            ></AutocompleteElement>
+
+            <AutocompleteElement
+              name={"amount"}
+              label={"Amount"}
+              options={splitterOptions}
+              control={control}
+              multiple
+            ></AutocompleteElement>
+
             <Button type="submit" variant="contained" color={"primary"}>
               Add
             </Button>
@@ -81,14 +121,4 @@ export default function AddTransactionForm({
       </Stack>
     </Box>
   );
-}
-
-interface Transaction {
-  id: number;
-  dateAdded: string;
-  dateIncurred: string;
-  name: string;
-  location: string;
-  amount: number;
-  addedBy: string;
 }
