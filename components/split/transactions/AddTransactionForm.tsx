@@ -19,7 +19,7 @@ interface AddSplitterFormProps {
 }
 
 interface SplitterOption {
-  id: number;
+  id: string;
   label: string;
 }
 
@@ -27,20 +27,14 @@ export default function AddTransactionForm({
   handleAddTransaction,
 }: AddSplitterFormProps): ReactElement {
   const [splitterOptions, setSplitterOptions] = useState<SplitterOption[]>([]);
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      name: "",
-      location: "",
-      amount: 0,
-    },
-  });
+  const { control, handleSubmit } = useForm();
 
   function generateSplitterOptionList(splitterList: Splitter[]) {
     splitterList.forEach((splitter) => {
       setSplitterOptions((prev) => [
         ...prev,
         {
-          id: 1,
+          id: splitter.name,
           label: splitter.name,
         },
       ]);
@@ -49,7 +43,7 @@ export default function AddTransactionForm({
 
   useEffect(() => {
     generateSplitterOptionList;
-    console.log(splitterOptions)
+    console.log(splitterOptions);
   }, [splitterOptions]);
 
   return (
@@ -63,7 +57,7 @@ export default function AddTransactionForm({
       }}
     >
       <Stack
-        direction="row"
+        direction="column"
         justifyContent="center"
         spacing={2}
         sx={{ width: "100%" }}
@@ -71,12 +65,12 @@ export default function AddTransactionForm({
         <form onSubmit={handleSubmit(handleAddTransaction)} noValidate>
           <Stack
             spacing={2}
-            direction="row"
+            direction="column"
             sx={{ justifyContent: "spread-between" }}
           >
             <TextFieldElement
-              name={"name"}
-              label={"Name"}
+              name={"item"}
+              label={"Item"}
               control={control}
               required
               fullWidth
@@ -99,15 +93,8 @@ export default function AddTransactionForm({
             />
 
             <AutocompleteElement
-              name={"amount"}
-              label={"Amount"}
-              options={splitterOptions}
-              control={control}
-            ></AutocompleteElement>
-
-            <AutocompleteElement
-              name={"amount"}
-              label={"Amount"}
+              name={"owedBy"}
+              label={"Owed By"}
               options={splitterOptions}
               control={control}
               multiple

@@ -16,7 +16,7 @@ export default function Summary({ transactionList }: SummaryProps) {
   const total = deriveTotalFromTransactions(transactionList);
 
   const largestTransactionSummary = () => {
-    if (transactionList.length > 0) {
+    if (transactionList && transactionList.length > 0) {
       const largestTransaction = deriveLargestTransaction(transactionList);
 
       return (
