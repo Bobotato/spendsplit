@@ -18,14 +18,16 @@
     "@mui/material-nextjs": "^5.16.4",
     "@mui/x-charts": "^7.12.1",
     "@mui/x-date-pickers": "^7.11.0",
-    "axios": "^1.7.2",
+    "bcrypt": "^5.1.1",
     "better-sqlite3": "^11.1.2",
     "dayjs": "^1.11.12",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.1",
     "react-hook-form-mui": "^7.0.1",
+    "vercel": "^35.2.4",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"
   },
@@ -36,6 +38,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",
+    "prisma": "^5.18.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
