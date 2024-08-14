@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { checkUserExists, createNewUser } from "@/services/auth/auth";
+
+import { UsernameAlreadyExistsError } from "@/services/errors";
+import { create } from "domain";
+
 async function POST(request: NextRequest) {
   try {
     const res = await request.json();
@@ -21,14 +26,31 @@ async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    const result = await prisma.user.create({
-      data: {
-        email: res.email,
-        passwordHash: res.password,
-      },
-    });
-    return NextResponse.json({ response: result }, { status: 200 });
+    await checkUserExists(res.email);
+    await createNewUser(res.email, res.password);
+    return NextResponse.json(
+      { message: "User successfully created." },
+      { status: 200 }
+    );
   } catch (e) {
+    console.log(e);
+    if (e instanceof UsernameAlreadyExistsError) {
+      return NextResponse.json(
+        {
+          error:
+            "The email is already taken, please use another email or log in.",
+        },
+        { status: 409 }
+      );
+    }
+    if (e instanceof SyntaxError) {
+      return NextResponse.json(
+        {
+          error: "There was no JSON body supplied.",
+        },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       {
         error:
