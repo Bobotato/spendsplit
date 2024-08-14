@@ -1,20 +1,39 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+
+import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken";
 
 import { decryptAccessToken } from "@/lib/jwt/jwt";
 
-async function POST(request: Request) {
+async function POST() {
   try {
-    const res = await request.json();
-    if (res.access_token) {
-      decryptAccessToken(res.access_token);
+    const access_token = cookies().get("access_token");
+    if (access_token?.value) {
+      decryptAccessToken(access_token.value);
+      return NextResponse.json({ verified: "True" });
     } else {
       return NextResponse.json(
-        { error: "No token was supplied." },
+        { error: "No token was supplied. Please supply a token." },
         { status: 401 }
       );
     }
   } catch (e) {
-    return NextResponse.json({ error: "Broken" }, { status: 401 });
+    if (e instanceof TokenExpiredError) {
+      return NextResponse.json(
+        {
+          error:
+            "The token has expired, please login again to refresh your token.",
+        },
+        { status: 401 }
+      );
+    }
+    if (e instanceof JsonWebTokenError) {
+      return NextResponse.json(
+        { error: "The token is invalid. Please login again." },
+        { status: 401 }
+      );
+    }
+    return NextResponse.json({ error: e }, { status: 500 });
   }
 }
 

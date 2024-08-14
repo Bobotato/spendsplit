@@ -1,27 +1,35 @@
-import { sign, verify } from "jsonwebtoken";
+import { Secret, sign, verify } from "jsonwebtoken";
+import { MissingEnvError } from "./errors";
+import type { Algorithm } from "jsonwebtoken";
 
 interface accessTokenData {
   email: string;
 }
 
-const jwtSecretKey = process.env.JWT_SECRET;
-const jwtAlgo = process.env.JWT_ALGO;
-const exp = process.env.JWT_EXPIRY;
-
 function decryptAccessToken(accessToken: string) {
-  const payload = verify(accessToken, jwtSecretKey);
-  return payload;
+  if (process.env.JWT_SECRET && process.env.JWT_ALGO) {
+    const payload = verify(accessToken, process.env.JWT_SECRET as Secret, {
+      algorithms: [process.env.JWT_ALGO as Algorithm],
+    });
+    return payload;
+  } else {
+    throw new MissingEnvError("Env missing");
+  }
 }
 
 function generateAccessToken(data: accessTokenData) {
-  try {
-    const token = sign(data, jwtSecretKey, {
-      algorithm: jwtAlgo,
-      expiresIn: exp,
+  if (
+    !process.env.JWT_SECRET ||
+    !process.env.JWT_EXPIRY ||
+    !process.env.JWT_ALGO
+  ) {
+    throw new MissingEnvError("Env missing");
+  } else {
+    const token = sign(data, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRY as string,
+      algorithm: process.env.JWT_ALGO as Algorithm,
     });
     return token;
-  } catch (e) {
-    console.error(e);
   }
 }
 
