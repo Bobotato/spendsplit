@@ -35,7 +35,7 @@ async function POST(request: NextRequest) {
     if (!(await comparePasswords(user.passwordHash, res.password))) {
       return NextResponse.json(
         { error: "The email or password supplied was incorrect." },
-        { status: 400 }
+        { status: 401 }
       );
     }
 
@@ -54,7 +54,7 @@ async function POST(request: NextRequest) {
     if (e instanceof UserNotFoundError) {
       return NextResponse.json(
         { error: "The email or password supplied was incorrect." },
-        { status: 400 }
+        { status: 401 }
       );
     }
     console.log(e);

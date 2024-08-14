@@ -22,10 +22,18 @@ export default function Login() {
 
   const router = useRouter();
 
-  function handleLogin(loginCredentials: Credentials) {
+  async function handleLogin(loginCredentials: Credentials) {
     try {
-      console.log(loginCredentials);
-      router.push("/split");
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({
+          email: loginCredentials.email,
+          password: loginCredentials.password,
+        }),
+      });
+      if (response.ok) {
+        router.push("/split");
+      }
     } catch (e) {
       console.error(e);
     }
