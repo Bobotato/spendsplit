@@ -37,7 +37,7 @@ export default function LoginPage() {
         </Button>
       </Container>
 
-      <Container maxWidth="xs" sx={{ textAlign: 'center', mt: 4 }}>
+      <Container maxWidth="xs" sx={{ textAlign: "center", mt: 4 }}>
         <Typography variant="body1">Don't have an account?</Typography>
         <Typography variant="body1">
           <Link href="/register">Register</Link>
