@@ -12,17 +12,17 @@ import {
   TextFieldElement,
   PasswordElement,
 } from "react-hook-form-mui";
-import { loginCredentials } from "@/types/AuthTypes";
+import { Credentials } from "@/types/AuthTypes";
 
 export default function Login() {
-  const defaultValues: loginCredentials = {
+  const defaultValues: Credentials = {
     email: "",
     password: "",
   };
 
   const router = useRouter();
 
-  function handleLogin(loginCredentials: loginCredentials) {
+  function handleLogin(loginCredentials: Credentials) {
     try {
       console.log(loginCredentials);
       router.push("/split");
