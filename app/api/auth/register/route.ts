@@ -21,7 +21,13 @@ async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    return NextResponse.json({ test: "Registered" });
+    const result = await prisma.user.create({
+      data: {
+        email: res.email,
+        passwordHash: res.password,
+      },
+    });
+    return NextResponse.json({ response: result }, { status: 200 });
   } catch (e) {
     return NextResponse.json(
       {

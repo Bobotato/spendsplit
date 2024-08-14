@@ -1,15 +1,12 @@
-import { cookies } from "next/headers";
+import { compare, genSalt, hash } from "bcrypt";
 
-async function getSessionJWT() {
-  const jwt = cookies().get("session")?.value;
+async function hashPassword(password: string) {
+  const salt = await genSalt();
+  return hash(password, salt);
 }
 
-async function login() {
-  console.log("Login");
+async function comparePasswords(passwordHash: string, password: string) {
+  return compare(password, passwordHash);
 }
 
-async function logout() {
-  cookies().set("session", "", { maxAge: 0 });
-}
-
-export { getSessionJWT, login, logout };
+export { hashPassword, comparePasswords };

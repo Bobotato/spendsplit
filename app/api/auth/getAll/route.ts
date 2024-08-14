@@ -1,13 +1,11 @@
-import { generateAccessToken } from "@/lib/jwt/jwt";
-import { cookies } from "next/headers";
+import { prisma } from "@/services/prisma";
 
 import { NextRequest, NextResponse } from "next/server";
 
-import { main } from "@/services/index";
-
-async function GET(request: NextRequest) {
+async function GET() {
   try {
-    return NextResponse.json({ response: main() });
+    const result = await prisma.user.findMany();
+    return NextResponse.json({ response: result });
   } catch (e) {
     console.log(e);
     return NextResponse.json(
