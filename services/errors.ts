@@ -19,6 +19,13 @@ export class UsernameAlreadyExistsError extends APIError {
   }
 }
 
+export class UserNotFoundError extends APIError {
+  constructor(message: string) {
+    super(message);
+    this.name = "UserNotFoundError";
+  }
+}
+
 export class APIResponseMalformedError extends APIError {
   constructor(message: string) {
     super(message);

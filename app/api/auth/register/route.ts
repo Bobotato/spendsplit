@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { checkUserExists, createNewUser } from "@/services/auth/auth";
 
 import { UsernameAlreadyExistsError } from "@/services/errors";
-import { create } from "domain";
 
 async function POST(request: NextRequest) {
   try {
