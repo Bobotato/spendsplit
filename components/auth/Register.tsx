@@ -1,122 +1,122 @@
 "use client";
 
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
-import { Visibility, VisibilityOff } from "@mui/icons-material/";
+import Stack from "@mui/material/Stack";
+import CircularProgress from "@mui/material/CircularProgress";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { RegisterSchema } from "@/schemas/forms/auth";
+
+import type { Credentials } from "@/types/AuthTypes";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [edited, setEdited] = useState({ email: false, password: false });
-  const [registerDetails, setRegisterDetails] = useState<loginDetails>({
-    email: "",
-    password: "",
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterSchema>({
+    mode: "all",
+    resolver: zodResolver(RegisterSchema),
   });
 
   const router = useRouter();
 
-  function toggleShowPassword() {
+  function handleShowPassword() {
     setShowPassword((prev) => !prev);
-    console.log(showPassword);
   }
 
-  function handleRegisterChange(
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    identifier: string
-  ) {
-    setRegisterDetails((prev) => ({
-      ...prev,
-      [identifier]: event.target.value,
-    }));
-  }
-
-  function handleRegister(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log(registerDetails);
-    router.push("/split");
+  async function handleRegister(registerCredentials: Credentials) {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify({
+          email: registerCredentials.email,
+          password: registerCredentials.password,
+        }),
+      });
+      if (response.ok) {
+        router.push("/split");
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        component="form"
-        onSubmit={handleRegister}
-        noValidate
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 4,
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <form onSubmit={handleSubmit(handleRegister)} className="w-full">
+        <Stack direction="column" spacing={2}>
           <TextField
-            margin="none"
-            required
+            {...register("email")}
+            label="Email *"
+            error={!!errors.email}
+            helperText={errors.email?.message}
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={(event) => handleRegisterChange(event, "email")}
-          />
-
-          <FormControl variant="outlined" fullWidth>
-            <InputLabel htmlFor="outlined-adornment-password">
-              Password *
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              type={showPassword ? "text" : "password"}
-              endAdornment={
+          ></TextField>
+          <TextField
+            {...register("password")}
+            label="Password *"
+            type={showPassword ? "text" : "password"}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            fullWidth
+            InputProps={{
+              endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
-                    onClick={toggleShowPassword}
+                    onClick={handleShowPassword}
                     edge="end"
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
-              }
-              onChange={(event) => handleRegisterChange(event, "password")}
-              label="Password"
-              required
-            />
-          </FormControl>
-
+              ),
+            }}
+          ></TextField>
           <TextField
-            margin="none"
-            required
+            {...register("passwordConfirm")}
+            label="Confirm password *"
+            error={!!errors.passwordConfirm}
+            helperText={errors.passwordConfirm?.message}
             fullWidth
-            id="confirm-password"
-            label="Confirm Password"
-            name="confirm-password"
-          />
-        </Box>
+          ></TextField>
 
-        <Button type="submit" fullWidth variant="contained">
-          Register
-        </Button>
-      </Box>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 4 }}
+            disabled={isLoading}
+          >
+            {isLoading ? <CircularProgress size={25} /> : "Register"}
+          </Button>
+        </Stack>
+      </form>
     </Container>
   );
 }
