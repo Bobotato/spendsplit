@@ -100,6 +100,7 @@ export default function Register() {
           ></TextField>
           <TextField
             {...register("passwordConfirm")}
+            type="password"
             label="Confirm password *"
             error={!!errors.passwordConfirm}
             helperText={errors.passwordConfirm?.message}
