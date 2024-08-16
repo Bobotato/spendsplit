@@ -7,9 +7,9 @@ import {
   UsernameAlreadyExistsError,
 } from "@/services/errors";
 
-async function getUser(email: string) {
+async function getUser(username: string) {
   const res = await prisma.user.findFirst({
-    where: { email: email },
+    where: { username: username },
   });
   if (!res) {
     throw new UserNotFoundError("User not found");
@@ -18,19 +18,19 @@ async function getUser(email: string) {
   }
 }
 
-async function createNewUser(email: string, password: string) {
+async function createNewUser(username: string, password: string) {
   await prisma.user.create({
     data: {
-      email: email,
+      username: username,
       passwordHash: await hashPassword(password),
     },
   });
 }
 
-async function checkUserExists(email: string) {
+async function checkUserExists(username: string) {
   const res = await prisma.user.findMany({
     where: {
-      email: email,
+      username: username,
     },
   });
   if (res.length !== 0) {

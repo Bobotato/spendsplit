@@ -44,7 +44,7 @@ export default function Register() {
       const response = await fetch("/api/auth/register", {
         method: "POST",
         body: JSON.stringify({
-          email: registerCredentials.email,
+          username: registerCredentials.username,
           password: registerCredentials.password,
         }),
       });
@@ -71,10 +71,10 @@ export default function Register() {
       <form onSubmit={handleSubmit(handleRegister)} className="w-full">
         <Stack direction="column" spacing={2}>
           <TextField
-            {...register("email")}
-            label="Email *"
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            {...register("username")}
+            label="Username *"
+            error={!!errors.username}
+            helperText={errors.username?.message}
             fullWidth
           ></TextField>
           <TextField

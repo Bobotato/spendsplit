@@ -1,21 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 import { checkUserExists, createNewUser } from "@/services/auth/auth";
 
 import { UsernameAlreadyExistsError } from "@/services/errors";
 
+import { generateAccessToken } from "@/lib/jwt/jwt";
+
 async function POST(request: NextRequest) {
   try {
     const res = await request.json();
-    if (!res.email && !res.password) {
+    if (!res.username && !res.password) {
       return NextResponse.json(
         { error: "No credentials were supplied." },
         { status: 400 }
       );
     }
-    if (!res.email) {
+    if (!res.username) {
       return NextResponse.json(
-        { error: "No email was supplied." },
+        { error: "No username was supplied." },
         { status: 400 }
       );
     }
@@ -25,19 +28,21 @@ async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    await checkUserExists(res.email);
-    await createNewUser(res.email, res.password);
-    return NextResponse.json(
-      { message: "User successfully created." },
-      { status: 200 }
-    );
+    await checkUserExists(res.username);
+    await createNewUser(res.username, res.password);
+
+    const accessToken = generateAccessToken({ username: res.username });
+    if (accessToken) {
+      cookies().set("access_token", accessToken);
+    }
+    return NextResponse.json({ access_token: accessToken }, { status: 200 });
   } catch (e) {
     console.log(e);
     if (e instanceof UsernameAlreadyExistsError) {
       return NextResponse.json(
         {
           error:
-            "The email is already taken, please use another email or log in.",
+            "The username is already taken, please use another username or log in.",
         },
         { status: 409 }
       );

@@ -9,8 +9,8 @@ async function POST() {
   try {
     const access_token = cookies().get("access_token");
     if (access_token?.value) {
-      decryptAccessToken(access_token.value);
-      return NextResponse.json({ verified: "True" });
+      const payload = decryptAccessToken(access_token.value);
+      return NextResponse.json({ username: payload.username });
     } else {
       return NextResponse.json(
         { error: "No token was supplied. Please supply a token." },

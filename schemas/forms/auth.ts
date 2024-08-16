@@ -1,19 +1,17 @@
 import { z } from "zod";
 
 const LoginSchema = z.object({
-  email: z
+  username: z
     .string()
-    .email({ message: "Enter a valid email format" })
-    .min(1, { message: "Email is required" }),
+    .min(1, { message: "Username is required" }),
   password: z.string().min(1, { message: "Password is required" }),
 });
 
 const RegisterSchema = z
   .object({
-    email: z
+    username: z
       .string()
-      .email({ message: "Enter a valid email format" })
-      .min(1, { message: "Email is required" }),
+      .min(1, { message: "Username is required" }),
     password: z.string().min(1, { message: "Password is required" }),
     passwordConfirm: z
       .string()

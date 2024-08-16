@@ -10,19 +10,14 @@ import Stack from "@mui/material/Stack";
 import Image from "next/image";
 
 import type { ReactElement } from "react";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function ButtonAppBar(): ReactElement {
-  const router = useRouter();
+  const { logout } = useAuth();
 
   async function handleLogout() {
     try {
-      const response = await fetch("/api/auth/logout", {
-        method: "POST",
-      });
-      if (response.ok) {
-        router.push("/logout");
-      }
+      await logout();
     } catch (e) {
       console.error(e);
     }

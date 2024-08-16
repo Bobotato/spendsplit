@@ -12,15 +12,15 @@ import { UserNotFoundError } from "@/services/errors";
 async function POST(request: NextRequest) {
   try {
     const res = await request.json();
-    if (!res.email && !res.password) {
+    if (!res.username && !res.password) {
       return NextResponse.json(
         { error: "No credentials were supplied." },
         { status: 400 }
       );
     }
-    if (!res.email) {
+    if (!res.username) {
       return NextResponse.json(
-        { error: "No email was supplied." },
+        { error: "No username was supplied." },
         { status: 400 }
       );
     }
@@ -31,15 +31,15 @@ async function POST(request: NextRequest) {
       );
     }
 
-    const user = await getUser(res.email);
+    const user = await getUser(res.username);
     if (!(await comparePasswords(user.passwordHash, res.password))) {
       return NextResponse.json(
-        { error: "The email or password supplied was incorrect." },
+        { error: "The username or password supplied was incorrect." },
         { status: 401 }
       );
     }
 
-    const accessToken = generateAccessToken({ email: res.email });
+    const accessToken = generateAccessToken({ username: res.username });
     if (accessToken) {
       cookies().set("access_token", accessToken);
     }
@@ -53,7 +53,7 @@ async function POST(request: NextRequest) {
     }
     if (e instanceof UserNotFoundError) {
       return NextResponse.json(
-        { error: "The email or password supplied was incorrect." },
+        { error: "The username or password supplied was incorrect." },
         { status: 401 }
       );
     }

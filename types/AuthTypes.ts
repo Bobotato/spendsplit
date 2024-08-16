@@ -1,6 +1,10 @@
-interface Credentials {
-    email?: string
-    password?: string
+interface activeUser {
+  username: string;
 }
 
-export type { Credentials };
+interface Credentials {
+  username: string;
+  password: string;
+}
+
+export type { activeUser, Credentials };

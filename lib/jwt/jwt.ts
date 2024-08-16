@@ -3,7 +3,7 @@ import { MissingEnvError } from "./errors";
 import type { Algorithm } from "jsonwebtoken";
 
 interface accessTokenData {
-  email: string;
+  username: string;
 }
 
 function decryptAccessToken(accessToken: string) {

@@ -11,12 +11,14 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useAuth } from "@/hooks/useAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { LoginSchema } from "@/schemas/forms/auth";
+
+import { useRouter } from "next/navigation";
 
 import { Credentials } from "@/types/AuthTypes";
 
@@ -33,21 +35,24 @@ export default function Login() {
     resolver: zodResolver(LoginSchema),
   });
 
+  const { login, getCurrentUser } = useAuth();
+
   const router = useRouter();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await getCurrentUser();
+      if (user) {
+        router.push("/split");
+      }
+      getUser();
+    };
+  }, []);
 
   async function handleLogin(loginCredentials: Credentials) {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify({
-          email: loginCredentials.email,
-          password: loginCredentials.password,
-        }),
-      });
-      if (response.ok) {
-        router.push("/split");
-      }
+      await login(loginCredentials);
     } catch (e) {
       console.error(e);
     } finally {
@@ -72,10 +77,10 @@ export default function Login() {
       <form onSubmit={handleSubmit(handleLogin)} className="w-full">
         <Stack direction="column" spacing={2}>
           <TextField
-            {...register("email")}
-            label="Email *"
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            {...register("username")}
+            label="Username *"
+            error={!!errors.username}
+            helperText={errors.username?.message}
             fullWidth
           ></TextField>
           <TextField
