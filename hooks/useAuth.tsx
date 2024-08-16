@@ -1,11 +1,8 @@
-import { useState } from "react";
-
 import type { activeUser, Credentials } from "@/types/AuthTypes";
 
 import { useRouter } from "next/navigation";
 
 function useAuth() {
-  const [currentUser, setCurrentUser] = useState<activeUser | undefined>();
   const router = useRouter();
 
   async function getCurrentUser() {
