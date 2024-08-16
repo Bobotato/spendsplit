@@ -32,7 +32,7 @@ export default function LoginPage() {
       <Login></Login>
 
       <Container maxWidth="xs">
-        <Button href="/split" variant="contained" fullWidth>
+        <Button href="/groups" variant="contained" fullWidth>
           Try as Guest
         </Button>
       </Container>

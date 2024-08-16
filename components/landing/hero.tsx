@@ -62,11 +62,16 @@ export default function Hero() {
       </Typography>
 
       <Stack direction="row" spacing={2}>
-        <Button href="/split" variant="contained" size="large" disableElevation>
+        <Button href="/login" variant="contained" size="large" disableElevation>
           Login
         </Button>
 
-        <Button href="/split" variant="contained" size="large" disableElevation>
+        <Button
+          href="/register"
+          variant="contained"
+          size="large"
+          disableElevation
+        >
           Register
         </Button>
       </Stack>

@@ -12,6 +12,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { NewGroupSchema } from "@/schemas/forms/split/newGroupForm";
+import { Typography } from "@mui/material";
+
+interface NewGroupFormProps {
+  activeUserID: number;
+}
 
 export default function NewGroupForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -52,8 +57,10 @@ export default function NewGroupForm() {
             label="Group Name *"
             error={!!errors.groupName}
             helperText={errors.groupName?.message}
+            placeholder="Italy trip"
             fullWidth
           ></TextField>
+          <Typography>Enter a name for your group or event.</Typography>
           <TextField
             {...register("groupDesc")}
             label="Group Description *"
@@ -61,19 +68,32 @@ export default function NewGroupForm() {
             error={!!errors.groupDesc}
             helperText={errors.groupDesc?.message}
             fullWidth
+            placeholder="Florence spending from 19/10/2024 - 29/10/2024"
             multiline
           ></TextField>
+          <Typography>Enter a short description for your group or event.</Typography>
         </Stack>
 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 4 }}
-          disabled={isLoading}
-        >
-          {isLoading ? <CircularProgress size={25} /> : "Add New Group"}
-        </Button>
+        <Stack direction="row" spacing={2} sx={{ mt: 4 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 4 }}
+            disabled={isLoading}
+          >
+            {isLoading ? <CircularProgress size={25} /> : "Add New Group"}
+          </Button>
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            disabled={isLoading}
+          >
+            Reset Form
+          </Button>
+        </Stack>
       </form>
     </Container>
   );
