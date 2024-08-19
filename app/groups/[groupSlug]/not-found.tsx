@@ -20,7 +20,7 @@ export default function NotFound(): ReactElement {
       <Stack direction="column" justifyContent="center" alignItems="center">
         <Image src={SpendSplitLogo} alt="Spendsplit Logo" priority={true} />
 
-        <Typography>There's nothing here.</Typography>
+        <Typography>The specified group was not found.</Typography>
         <Typography>
           <Link href="/" className="hover:text-green-500">
             Press here to go home.

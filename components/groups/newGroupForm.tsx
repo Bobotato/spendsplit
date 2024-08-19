@@ -25,6 +25,7 @@ export default function NewGroupForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<NewGroupSchema>({
     mode: "all",
     resolver: zodResolver(NewGroupSchema),
@@ -71,7 +72,9 @@ export default function NewGroupForm() {
             placeholder="Florence spending from 19/10/2024 - 29/10/2024"
             multiline
           ></TextField>
-          <Typography>Enter a short description for your group or event.</Typography>
+          <Typography>
+            Enter a short description for your group or event.
+          </Typography>
         </Stack>
 
         <Stack direction="row" spacing={2} sx={{ mt: 4 }}>
@@ -86,7 +89,8 @@ export default function NewGroupForm() {
           </Button>
 
           <Button
-            type="submit"
+            type="button"
+            onClick={() => reset()}
             fullWidth
             variant="contained"
             disabled={isLoading}

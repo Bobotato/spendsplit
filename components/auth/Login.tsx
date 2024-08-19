@@ -43,7 +43,7 @@ export default function Login() {
     const getUser = async () => {
       const user = await getCurrentUser();
       if (user) {
-        router.push("/split");
+        router.push("/groups");
       }
       getUser();
     };

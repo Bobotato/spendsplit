@@ -19,6 +19,13 @@ export class UsernameAlreadyExistsError extends APIError {
   }
 }
 
+export class GroupIDCollisionError extends APIError {
+  constructor(message: string) {
+    super(message);
+    this.name = "GroupIDCollisionError";
+  }
+}
+
 export class UserNotFoundError extends APIError {
   constructor(message: string) {
     super(message);

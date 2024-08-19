@@ -29,7 +29,7 @@ function useAuth() {
         }),
       });
       if (response.ok) {
-        router.push("/split");
+        router.push("/groups");
       }
     } catch (e) {
       console.error(e);
