@@ -1,6 +1,7 @@
 "use client";
 
 import * as dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
@@ -16,8 +17,10 @@ interface GroupItemProps {
 export default function GroupItem({ group }: GroupItemProps) {
   const { id, groupTitle, groupDesc, createdAt, createdBy } = group;
 
+  const router = useRouter();
+
   function handleClick() {
-    console.log(id);
+    router.push(`/groups/${id}`);
   }
   return (
     <Button onClick={handleClick}>
