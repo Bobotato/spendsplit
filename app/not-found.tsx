@@ -1,19 +1,32 @@
 import { ReactElement } from "react";
+
+import Grid from "@mui/material/Grid";
 import Link from "next/link";
 import Image from "next/image";
 import SpendSplitLogo from "/public/images/SpendSplitLogo.png";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 export default function NotFound(): ReactElement {
   return (
-    <main className="not-found flex flex-col gap-8 mx-auto w-screen h-screen justify-center items-center max-w-lg">
-      <Image src={SpendSplitLogo} alt="Spendsplit Logo" priority={true} />
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      sx={{
+        height: "100vh",
+      }}
+    >
+      <Stack direction="column" justifyContent="center" alignItems="center">
+        <Image src={SpendSplitLogo} alt="Spendsplit Logo" priority={true} />
 
-      <div className="flex flex-col justify-center items-center">
-        <h2 className="text-base">There's nothing here.</h2>
-        <Link href="/" className="hover:text-green-500">
-          Press here to go home.
-        </Link>
-      </div>
-    </main>
+        <Typography>There's nothing here.</Typography>
+        <Typography>
+          <Link href="/" className="hover:text-green-500">
+            Press here to go home.
+          </Link>
+        </Typography>
+      </Stack>
+    </Grid>
   );
 }

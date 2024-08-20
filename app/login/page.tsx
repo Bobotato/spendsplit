@@ -1,8 +1,9 @@
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
-import Login from "@/app/components/auth/Login";
+import Login from "@/components/auth/Login";
 
 import Image from "next/image";
 
@@ -23,16 +24,25 @@ export default function LoginPage() {
         alt="Spendsplit Logo"
         width={400}
         height={100}
+        priority
       />
 
       <Typography variant="h5">Log In</Typography>
 
       <Login></Login>
 
-      <Typography variant="body1">Don't have an account?</Typography>
-      <Typography variant="body1">
-        <Link href="/register">Register</Link>
-      </Typography>
+      <Container maxWidth="xs">
+        <Button href="/groups" variant="contained" fullWidth>
+          Try as Guest
+        </Button>
+      </Container>
+
+      <Container maxWidth="xs" sx={{ textAlign: "center", mt: 4 }}>
+        <Typography variant="body1">Don't have an account?</Typography>
+        <Typography variant="body1">
+          <Link href="/register">Register</Link>
+        </Typography>
+      </Container>
     </Container>
   );
 }

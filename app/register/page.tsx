@@ -2,7 +2,7 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
-import Register from "@/app/components/auth/Register";
+import Register from "@/components/auth/Register";
 
 import Image from "next/image";
 
@@ -23,6 +23,7 @@ export default function RegisterPage() {
         alt="Spendsplit Logo"
         width={400}
         height={100}
+        priority
       />
 
       <Typography variant="h5">Register</Typography>

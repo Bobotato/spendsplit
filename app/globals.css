@@ -20,4 +20,8 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .filter-green {
+    filter: invert(43%) sepia(41%) saturate(340%) hue-rotate(70deg) brightness(97%) contrast(90%)
+  }
 }
