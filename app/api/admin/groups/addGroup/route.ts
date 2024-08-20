@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { checkUserExists, createNewUser } from "@/services/auth/auth";
-import { UsernameAlreadyExistsError } from "@/services/errors";
+import { GroupIDCollisionError } from "@/services/errors";
 
 async function POST(request: NextRequest) {
   try {
@@ -27,13 +27,13 @@ async function POST(request: NextRequest) {
     await checkUserExists(res.username);
     await createNewUser(res.username, res.password);
 
-    return NextResponse.json({ message: "Admin: User Added" }, { status: 200 });
+    return NextResponse.json({ message: "Admin: New group Added" }, { status: 200 });
   } catch (e) {
     console.log(e);
-    if (e instanceof UsernameAlreadyExistsError) {
+    if (e instanceof GroupIDCollisionError) {
       return NextResponse.json(
         {
-          error: "The username is already taken.",
+          error: "The group ID is already taken.",
         },
         { status: 409 }
       );
@@ -48,7 +48,7 @@ async function POST(request: NextRequest) {
     }
     return NextResponse.json(
       {
-        error: "There was an error creating account, check server logs.",
+        error: "There was an error creating new group, check server logs.",
       },
       { status: 500 }
     );

@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import Typography from "@mui/material/Typography";
 
 interface GroupTransactionsProps {
@@ -9,5 +11,11 @@ interface Params {
 }
 
 export default function GroupTransactions({ params }: GroupTransactionsProps) {
+  try {
+    const transactions = getTransactionsByGroupID(params.groupSlug);
+  } catch (e) {
+    notFound();
+  }
+
   return <Typography>{params.groupSlug}</Typography>;
 }
