@@ -1,10 +1,10 @@
-import { prisma } from "@/services/prisma";
+import { NextResponse } from "next/server";
 
-import { NextRequest, NextResponse } from "next/server";
+import { getAllGroups } from "@/app/api/services/groups/groups";
 
 async function GET() {
   try {
-    const result = await prisma.transactionGroup.findMany();
+    const result = await getAllGroups();
     return NextResponse.json({ response: result });
   } catch (e) {
     console.log(e);

@@ -33,6 +33,21 @@ export class UserNotFoundError extends APIError {
   }
 }
 
+export class GroupNotFoundError extends APIError {
+  constructor(message: string) {
+    super(message);
+    this.name = "GroupNotFoundError"
+  }
+}
+
+export class TransactionNotFoundError extends APIError {
+  constructor(message: string) {
+    super(message);
+    this.name = "TransactionNotFoundError"
+  }
+}
+
+
 export class APIResponseMalformedError extends APIError {
   constructor(message: string) {
     super(message);

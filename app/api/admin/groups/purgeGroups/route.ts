@@ -1,10 +1,10 @@
-import { prisma } from "@/services/prisma";
-
 import { NextRequest, NextResponse } from "next/server";
 
-async function POST(groupID: number) {
+import { purgeGroups } from "@/app/api/services/groups/groups";
+
+async function POST() {
   try {
-    const result = await prisma.user.findMany();
+    const result = await purgeGroups();
     return NextResponse.json({ response: result });
   } catch (e) {
     console.log(e);

@@ -1,12 +1,11 @@
-"use client";
-
-import * as dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+
+import { convertPrismaDateToDateString } from "@/utils/helpers";
 
 import type { Group } from "@/types/GroupTypes";
 
@@ -16,6 +15,8 @@ interface GroupItemProps {
 
 export default function GroupItem({ group }: GroupItemProps) {
   const { id, groupTitle, groupDesc, createdAt, createdBy } = group;
+
+  const dateString = convertPrismaDateToDateString(createdAt);
 
   const router = useRouter();
 
@@ -29,7 +30,7 @@ export default function GroupItem({ group }: GroupItemProps) {
           <Typography>{id}</Typography>
           <Typography>{groupTitle}</Typography>
           <Typography>{groupDesc}</Typography>
-          <Typography>{createdAt}</Typography>
+          <Typography>{dateString}</Typography>
           <Typography>{createdBy}</Typography>
         </Stack>
       </Paper>

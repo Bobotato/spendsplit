@@ -1,6 +1,8 @@
+"use client";
+
 import { Suspense } from "react";
 
-import AppBar from "@/components/split/AppBar";
+import { useEffect, useState } from "react";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -9,44 +11,26 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 
+import AppBar from "@/components/split/AppBar";
 import GroupList from "@/components/groups/groupList";
 import NewGroupForm from "@/components/groups/newGroupForm";
+
+import { getGroups } from "@/services/split";
 
 import type { ReactElement } from "react";
 import type { Group } from "@/types/GroupTypes";
 
-const groupData: Group[] = [
-  {
-    id: 1,
-    groupTitle: "test1",
-    groupDesc: "test1",
-    createdAt: 1724054975,
-    createdBy: 1,
-  },
-  {
-    id: 2,
-    groupTitle: "test1",
-    groupDesc: "test1",
-    createdAt: 1724054975,
-    createdBy: 1,
-  },
-  {
-    id: 3,
-    groupTitle: "test1",
-    groupDesc: "test1",
-    createdAt: 1724054975,
-    createdBy: 1,
-  },
-  {
-    id: 4,
-    groupTitle: "test1",
-    groupDesc: "test1",
-    createdAt: 1724054975,
-    createdBy: 1,
-  },
-];
-
 export default function MyGroupsPage(): ReactElement {
+  const [groups, setGroups] = useState<Group[]>([]);
+
+  useEffect(() => {
+    getGroups(1)
+      .then((res) => res.json())
+      .then((data) => {
+        setGroups(data.response);
+      });
+  }, []);
+
   return (
     <Box>
       <AppBar></AppBar>
@@ -76,8 +60,8 @@ export default function MyGroupsPage(): ReactElement {
           </Typography>
         </Typography>
 
-        <Suspense fallback={<Typography>Loading your groups...</Typography>}>
-          <GroupList groups={groupData}></GroupList>
+        <Suspense fallback={<Typography>Loading...</Typography>}>
+          <GroupList groups={groups} />
         </Suspense>
 
         <Container maxWidth="sm">

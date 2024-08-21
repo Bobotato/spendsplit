@@ -1,5 +1,3 @@
-import { prisma } from "@/services/prisma";
-
 import { NextRequest, NextResponse } from "next/server";
 
 async function GET() {

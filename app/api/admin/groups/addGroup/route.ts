@@ -1,33 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { checkUserExists, createNewUser } from "@/services/auth/auth";
-import { GroupIDCollisionError } from "@/services/errors";
+import { GroupIDCollisionError } from "@/app/api/services/errors";
+
+import { createGroup } from "@/app/api/services/groups/groups";
 
 async function POST(request: NextRequest) {
   try {
-    const res = await request.json();
-    if (!res.username && !res.password) {
+    const req = await request.json();
+    if (!req.groupTitle || !req.groupDesc || !req.createdById) {
       return NextResponse.json(
-        { error: "No credentials were supplied." },
+        { error: "Group details were not supplied or were incomplete." },
         { status: 400 }
       );
     }
-    if (!res.username) {
-      return NextResponse.json(
-        { error: "No username was supplied." },
-        { status: 400 }
-      );
-    }
-    if (!res.password) {
-      return NextResponse.json(
-        { error: "No password was supplied." },
-        { status: 400 }
-      );
-    }
-    await checkUserExists(res.username);
-    await createNewUser(res.username, res.password);
+    const res = await createGroup(
+      req.groupTitle,
+      req.groupDesc,
+      req.createdById
+    );
+    const id = res.id;
 
-    return NextResponse.json({ message: "Admin: New group Added" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Admin: New group Added", id },
+      { status: 200 }
+    );
   } catch (e) {
     console.log(e);
     if (e instanceof GroupIDCollisionError) {

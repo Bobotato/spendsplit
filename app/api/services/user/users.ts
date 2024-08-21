@@ -1,16 +1,25 @@
-import { prisma } from "@/services/prisma";
+import { prisma } from "@/app/api/services/prisma"
 
 import { hashPassword } from "@/lib/auth/auth";
 
 import {
   UserNotFoundError,
   UsernameAlreadyExistsError,
-} from "@/services/errors";
+} from "@/app/api/services/errors";
 
 async function getUser(username: string) {
   const res = await prisma.user.findFirst({
     where: { username: username },
   });
+  if (!res) {
+    throw new UserNotFoundError("User not found");
+  } else {
+    return res;
+  }
+}
+
+async function getAllUsers() {
+  const res = await prisma.user.findMany();
   if (!res) {
     throw new UserNotFoundError("User not found");
   } else {
@@ -38,4 +47,4 @@ async function checkUserExists(username: string) {
   }
 }
 
-export { getUser, createNewUser, checkUserExists };
+export { getUser, getAllUsers, createNewUser, checkUserExists };
