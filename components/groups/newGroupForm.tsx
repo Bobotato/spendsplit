@@ -44,7 +44,6 @@ export default function NewGroupForm() {
   return (
     <Container
       component="main"
-      maxWidth="xs"
       sx={{
         display: "flex",
         flexDirection: "column",

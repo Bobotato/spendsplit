@@ -64,7 +64,7 @@ export default function MyGroupsPage(): ReactElement {
           <GroupList groups={groups} />
         </Suspense>
 
-        <Container maxWidth="sm">
+        <Container>
           <Card sx={{ p: 4 }}>
             <CardContent>
               <Stack
