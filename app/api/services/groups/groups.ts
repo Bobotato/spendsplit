@@ -1,6 +1,6 @@
 import { prisma } from "@/app/api/services/prisma";
 
-import { GroupNotFoundError } from "@/app/api/services/errors";
+import { GroupNotFoundError, UserNotFoundError } from "@/app/api/services/errors";
 
 async function addMemberToGroup(groupId: number, member: string) {
   const res = await prisma.transactionGroup.update({
@@ -29,6 +29,10 @@ async function removeMemberFromGroup(groupId: number, member: string) {
     throw new GroupNotFoundError("No groups were found");
   }
   const members = group.groupMembers;
+
+  if (members.length === 0 || !members.includes(member)) {
+    throw new UserNotFoundError("No member was found")
+  }
   const filteredMembers = members.filter((word: string) => word !== member);
 
   const res = await prisma.transactionGroup.update({
