@@ -13,7 +13,34 @@ async function addMemberToGroup(groupId: number, member: string) {
       },
     },
   });
-  return res
+  return res;
+}
+
+async function removeMemberFromGroup(groupId: number, member: string) {
+  const group = await prisma.transactionGroup.findUnique({
+    where: {
+      id: groupId,
+    },
+    select: {
+      groupMembers: true,
+    },
+  });
+  if (!group) {
+    throw new GroupNotFoundError("No groups were found");
+  }
+  const members = group.groupMembers;
+  const filteredMembers = members.filter((word: string) => word !== member);
+
+  const res = await prisma.transactionGroup.update({
+    where: {
+      id: groupId,
+    },
+    data: {
+      groupMembers: filteredMembers,
+    },
+  });
+
+  return res;
 }
 
 async function createGroup(
@@ -25,7 +52,7 @@ async function createGroup(
     data: {
       groupTitle: groupTitle,
       groupDesc: groupDesc,
-      createdById: createdById,2
+      createdById: createdById,
     },
   });
   return res;
@@ -47,9 +74,7 @@ async function getGroupByGroupId(groupId: number) {
     },
   });
   if (!res) {
-    throw new GroupNotFoundError(
-      "No groups with this ID were found."
-    );
+    throw new GroupNotFoundError("No groups with this ID were found.");
   } else {
     return res;
   }
@@ -91,4 +116,5 @@ export {
   getGroupsByCreatedById,
   deleteGroupByGroupId,
   purgeGroups,
+  removeMemberFromGroup,
 };
