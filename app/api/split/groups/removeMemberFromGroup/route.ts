@@ -2,6 +2,8 @@ import { NextResponse, NextRequest } from "next/server";
 
 import { removeMemberFromGroup } from "@/app/api/services/groups/groups";
 
+import { GroupNotFoundError } from "@/app/api/services/errors";
+
 async function POST(request: NextRequest) {
   try {
     const req = await request.json();
@@ -18,6 +20,14 @@ async function POST(request: NextRequest) {
     return NextResponse.json({ response: result });
   } catch (e) {
     console.log(e);
+    if (e instanceof GroupNotFoundError) {
+      return NextResponse.json(
+        {
+          error: "There is no group with this id.",
+        },
+        { status: 400 }
+      );
+    }
     if (e instanceof SyntaxError) {
       return NextResponse.json(
         {
