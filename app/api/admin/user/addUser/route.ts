@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { checkUserExists, createNewUser } from "@/services/auth/auth";
-import { UsernameAlreadyExistsError } from "@/services/errors";
+import { checkUserExists, createNewUser } from "@/app/api/services/auth/users";
+import { UsernameAlreadyExistsError } from "@/app/api/services/errors";
 
 async function POST(request: NextRequest) {
   try {

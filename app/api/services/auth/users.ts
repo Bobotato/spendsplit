@@ -1,6 +1,6 @@
 import { prisma } from "@/app/api/services/prisma"
 
-import { hashPassword } from "@/lib/auth/auth";
+import { hashPassword } from "@/app/api/lib/auth/auth";
 
 import {
   UserNotFoundError,

@@ -1,4 +1,4 @@
-import { prisma } from "@/services/prisma";
+import { prisma } from "@/app/api/services/prisma";
 
 import { NextRequest, NextResponse } from "next/server";
 

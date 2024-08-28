@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken";
 
-import { decryptAccessToken } from "@/lib/jwt/jwt";
+import { decryptAccessToken } from "@/app/api/lib/jwt/jwt";
 
 async function POST() {
   try {

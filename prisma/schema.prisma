@@ -26,7 +26,24 @@ model TransactionGroup {
   createdAt DateTime @default(now())
   groupTitle String
   groupDesc String
+  groupMembers String[]
+  transactions Transaction[]
 
   createdBy User @relation(fields: [createdById], references: [id])
   createdById Int 
+}
+
+model Transaction {
+  id    Int   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  
+  transactionItem String
+  transactionAmount Int
+  transactionIncurred DateTime
+
+  createdBy String
+  splitters String[]
+
+  group TransactionGroup @relation(fields: [groupId], references: [id])
+  groupId Int 
 }

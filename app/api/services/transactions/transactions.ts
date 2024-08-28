@@ -1,6 +1,6 @@
 import { prisma } from "@/app/api/services/prisma";
 
-import { TransactionNotFoundError } from "../errors";
+import { TransactionNotFoundError } from "@/app/api/services/errors";
 
 async function getAllTransactions() {
   const res = await prisma.transactions.findMany();

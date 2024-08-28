@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-import { checkUserExists, createNewUser } from "@/services/auth/auth";
+import { checkUserExists, createNewUser } from "@/app/api/services/auth/users";
 
-import { UsernameAlreadyExistsError } from "@/services/errors";
+import { UsernameAlreadyExistsError } from "@/app/api/services/errors";
 
-import { generateAccessToken } from "@/lib/jwt/jwt";
+import { generateAccessToken } from "@/app/api/lib/jwt/jwt";
 
 async function POST(request: NextRequest) {
   try {

@@ -1,13 +1,13 @@
-import { generateAccessToken } from "@/lib/jwt/jwt";
+import { generateAccessToken } from "@/app/api/lib/jwt/jwt";
 import { cookies } from "next/headers";
 
 import { NextRequest, NextResponse } from "next/server";
 
-import { getUser } from "@/services/auth/auth";
+import { getUser } from "@/app/api/services/auth/users";
 
-import { comparePasswords } from "@/lib/auth/auth";
+import { comparePasswords } from "@/app/api/lib/auth/auth";
 
-import { UserNotFoundError } from "@/services/errors";
+import { UserNotFoundError } from "@/app/api/services/errors";
 
 async function POST(request: NextRequest) {
   try {
