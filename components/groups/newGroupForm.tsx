@@ -16,9 +16,10 @@ import { Typography } from "@mui/material";
 
 interface NewGroupFormProps {
   activeUserID: number;
+  handleAddNewGroup: (data: NewGroupSchema) => Promise<void>;
 }
 
-export default function NewGroupForm() {
+export default function NewGroupForm({ activeUserID, handleAddNewGroup }: NewGroupFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -31,9 +32,10 @@ export default function NewGroupForm() {
     resolver: zodResolver(NewGroupSchema),
   });
 
-  async function handleAddNewGroup() {
+  async function handleAddNewGroupSubmit(data: NewGroupSchema) {
     try {
       setIsLoading(true);
+      handleAddNewGroup(data)
     } catch (e) {
       console.error(e);
     } finally {
@@ -50,13 +52,13 @@ export default function NewGroupForm() {
         alignItems: "center",
       }}
     >
-      <form onSubmit={handleSubmit(handleAddNewGroup)} className="w-full">
+      <form onSubmit={handleSubmit(handleAddNewGroupSubmit)} className="w-full">
         <Stack direction="column" spacing={2}>
           <TextField
-            {...register("groupName")}
+            {...register("groupTitle")}
             label="Group Name *"
-            error={!!errors.groupName}
-            helperText={errors.groupName?.message}
+            error={!!errors.groupTitle}
+            helperText={errors.groupTitle?.message}
             placeholder="Italy trip"
             fullWidth
           ></TextField>

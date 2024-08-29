@@ -18,12 +18,8 @@ async function POST(request: NextRequest) {
       req.groupDesc,
       req.createdById
     );
-    const title = res.groupTitle;
 
-    return NextResponse.json(
-      { message: `Successfully created new group, ${title}.` },
-      { status: 200 }
-    );
+    return NextResponse.json({ response: res }, { status: 200 });
   } catch (e) {
     console.log(e);
     if (e instanceof GroupIDCollisionError) {
@@ -44,7 +40,8 @@ async function POST(request: NextRequest) {
     }
     return NextResponse.json(
       {
-        error: "There was an error creating a new group, please try again later.",
+        error:
+          "There was an error creating a new group, please try again later.",
       },
       { status: 500 }
     );

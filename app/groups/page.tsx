@@ -1,7 +1,5 @@
 "use client";
 
-import { Suspense } from "react";
-
 import { useEffect, useState } from "react";
 
 import Box from "@mui/material/Box";
@@ -16,7 +14,9 @@ import AppBar from "@/components/split/AppBar";
 import GroupList from "@/components/groups/groupList";
 import NewGroupForm from "@/components/groups/newGroupForm";
 
-import { getGroupsByUserId } from "@/services/split";
+import { addNewGroup, getGroupsByUserId } from "@/services/split";
+
+import { NewGroupSchema } from "@/schemas/forms/split/newGroupForm";
 
 import type { ReactElement } from "react";
 import type { Group } from "@/types/GroupTypes";
@@ -33,6 +33,21 @@ export default function MyGroupsPage(): ReactElement {
         setIsLoading(false);
       });
   }, []);
+
+  async function handleAddNewGroup(data: NewGroupSchema) {
+    const res = await addNewGroup(data.groupTitle, data.groupDesc, 1);
+    const group = await res.json();
+    setGroups((groups) => [
+      ...groups,
+      {
+        id: group.response.id,
+        createdAt: group.response.createdAt,
+        groupTitle: group.response.groupTitle,
+        groupDesc: group.response.groupDesc,
+        createdBy: group.response.createdById,
+      },
+    ]);
+  }
 
   return (
     <Box>
@@ -92,7 +107,7 @@ export default function MyGroupsPage(): ReactElement {
                 >
                   Add a new group:
                 </Typography>
-                <NewGroupForm />
+                <NewGroupForm handleAddNewGroup={handleAddNewGroup} />
               </Stack>
             </CardContent>
           </Card>
