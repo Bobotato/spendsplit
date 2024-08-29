@@ -49,6 +49,21 @@ export default function MyGroupsPage(): ReactElement {
     ]);
   }
 
+  async function handleAddNewGroupMember(data: NewGroupSchema) {
+    const res = await addNewGroup(data.groupTitle, data.groupDesc, 1);
+    const group = await res.json();
+    setGroups((groups) => [
+      ...groups,
+      {
+        id: group.response.id,
+        createdAt: group.response.createdAt,
+        groupTitle: group.response.groupTitle,
+        groupDesc: group.response.groupDesc,
+        createdBy: group.response.createdById,
+      },
+    ]);
+  }
+
   return (
     <Box>
       <AppBar></AppBar>
