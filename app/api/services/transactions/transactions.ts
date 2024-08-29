@@ -2,6 +2,27 @@ import { prisma } from "@/app/api/services/prisma";
 
 import { TransactionNotFoundError } from "@/app/api/services/errors";
 
+async function createTransaction(
+  transactionItem: string,
+  transactionAmount: number,
+  transactionDate: string,
+  createdBy: string,
+  splitters: string[],
+  groupId: number
+) {
+  const res = await prisma.transactionGroup.create({
+    data: {
+      transactionItem: transactionItem,
+      transactionAmount: transactionAmount,
+      transactionDate: transactionDate,
+      createdBy: createdBy,
+      splitters: splitters,
+      groupId: groupId,
+    },
+  });
+  return res;
+}
+
 async function getAllTransactions() {
   const res = await prisma.transactions.findMany();
   if (!res) {
@@ -50,7 +71,7 @@ async function deleteTransactionByTransactionId(transactionId: number) {
   }
 }
 
-async function deleteTransactionByGroupId(groupId: number) {
+async function deleteTransactionsByGroupId(groupId: number) {
   const res = await prisma.transactions.deleteMany({
     where: {
       groupId: groupId,
@@ -69,10 +90,11 @@ async function purgeTransactions() {
 }
 
 export {
+  createTransaction,
   getAllTransactions,
   getTransactionsByGroupId,
   getTransactionByTransactionId,
-  deleteTransactionByGroupId,
+  deleteTransactionsByGroupId,
   deleteTransactionByTransactionId,
   purgeTransactions,
 };

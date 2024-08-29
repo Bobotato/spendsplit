@@ -1,13 +1,11 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { TextFieldElement, AutocompleteElement } from "react-hook-form-mui";
+import { TextFieldElement } from "react-hook-form-mui";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-
-import { splitterColours } from "@/utils/colourList";
 
 import type { ReactElement, FormEvent } from "react";
 import type { Splitter } from "@/types/UserTypes";
@@ -22,7 +20,6 @@ export default function AddSplitterForm({
   const { control, handleSubmit } = useForm({
     defaultValues: {
       name: "",
-      colour: ""
     },
   });
 
@@ -51,14 +48,6 @@ export default function AddSplitterForm({
             <TextFieldElement
               name={"name"}
               label={"Name"}
-              control={control}
-              required
-              fullWidth
-            />
-
-            <TextFieldElement
-              name={"colour"}
-              label={"Colour"}
               control={control}
               required
               fullWidth

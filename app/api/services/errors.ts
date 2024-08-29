@@ -26,6 +26,13 @@ export class GroupIDCollisionError extends APIError {
   }
 }
 
+export class TransactionIDCollisionError extends APIError {
+  constructor(message: string) {
+    super(message);
+    this.name = "TransactionIDCollisionError"
+  }
+}
+
 export class UserNotFoundError extends APIError {
   constructor(message: string) {
     super(message);

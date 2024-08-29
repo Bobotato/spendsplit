@@ -39,7 +39,7 @@ model Transaction {
   
   transactionItem String
   transactionAmount Int
-  transactionIncurred DateTime
+  transactionDate String
 
   createdBy String
   splitters String[]

@@ -38,7 +38,10 @@ export default function ButtonAppBar(): ReactElement {
             />
           </Link>
 
-          <Stack direction="row">
+          <Stack direction="row" spacing={4}>
+            <Button href="/groups" color="inherit">
+              My Groups
+            </Button>
             <Button onClick={handleLogout} color="inherit">
               Logout
             </Button>

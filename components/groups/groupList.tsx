@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -11,9 +12,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import SendIcon from '@mui/icons-material/Send';
+import SendIcon from "@mui/icons-material/Send";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import { convertPrismaDateToDateString } from "@/utils/helpers";
+
+import { deleteGroupByGroupId } from "@/services/split";
 
 import type { Group } from "@/types/GroupTypes";
 
@@ -24,8 +28,12 @@ interface GroupListProps {
 export default function GroupList({ groups }: GroupListProps) {
   const router = useRouter();
 
-  function handleClick(id: number) {
+  function handleClickGo(id: number) {
     router.push(`/groups/${id}`);
+  }
+
+  function handleClickDelete(id: number) {
+    deleteGroupByGroupId(id);
   }
 
   return (
@@ -43,7 +51,12 @@ export default function GroupList({ groups }: GroupListProps) {
                   <TableCell>Group Name</TableCell>
                   <TableCell align="right">Group Description</TableCell>
                   <TableCell align="right">Creation Date</TableCell>
-                  <TableCell align="right">{}</TableCell>
+                  <TableCell align="right" sx={{ width: 200 }}>
+                    {}
+                  </TableCell>
+                  <TableCell align="right" sx={{ width: 80 }}>
+                    {}
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -60,7 +73,23 @@ export default function GroupList({ groups }: GroupListProps) {
                       {convertPrismaDateToDateString(group.createdAt)}
                     </TableCell>
                     <TableCell align="right">
-                      <Button variant="contained" endIcon={<SendIcon />} onClick={() => handleClick(group.id)}>Go</Button>
+                      <Button
+                        variant="contained"
+                        endIcon={<SendIcon />}
+                        onClick={() => handleClickGo(group.id)}
+                      >
+                        Go
+                      </Button>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Button
+                        variant="contained"
+                        color="error"
+                        endIcon={<DeleteForeverIcon />}
+                        onClick={() => handleClickDelete(group.id)}
+                      >
+                        Delete
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

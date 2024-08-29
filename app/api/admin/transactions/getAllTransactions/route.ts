@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { getAllTransactions } from "@/app/api/services/transactions/transactions";
+
 async function GET() {
   try {
-    const result = await prisma.transactions.findMany();
+    const result = await getAllTransactions();
     return NextResponse.json({ response: result });
   } catch (e) {
     console.log(e);
