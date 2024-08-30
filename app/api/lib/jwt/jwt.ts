@@ -4,6 +4,7 @@ import type { Algorithm } from "jsonwebtoken";
 
 interface accessTokenData {
   username: string;
+  userId: number;
 }
 
 function decryptAccessToken(accessToken: string) {
@@ -18,6 +19,7 @@ function decryptAccessToken(accessToken: string) {
 }
 
 function generateAccessToken(data: accessTokenData) {
+  console.log(data)
   if (
     !process.env.JWT_SECRET ||
     !process.env.JWT_EXPIRY ||

@@ -39,7 +39,7 @@ async function POST(request: NextRequest) {
       );
     }
 
-    const accessToken = generateAccessToken({ username: res.username });
+    const accessToken = generateAccessToken({ username: user.username, userId: user.id });
     if (accessToken) {
       cookies().set("access_token", accessToken);
     }

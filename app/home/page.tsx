@@ -14,24 +14,44 @@ import AppBar from "@/components/split/AppBar";
 import GroupList from "@/components/groups/groupList";
 import NewGroupForm from "@/components/groups/newGroupForm";
 
-import { addNewGroup, getGroupsByUserId } from "@/services/split";
+import { addNewGroup } from "@/services/split";
+import { getUserDetailsFromJWT } from "@/services/user/user";
+import { getGroupsByUserId } from "@/services/split";
+import { useUserStore } from "@/app/context/userContext";
 
 import { NewGroupSchema } from "@/schemas/forms/split/newGroupForm";
 
 import type { ReactElement } from "react";
 import type { Group } from "@/types/GroupTypes";
+import { get } from "http";
 
 export default function MyGroupsPage(): ReactElement {
   const [groups, setGroups] = useState<Group[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const userDetails = useUserStore((state) => state);
+  const updateUserDetails = useUserStore((state) => state.updateUserDetails);
+
   useEffect(() => {
-    getGroupsByUserId(1)
-      .then((res) => res.json())
-      .then((data) => {
-        setGroups(data.response);
-        setIsLoading(false);
-      });
+    const getGroups = async (id: number) => {
+      const data = await getGroupsByUserId(id);
+      const json = await data?.json();
+      const userGroups = await json.response
+      setGroups(userGroups)
+      setIsLoading(false);
+    };
+
+    const fetchUserDetails = async () => {
+      const data = await getUserDetailsFromJWT();
+      const newUserDetails = await data?.json();
+      updateUserDetails(newUserDetails);
+
+      if (newUserDetails.id) {
+        await getGroups(newUserDetails.id);
+      }
+    };
+
+    fetchUserDetails();
   }, []);
 
   async function handleAddNewGroup(data: NewGroupSchema) {
@@ -67,7 +87,6 @@ export default function MyGroupsPage(): ReactElement {
   return (
     <Box>
       <AppBar></AppBar>
-
       <Stack
         spacing={8}
         sx={{
@@ -89,7 +108,7 @@ export default function MyGroupsPage(): ReactElement {
             color="primary"
             sx={{ fontWeight: "bold", textAlign: "center" }}
           >
-            username
+            {userDetails.userDetails.username}
           </Typography>
         </Typography>
 

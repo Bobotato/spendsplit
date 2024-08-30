@@ -29,7 +29,7 @@ function useAuth() {
         }),
       });
       if (response.ok) {
-        router.push("/groups");
+        router.push("/home");
       }
     } catch (e) {
       console.error(e);

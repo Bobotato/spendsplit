@@ -43,7 +43,6 @@ async function getGroupsByUserId(userId: number) {
         createdById: userId,
       }),
     });
-    console.log(response);
     return response;
   } catch (e) {
     console.error(e);

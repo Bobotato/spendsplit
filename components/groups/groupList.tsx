@@ -1,5 +1,4 @@
 import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
