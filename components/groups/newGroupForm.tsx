@@ -15,11 +15,10 @@ import { NewGroupSchema } from "@/schemas/forms/split/newGroupForm";
 import { Typography } from "@mui/material";
 
 interface NewGroupFormProps {
-  activeUserID: number;
   handleAddNewGroup: (data: NewGroupSchema) => Promise<void>;
 }
 
-export default function NewGroupForm({ activeUserID, handleAddNewGroup }: NewGroupFormProps) {
+export default function NewGroupForm({ handleAddNewGroup }: NewGroupFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {

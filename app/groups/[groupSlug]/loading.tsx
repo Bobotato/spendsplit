@@ -6,7 +6,7 @@ export default function Loading() {
   <Stack>
     <CircularProgress color="primary" />
     <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
-      Loading your homepage...
+      Loading this group...
     </Typography>
   </Stack>;
 }
