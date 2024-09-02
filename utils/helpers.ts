@@ -5,4 +5,9 @@ function convertPrismaDateToDateString(date: number) {
   return dayjs(dateObj).format("DD/MM/YYYY").toString();
 }
 
-export { convertPrismaDateToDateString };
+function convertPrismaDateToEpoch(date: number) {
+  let dateObj = new Date(date)
+  return dayjs(dateObj).format("x")
+}
+
+export { convertPrismaDateToDateString, convertPrismaDateToEpoch };

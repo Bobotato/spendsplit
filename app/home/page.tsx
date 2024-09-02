@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -31,7 +31,7 @@ export default function MyGroupsPage(): ReactElement {
   const [groups, setGroups] = useState<Group[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const router = useRouter()
+  const router = useRouter();
   const userDetails = useUserStore((state) => state);
   const updateUserDetails = useUserStore((state) => state.updateUserDetails);
 
@@ -39,8 +39,8 @@ export default function MyGroupsPage(): ReactElement {
     const getGroups = async (id: number) => {
       const data = await getGroupsByUserId(id);
       const json = await data?.json();
-      const userGroups = await json.response
-      setGroups(userGroups)
+      const userGroups = await json.response;
+      setGroups(userGroups);
       setIsLoading(false);
     };
 
@@ -54,7 +54,7 @@ export default function MyGroupsPage(): ReactElement {
         }
       } catch (error) {
         if (error instanceof UnauthorisedError) {
-          router.push('/login')
+          router.push("/login");
         }
       }
     };
@@ -131,7 +131,9 @@ export default function MyGroupsPage(): ReactElement {
             </Stack>
           </Box>
         ) : (
-          <GroupList groups={groups} />
+          <Box sx={{ display: "flex" }}>
+            <GroupList groups={groups} />
+          </Box>
         )}
 
         <Container>
