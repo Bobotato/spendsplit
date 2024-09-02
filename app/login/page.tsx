@@ -1,3 +1,11 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+import { getUserDetailsFromJWT } from "@/services/user/user";
+import { useUserStore } from "@/app/context/userContext";
+
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
@@ -7,7 +15,27 @@ import Login from "@/components/auth/Login";
 
 import Image from "next/image";
 
+
 export default function LoginPage() {
+
+  const router = useRouter();
+  const updateUserDetails = useUserStore((state) => state.updateUserDetails);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const data = await getUserDetailsFromJWT();
+        const newUserDetails = await data?.json();
+        updateUserDetails(newUserDetails);
+        router.push('/home')
+      } catch (error) {
+        console.log(error)
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
+
   return (
     <Container
       sx={{

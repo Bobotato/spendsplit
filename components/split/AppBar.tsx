@@ -39,7 +39,7 @@ export default function ButtonAppBar(): ReactElement {
           </Link>
 
           <Stack direction="row" spacing={4}>
-            <Button href="/groups" color="inherit">
+            <Button href="/home" color="inherit">
               My Groups
             </Button>
             <Button onClick={handleLogout} color="inherit">

@@ -25,7 +25,6 @@ import { NewGroupSchema } from "@/schemas/forms/split/newGroupForm";
 import type { ReactElement } from "react";
 import type { Group } from "@/types/GroupTypes";
 import { UnauthorisedError } from "@/services/errors";
-import { Router } from "next/router";
 
 export default function MyGroupsPage(): ReactElement {
   const [groups, setGroups] = useState<Group[]>([]);

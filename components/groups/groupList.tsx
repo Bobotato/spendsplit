@@ -19,7 +19,6 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 
 import SendIcon from "@mui/icons-material/Send";
@@ -114,7 +113,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align="right"
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -179,16 +178,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           Your groups
         </Typography>
       )}
-      {numSelected > 0 ? (
+      {numSelected > 0 && (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -286,7 +279,7 @@ export default function GroupList({ groups }: GroupListProps) {
           You currently have no groups, add some using the form below!
         </Typography>
       ) : (
-        <Paper sx={{ width: "100%", mb: 2 }}>
+        <Paper sx={{ width: "100%", mb: 2, p: 4 }}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -328,6 +321,7 @@ export default function GroupList({ groups }: GroupListProps) {
                         id={labelId}
                         scope="row"
                         padding="none"
+                        align="right"
                       >
                         {convertPrismaDateToDateString(row.createdAt)}
                       </TableCell>
