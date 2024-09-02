@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 
@@ -92,15 +91,22 @@ export default function MyGroupsPage(): ReactElement {
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <AppBar></AppBar>
       <Stack
-        spacing={8}
+        spacing={4}
         sx={{
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          mt: 12,
+          p: 4,
         }}
       >
         <Typography
@@ -135,26 +141,28 @@ export default function MyGroupsPage(): ReactElement {
           </Box>
         )}
 
-        <Container>
-          <Card sx={{ p: 4 }}>
-            <CardContent>
-              <Stack
-                direction="column"
-                spacing={4}
-                sx={{ justifyContent: "center", alignItems: "center" }}
+        <Box sx={{ width: "100%" }}>
+          <Paper sx={{ width: "100%", p: 4 }}>
+            <Stack
+              direction="column"
+              spacing={4}
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Typography
+                variant="h4"
+                color="primary"
+                sx={{ fontWeight: "bold", textAlign: "center" }}
               >
-                <Typography
-                  variant="h4"
-                  color="primary"
-                  sx={{ fontWeight: "bold", textAlign: "center" }}
-                >
-                  Add a new group:
-                </Typography>
-                <NewGroupForm handleAddNewGroup={handleAddNewGroup} />
-              </Stack>
-            </CardContent>
-          </Card>
-        </Container>
+                Add a new group:
+              </Typography>
+              <NewGroupForm handleAddNewGroup={handleAddNewGroup} />
+            </Stack>
+          </Paper>
+        </Box>
       </Stack>
     </Box>
   );

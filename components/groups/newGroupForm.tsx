@@ -49,6 +49,8 @@ export default function NewGroupForm({ handleAddNewGroup }: NewGroupFormProps) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        width: '100%',
+        p: 4
       }}
     >
       <form onSubmit={handleSubmit(handleAddNewGroupSubmit)} className="w-full">

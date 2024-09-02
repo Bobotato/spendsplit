@@ -212,7 +212,7 @@ export default function GroupList({ groups }: GroupListProps) {
   };
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
+    if (event.target.checked && groups) {
       const newSelected = groups.map((n) => n.id);
       setSelected(newSelected);
       return;
@@ -273,7 +273,7 @@ export default function GroupList({ groups }: GroupListProps) {
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", minWidth: 750 }}>
       {!groups || groups.length === 0 ? (
         <Typography variant="body1">
           You currently have no groups, add some using the form below!
@@ -325,9 +325,9 @@ export default function GroupList({ groups }: GroupListProps) {
                       >
                         {convertPrismaDateToDateString(row.createdAt)}
                       </TableCell>
-                      <TableCell align="right">{row.groupTitle}</TableCell>
-                      <TableCell align="right">{row.groupDesc}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="right" sx={{maxWidth: '100px'}}>{row.groupTitle}</TableCell>
+                      <TableCell align="right" sx={{maxWidth: '100px'}}>{row.groupDesc}</TableCell>
+                      <TableCell align="right" sx={{maxWidth: '80px'}}>
                         <Button
                           variant="contained"
                           endIcon={<SendIcon />}
@@ -336,7 +336,7 @@ export default function GroupList({ groups }: GroupListProps) {
                           Go
                         </Button>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="right" sx={{maxWidth: '100px'}}>
                         <Button
                           variant="contained"
                           color="error"
