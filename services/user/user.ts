@@ -1,12 +1,17 @@
-async function getUserDetailsFromJWT() {
-    try {
-      const response = await fetch("../api/auth/verifyJWT", {
-        method: "POST",
-        })
-      return response;
-    } catch (e) {
-      console.error(e);
-    }
-  }
+import { UnauthorisedError } from "@/services/errors";
 
-export { getUserDetailsFromJWT }
+async function getUserDetailsFromJWT() {
+  try {
+    const response = await fetch("../api/auth/verifyJWT", {
+      method: "POST",
+    });
+    if (!response.ok) {
+      throw new UnauthorisedError("JWT was expired or unauthorised, please log in again.");
+    }
+    return response;
+  } catch (e) {
+    throw e;
+  }
+}
+
+export { getUserDetailsFromJWT };

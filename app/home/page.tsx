@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation'
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -23,12 +24,14 @@ import { NewGroupSchema } from "@/schemas/forms/split/newGroupForm";
 
 import type { ReactElement } from "react";
 import type { Group } from "@/types/GroupTypes";
-import { get } from "http";
+import { UnauthorisedError } from "@/services/errors";
+import { Router } from "next/router";
 
 export default function MyGroupsPage(): ReactElement {
   const [groups, setGroups] = useState<Group[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const router = useRouter()
   const userDetails = useUserStore((state) => state);
   const updateUserDetails = useUserStore((state) => state.updateUserDetails);
 
@@ -42,12 +45,17 @@ export default function MyGroupsPage(): ReactElement {
     };
 
     const fetchUserDetails = async () => {
-      const data = await getUserDetailsFromJWT();
-      const newUserDetails = await data?.json();
-      updateUserDetails(newUserDetails);
-
-      if (newUserDetails.id) {
-        await getGroups(newUserDetails.id);
+      try {
+        const data = await getUserDetailsFromJWT();
+        const newUserDetails = await data?.json();
+        updateUserDetails(newUserDetails);
+        if (newUserDetails.id) {
+          await getGroups(newUserDetails.id);
+        }
+      } catch (error) {
+        if (error instanceof UnauthorisedError) {
+          router.push('/login')
+        }
       }
     };
 
