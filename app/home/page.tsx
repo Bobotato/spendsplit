@@ -14,9 +14,8 @@ import AppBar from "@/components/split/AppBar";
 import GroupList from "@/components/groups/groupList";
 import NewGroupForm from "@/components/groups/newGroupForm";
 
-import { addNewGroup } from "@/services/split";
+import { addNewGroup, getGroupsByUserId } from "@/services/groups/groups";
 import { getUserDetailsFromJWT } from "@/services/user/user";
-import { getGroupsByUserId } from "@/services/split";
 import { useUserStore } from "@/app/context/userContext";
 
 import { NewGroupSchema } from "@/schemas/forms/split/newGroupForm";
@@ -70,7 +69,8 @@ export default function MyGroupsPage(): ReactElement {
         createdAt: group.response.createdAt,
         groupTitle: group.response.groupTitle,
         groupDesc: group.response.groupDesc,
-        createdBy: group.response.createdById,
+        createdById: group.response.createdById,
+        groupMembers: []
       },
     ]);
   }
@@ -85,7 +85,8 @@ export default function MyGroupsPage(): ReactElement {
         createdAt: group.response.createdAt,
         groupTitle: group.response.groupTitle,
         groupDesc: group.response.groupDesc,
-        createdBy: group.response.createdById,
+        createdById: group.response.createdById,
+        groupMembers: []
       },
     ]);
   }

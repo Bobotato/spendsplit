@@ -1,5 +1,6 @@
-import type { Splitter } from "@/types/UserTypes";
+import type { Member } from "@/types/UserTypes";
 
+import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,25 +9,32 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 
-interface SplitterListProps {
-  splitterList: Splitter[];
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
+interface MemberListProps {
+  memberList: Member[];
+  handleDeleteMember: (member: string) => void;
 }
 
-interface SplitterTableColumn {
-  id: "name" | "colour";
+interface TableColumn {
+  id: "name" | "deleteButton";
   label: string;
   minWidth?: number;
   align?: "right";
   format?: (value: number) => string;
 }
 
-const splitterTableColumns: SplitterTableColumn[] = [
+const tableColumns: TableColumn[] = [
   { id: "name", label: "Name", minWidth: 170 },
-  { id: "colour", label: "Colour", minWidth: 170 },
+  { id: "deleteButton", label: "", minWidth: 170 },
 ];
 
-export default function SplitterList({ splitterList }: SplitterListProps) {
-  if (splitterList.length === 0) {
+export default function MemberList({ memberList, handleDeleteMember }: MemberListProps) {
+  function handleClickDelete(member: string) {
+    handleDeleteMember(member);
+  }
+
+  if (memberList.length === 0) {
     return <Typography>There's nothing here.</Typography>;
   } else {
     return (
@@ -34,7 +42,7 @@ export default function SplitterList({ splitterList }: SplitterListProps) {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              {splitterTableColumns.map((column) => (
+              {tableColumns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
@@ -46,15 +54,24 @@ export default function SplitterList({ splitterList }: SplitterListProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {splitterList.map((row) => (
+            {memberList.map((member, index) => (
               <TableRow
-                key={row.name}
+                key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  <Typography>{member}</Typography>
                 </TableCell>
-                <TableCell align="left">{row.colour}</TableCell>
+                <TableCell component="th" scope="row" align="right">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    endIcon={<DeleteForeverIcon />}
+                    onClick={() => handleClickDelete(member)}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

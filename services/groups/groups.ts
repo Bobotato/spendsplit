@@ -54,10 +54,9 @@ async function getGroupDataByGroupId(groupId: number) {
     const response = await fetch("../api/split/groups/getGroupByGroupId", {
       method: "POST",
       body: JSON.stringify({
-        id: groupId,
+        groupId: groupId,
       }),
     });
-    console.log(response);
     return response;
   } catch (e) {
     console.error(e);

@@ -24,13 +24,13 @@ import { visuallyHidden } from "@mui/utils";
 import SendIcon from "@mui/icons-material/Send";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-import { getComparator, descendingComparator } from "@/utils/table";
+import { getComparator } from "@/utils/table";
 
 import {
   convertPrismaDateToDateString,
   convertPrismaDateToEpoch,
 } from "@/utils/helpers";
-import { deleteGroupByGroupId } from "@/services/split";
+import { deleteGroupByGroupId } from "@/services/groups/groups";
 
 import type { Data, Order, HeadCell } from "@/types/TableTypes";
 

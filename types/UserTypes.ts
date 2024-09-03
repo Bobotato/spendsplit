@@ -1,4 +1,4 @@
-interface Splitter {
+interface Member {
   name: string;
 }
 
@@ -7,4 +7,4 @@ interface SplitterColour {
   colourHex: string;
 }
 
-export type { Splitter, SplitterColour };
+export type { Member, SplitterColour };

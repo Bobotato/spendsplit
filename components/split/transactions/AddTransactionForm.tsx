@@ -43,7 +43,6 @@ export default function AddTransactionForm({
 
   useEffect(() => {
     generateSplitterOptionList;
-    console.log(splitterOptions);
   }, [splitterOptions]);
 
   return (

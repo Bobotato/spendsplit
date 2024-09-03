@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 
 import useModal from "@/hooks/useModal";
 
@@ -17,13 +17,24 @@ import Stack from "@mui/material/Stack";
 import AddTransactionForm from "@/components/split/transactions/AddTransactionForm";
 import AddSplitterForm from "@/components/split/splitters/AddSplitterForm";
 import AppBar from "@/components/split/AppBar";
-import SplitterList from "@/components/split/splitters/SplitterList";
+import SplitterList from "@/components/split/splitters/memberList";
 import SummaryCard from "@/components/split/dashboard/SummaryCard";
 import TransactionTable from "@/components/split/transactions/TransactionTable";
 
-import { getGroupDataByGroupId } from "@/services/split";
+import {
+  addNewGroup,
+  getGroupDataByGroupId,
+  getGroupsByUserId,
+} from "@/services/groups/groups";
+import { getTransactionsByGroupId } from "@/services/transactions/transactions";
+import { getUserDetailsFromJWT } from "@/services/user/user";
+import { useUserStore } from "@/app/context/userContext";
 
 import { Transaction } from "@/types/TransactionTypes";
+
+import type { Group } from "@/types/GroupTypes";
+import { UnauthorisedError } from "@/services/errors";
+import { Member } from "@/types/UserTypes";
 
 interface GroupTransactionsProps {
   params: Params;
@@ -35,20 +46,46 @@ interface Params {
 
 export default function GroupTransactions({ params }: GroupTransactionsProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [splitters, setSplitters] = useState<Transaction[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [splitters, setSplitters] = useState<Member[]>([]);
+  const [isLoadingSplitters, setIsLoadingSplitters] = useState<boolean>(true);
 
+  const router = useRouter();
   const slugInt = parseInt(params.groupSlug);
 
+  const userDetails = useUserStore((state) => state);
+
   useEffect(() => {
-    getGroupDataByGroupId(slugInt)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.response);
-        setSplitters(data.response.groupMembers);
-        setIsLoading(false)
-        console.log(data.response.groupMembers);
-      });
+    const fetchGroupDetails = async () => {
+      try {
+        const data = await getGroupDataByGroupId(slugInt);
+        const json = await data?.json();
+        const groupDetails: Group = await json.response;
+        if (groupDetails.createdById !== userDetails.userDetails.id) {
+          console.log(groupDetails.createdById, userDetails.userDetails.id);
+          // router.push("/home");
+        }
+        const splitters: Member[] = groupDetails.groupMembers;
+        setSplitters(splitters);
+        setIsLoadingSplitters(false);
+
+        fetchTransactions();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const fetchTransactions = async () => {
+      try {
+        const data = await getTransactionsByGroupId(slugInt);
+        const json = await data?.json();
+        const transactions = await json.response;
+        setTransactions(transactions);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchGroupDetails();
   }, []);
 
   function handleAddTransaction() {
@@ -105,7 +142,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
   return (
     <Box>
       <AppBar></AppBar>
-      <Typography>{params.groupSlug}</Typography>
+      <Typography>{slugInt}</Typography>
 
       <Container maxWidth="md" sx={{ py: 6 }}>
         <Stack spacing={6}>
@@ -120,7 +157,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             >
               Transactions:
             </Typography>
-            <Stack spacing={4}>
+            {/* <Stack spacing={4}>
               {!transactions || transactions.length === 0 ? (
                 <Typography variant="body1">
                   There are currently no transactions to show. Add some
@@ -138,7 +175,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
                 splitters={splitters}
                 handleAddTransaction={handleAddTransaction}
               ></AddTransactionForm>
-            </Stack>
+            </Stack> */}
           </Container>
 
           <Container>
@@ -149,8 +186,14 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             >
               Splitters:
             </Typography>
-            {isLoading ? (
-              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            {isLoadingSplitters ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Stack
                   spacing={4}
                   sx={{ p: 4, justifyContent: "center", alignItems: "center" }}
@@ -160,7 +203,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
                 </Stack>
               </Box>
             ) : (
-              <SplitterList splitterList={splitters}></SplitterList>
+              <SplitterList memberList={splitters}></SplitterList>
             )}
 
             <AddSplitterForm

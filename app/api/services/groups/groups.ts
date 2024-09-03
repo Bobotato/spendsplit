@@ -75,7 +75,7 @@ async function getAllGroups() {
 }
 
 async function getGroupByGroupId(groupId: number) {
-  const res = await prisma.transactionGroup.findFirst({
+  const res = await prisma.transactionGroup.findUnique({
     where: {
       id: groupId,
     },

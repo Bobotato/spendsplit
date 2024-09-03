@@ -3,7 +3,8 @@ interface Group {
   createdAt: number;
   groupTitle: string;
   groupDesc: string;
-  createdBy: number;
+  createdById: number;
+  groupMembers: string[];
 }
 
 export type { Group };
