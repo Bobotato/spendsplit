@@ -9,8 +9,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 
@@ -20,6 +18,7 @@ import AppBar from "@/components/split/AppBar";
 import SplitterList from "@/components/split/splitters/memberList";
 import SummaryCard from "@/components/split/dashboard/SummaryCard";
 import TransactionTable from "@/components/split/transactions/TransactionTable";
+import AdminPanel from "@/components/groups/groupAdmin";
 
 import {
   addNewGroup,
@@ -105,40 +104,6 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
     closeModal();
   }
 
-  const { openModal, closeModal, ModalComponent } = useModal({
-    children: (
-      <>
-        <DialogTitle sx={{ px: 4, pt: 4 }}>Warning</DialogTitle>
-        <DialogContent sx={{ p: 4 }}>
-          <Stack direction="column" spacing={3}>
-            <Typography variant="body1">
-              You are about to delete all transactions. This process is{" "}
-              <Typography component="span" sx={{ fontWeight: "bold" }}>
-                irreversible
-              </Typography>
-              .
-            </Typography>
-            <Stack
-              direction="row"
-              spacing={2}
-              sx={{ justifyContent: "center" }}
-            >
-              <Button variant="contained" onClick={handleResetTransactions}>
-                Acknowledge and Confirm
-              </Button>
-              <Button
-                variant="contained"
-                onClick={handleCancelResetTransactions}
-              >
-                Cancel
-              </Button>
-            </Stack>
-          </Stack>
-        </DialogContent>
-      </>
-    ),
-  });
-
   return (
     <Box>
       <AppBar></AppBar>
@@ -219,57 +184,8 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             >
               Admin:
             </Typography>
-            <Stack
-              direction="column"
-              spacing={2}
-              sx={{ justifyContent: "space-between" }}
-            >
-              <Stack
-                direction="row"
-                spacing={2}
-                sx={{ justifyContent: "space-between" }}
-              >
-                <Stack direction="column">
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    Delete Group
-                  </Typography>
-                  <Typography variant="body1">
-                    Delete the group, all transactions and all users
-                    permanently.
-                  </Typography>
-                </Stack>
-                <Button
-                  type="button"
-                  variant="contained"
-                  color={"primary"}
-                  onClick={openModal}
-                >
-                  Delete Group
-                </Button>
-              </Stack>
-
-              <Stack
-                direction="row"
-                spacing={2}
-                sx={{ justifyContent: "space-between" }}
-              >
-                <Stack direction="column">
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    Delete Transactions
-                  </Typography>
-                  <Typography variant="body1">
-                    Delete all transactions permanently.
-                  </Typography>
-                </Stack>
-                <Button
-                  variant="contained"
-                  color={"primary"}
-                  onClick={openModal}
-                >
-                  Reset Transactions
-                </Button>
-              </Stack>
-            </Stack>
+            <AdminPanel />
+            
           </Container>
         </Stack>
       </Container>
