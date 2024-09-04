@@ -11,8 +11,8 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 
 import AppBar from "@/components/split/AppBar";
-import GroupList from "@/components/groups/groupList";
-import NewGroupForm from "@/components/groups/newGroupForm";
+import GroupList from "@/components/groups/GroupList";
+import NewGroupForm from "@/components/groups/NewGroupForm";
 
 import { addNewGroup, getGroupsByUserId } from "@/services/groups/groups";
 import { getUserDetailsFromJWT } from "@/services/user/user";
@@ -60,23 +60,7 @@ export default function MyGroupsPage(): ReactElement {
   }, []);
 
   async function handleAddNewGroup(data: NewGroupSchema) {
-    const res = await addNewGroup(data.groupTitle, data.groupDesc, 1);
-    const group = await res.json();
-    setGroups((groups) => [
-      ...groups,
-      {
-        id: group.response.id,
-        createdAt: group.response.createdAt,
-        groupTitle: group.response.groupTitle,
-        groupDesc: group.response.groupDesc,
-        createdById: group.response.createdById,
-        groupMembers: []
-      },
-    ]);
-  }
-
-  async function handleAddNewGroupMember(data: NewGroupSchema) {
-    const res = await addNewGroup(data.groupTitle, data.groupDesc, 1);
+    const res = await addNewGroup(data.groupTitle, data.groupDesc, userDetails.userDetails.id);
     const group = await res.json();
     setGroups((groups) => [
       ...groups,

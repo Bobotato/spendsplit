@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { notFound, useRouter } from "next/navigation";
-
-import useModal from "@/hooks/useModal";
+import { useRouter } from "next/navigation";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,12 +11,12 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 
 import AddTransactionForm from "@/components/split/transactions/AddTransactionForm";
-import AddSplitterForm from "@/components/split/splitters/AddSplitterForm";
+import NewGroupMemberForm from "@/components/groups/NewGroupMemberForm";
+import GroupMemberList from "@/components/groups/GroupMemberList";
 import AppBar from "@/components/split/AppBar";
-import SplitterList from "@/components/split/splitters/memberList";
 import SummaryCard from "@/components/split/dashboard/SummaryCard";
 import TransactionTable from "@/components/split/transactions/TransactionTable";
-import AdminPanel from "@/components/groups/groupAdmin";
+import AdminPanel from "@/components/groups/GroupAdmin";
 
 import {
   addNewGroup,
@@ -26,14 +24,12 @@ import {
   getGroupsByUserId,
 } from "@/services/groups/groups";
 import { getTransactionsByGroupId } from "@/services/transactions/transactions";
-import { getUserDetailsFromJWT } from "@/services/user/user";
 import { useUserStore } from "@/app/context/userContext";
 
 import { Transaction } from "@/types/TransactionTypes";
 
 import type { Group } from "@/types/GroupTypes";
-import { UnauthorisedError } from "@/services/errors";
-import { Member } from "@/types/UserTypes";
+import type { Member } from "@/types/UserTypes";
 
 interface GroupTransactionsProps {
   params: Params;
@@ -45,8 +41,9 @@ interface Params {
 
 export default function GroupTransactions({ params }: GroupTransactionsProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [splitters, setSplitters] = useState<Member[]>([]);
-  const [isLoadingSplitters, setIsLoadingSplitters] = useState<boolean>(true);
+  const [groupMembers, setGroupMembers] = useState<Member[]>([]);
+  const [isLoadingGroupMembers, setIsLoadingGroupMembers] =
+    useState<boolean>(true);
 
   const router = useRouter();
   const slugInt = parseInt(params.groupSlug);
@@ -63,9 +60,9 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
           console.log(groupDetails.createdById, userDetails.userDetails.id);
           // router.push("/home");
         }
-        const splitters: Member[] = groupDetails.groupMembers;
-        setSplitters(splitters);
-        setIsLoadingSplitters(false);
+        const groupMembers: Member[] = groupDetails.groupMembers;
+        setGroupMembers(groupMembers);
+        setIsLoadingGroupMembers(false);
 
         fetchTransactions();
       } catch (error) {
@@ -91,17 +88,21 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
     console.log("added");
   }
 
-  function handleAddSplitter(splitter: string) {
-    console.log("added", splitter);
+  function handleAddGroupMember(member: string) {
+    console.log("added", member);
+  }
+
+  function handleDeleteGroupMember(member: string) {
+    console.log("delete", member);
+  }
+
+  function handleDeleteGroup() {
+    console.log("Deletegroup");
+    router.push("/home");
   }
 
   function handleResetTransactions() {
     setTransactions([]);
-    closeModal();
-  }
-
-  function handleCancelResetTransactions() {
-    closeModal();
   }
 
   return (
@@ -151,7 +152,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             >
               Splitters:
             </Typography>
-            {isLoadingSplitters ? (
+            {isLoadingGroupMembers ? (
               <Box
                 sx={{
                   display: "flex",
@@ -168,12 +169,15 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
                 </Stack>
               </Box>
             ) : (
-              <SplitterList memberList={splitters}></SplitterList>
+              <GroupMemberList
+                memberList={groupMembers}
+                handleDeleteMember={handleDeleteGroupMember}
+              ></GroupMemberList>
             )}
 
-            <AddSplitterForm
-              handleAddSplitter={() => handleAddSplitter()}
-            ></AddSplitterForm>
+            <NewGroupMemberForm
+              handleAddMember={handleAddGroupMember}
+            ></NewGroupMemberForm>
           </Container>
 
           <Container>
@@ -184,8 +188,10 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             >
               Admin:
             </Typography>
-            <AdminPanel />
-            
+            <AdminPanel
+              handleDeleteGroup={handleDeleteGroup}
+              handleResetTransactions={handleResetTransactions}
+            />
           </Container>
         </Stack>
       </Container>
