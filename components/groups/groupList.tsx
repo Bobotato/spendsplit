@@ -1,5 +1,6 @@
 import { useState, useMemo, MouseEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+import useModal from "@/hooks/useModal";
 
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -15,6 +16,7 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -32,6 +34,8 @@ import {
 } from "@/utils/helpers";
 import { deleteGroupByGroupId } from "@/services/groups/groups";
 
+import type { ReactNode } from "react";
+import type { Group } from "@/types/GroupTypes";
 import type { Data, Order, HeadCell } from "@/types/TableTypes";
 
 const headCells: readonly HeadCell[] = [
@@ -189,10 +193,130 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   );
 }
 
-import type { Group } from "@/types/GroupTypes";
+interface EnhancedTableRowWithModalButtonsProps {
+  row: Group;
+  isItemSelected: boolean;
+  labelId: string;
+  handleClick: (event: MouseEvent<any>, id: number) => void;
+  handleDeleteGroup: (groupId: number) => void;
+}
+
+function EnhancedTableRowWithModalButtons({
+  row,
+  isItemSelected,
+  labelId,
+  handleClick,
+  handleDeleteGroup,
+}: EnhancedTableRowWithModalButtonsProps): ReactNode {
+  const {
+    openModal: openDeleteGroupModal,
+    closeModal: closeDeleteGroupModal,
+    ModalComponent: DeleteGroupModalComponent,
+  } = useModal();
+
+  const router = useRouter();
+
+  function handleClickGo(id: number) {
+    router.push(`/groups/${id}`);
+  }
+
+  function handleConfirmDeleteGroup(groupId: number) {
+    handleDeleteGroup(groupId);
+    closeDeleteGroupModal();
+  }
+
+  function DeleteGroupModal(): ReactNode {
+    return (
+      <DeleteGroupModalComponent title="Warning">
+        <Stack direction="column" spacing={3}>
+          <Typography variant="body1">
+            You are about to delete a group. This process is{" "}
+            <Typography component="span" sx={{ fontWeight: "bold" }}>
+              irreversible
+            </Typography>
+            .
+          </Typography>
+          <Stack direction="row" spacing={2} sx={{ justifyContent: "center" }}>
+            <Button
+              variant="contained"
+              onClick={() => handleConfirmDeleteGroup(row.id)}
+            >
+              Acknowledge and Confirm
+            </Button>
+            <Button variant="contained" onClick={closeDeleteGroupModal}>
+              Cancel
+            </Button>
+          </Stack>
+        </Stack>
+      </DeleteGroupModalComponent>
+    );
+  }
+
+  return (
+    <TableRow
+      hover
+      role="checkbox"
+      aria-checked={isItemSelected}
+      tabIndex={-1}
+      key={row.id}
+      selected={isItemSelected}
+    >
+      <TableCell padding="checkbox">
+        <Checkbox
+          color="primary"
+          checked={isItemSelected}
+          onClick={(event) => handleClick(event, row.id)}
+          inputProps={{
+            "aria-labelledby": labelId,
+          }}
+          sx={{ cursor: "pointer" }}
+        />
+      </TableCell>
+      <TableCell
+        component="th"
+        id={labelId}
+        scope="row"
+        padding="none"
+        align="right"
+      >
+        {convertPrismaDateToDateString(row.createdAt)}
+      </TableCell>
+      <TableCell align="right" sx={{ maxWidth: "100px" }}>
+        {row.groupTitle}
+      </TableCell>
+      <TableCell align="right" sx={{ maxWidth: "100px" }}>
+        {row.groupDesc}
+      </TableCell>
+
+      <TableCell align="right" sx={{ maxWidth: "80px" }}>
+        <Button
+          variant="contained"
+          endIcon={<SendIcon />}
+          onClick={() => handleClickGo(row.id)}
+        >
+          Go
+        </Button>
+      </TableCell>
+
+      <TableCell align="right" sx={{ maxWidth: "100px" }}>
+        <Button
+          variant="contained"
+          color="error"
+          endIcon={<DeleteForeverIcon />}
+          onClick={openDeleteGroupModal}
+        >
+          Delete
+        </Button>
+      </TableCell>
+
+      <DeleteGroupModal></DeleteGroupModal>
+    </TableRow>
+  );
+}
 
 interface GroupListProps {
   groups?: Group[];
+  handleDeleteGroup: (groupId: number) => void;
 }
 
 export default function GroupList({ groups }: GroupListProps) {
@@ -202,25 +326,39 @@ export default function GroupList({ groups }: GroupListProps) {
   const [page, setPage] = useState<number>(0);
   const [groupsPerPage, setgroupsPerPage] = useState<number>(5);
 
-  const handleRequestSort = (
+  const isSelected = (id: number) => selected.indexOf(id) !== -1;
+
+  // Avoid a layout jump when reaching the last page with empty groups.
+  const emptygroups =
+    page > 0 ? Math.max(0, (1 + page) * groupsPerPage - groups.length) : 0;
+
+  const visiblegroups: Group[] = useMemo(
+    () =>
+      [...groups]
+        .sort(getComparator(order, orderBy))
+        .slice(page * groupsPerPage, page * groupsPerPage + groupsPerPage),
+    [order, orderBy, page, groupsPerPage]
+  );
+
+  function handleRequestSort(
     event: React.MouseEvent<unknown>,
     property: keyof Data
-  ) => {
+  ) {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
-  };
+  }
 
-  const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
+  function handleSelectAllClick(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.checked && groups) {
       const newSelected = groups.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
-  };
+  }
 
-  const handleClick = (event: MouseEvent<unknown>, id: number) => {
+  function handleClick(event: MouseEvent<unknown>, id: number) {
     const selectedIndex = selected.indexOf(id);
     let newSelected: readonly number[] = [];
 
@@ -237,39 +375,19 @@ export default function GroupList({ groups }: GroupListProps) {
       );
     }
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-    setgroupsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (id: number) => selected.indexOf(id) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty groups.
-  const emptygroups =
-    page > 0 ? Math.max(0, (1 + page) * groupsPerPage - groups.length) : 0;
-
-  const visiblegroups = useMemo(
-    () =>
-      [...groups]
-        .sort(getComparator(order, orderBy))
-        .slice(page * groupsPerPage, page * groupsPerPage + groupsPerPage),
-    [order, orderBy, page, groupsPerPage]
-  );
-
-  const router = useRouter();
-
-  function handleClickGo(id: number) {
-    router.push(`/groups/${id}`);
   }
 
-  function handleClickDelete(id: number) {
-    deleteGroupByGroupId(id);
+  function handleChangePage(event: unknown, newPage: number) {
+    setPage(newPage);
+  }
+
+  function handleChangeRowsPerPage(event: ChangeEvent<HTMLInputElement>) {
+    setgroupsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  }
+
+  function handleDeleteGroup(groupId: number) {
+    console.log("Delete group", groupId);
   }
 
   return (
@@ -297,56 +415,14 @@ export default function GroupList({ groups }: GroupListProps) {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          onClick={(event) => handleClick(event, row.id)}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                          sx={{ cursor: "pointer" }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                        align="right"
-                      >
-                        {convertPrismaDateToDateString(row.createdAt)}
-                      </TableCell>
-                      <TableCell align="right" sx={{maxWidth: '100px'}}>{row.groupTitle}</TableCell>
-                      <TableCell align="right" sx={{maxWidth: '100px'}}>{row.groupDesc}</TableCell>
-                      <TableCell align="right" sx={{maxWidth: '80px'}}>
-                        <Button
-                          variant="contained"
-                          endIcon={<SendIcon />}
-                          onClick={() => handleClickGo(row.id)}
-                        >
-                          Go
-                        </Button>
-                      </TableCell>
-                      <TableCell align="right" sx={{maxWidth: '100px'}}>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          endIcon={<DeleteForeverIcon />}
-                          onClick={() => handleClickDelete(row.id)}
-                        >
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                    <EnhancedTableRowWithModalButtons
+                      key={index}
+                      row={row}
+                      isItemSelected={isItemSelected}
+                      labelId={labelId}
+                      handleClick={handleClick}
+                      handleDeleteGroup={handleDeleteGroup}
+                    />
                   );
                 })}
                 {emptygroups > 0 && (
