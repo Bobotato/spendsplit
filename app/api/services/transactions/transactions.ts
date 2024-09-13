@@ -6,17 +6,13 @@ async function createTransaction(
   transactionItem: string,
   transactionAmount: number,
   transactionDate: string,
-  createdBy: string,
-  splitters: string[],
   groupId: number
 ) {
-  const res = await prisma.transactionGroup.create({
+  const res = await prisma.transaction.create({
     data: {
       transactionItem: transactionItem,
       transactionAmount: transactionAmount,
       transactionDate: transactionDate,
-      createdBy: createdBy,
-      splitters: splitters,
       groupId: groupId,
     },
   });
@@ -24,7 +20,7 @@ async function createTransaction(
 }
 
 async function getAllTransactions() {
-  const res = await prisma.transactions.findMany();
+  const res = await prisma.transaction.findMany();
   if (!res) {
     throw new TransactionNotFoundError("No transactions were found");
   } else {
@@ -33,7 +29,7 @@ async function getAllTransactions() {
 }
 
 async function getTransactionsByGroupId(groupId: number) {
-  const res = await prisma.transactions.findMany({
+  const res = await prisma.transaction.findMany({
     where: {
       groupId: groupId,
     },
@@ -46,7 +42,7 @@ async function getTransactionsByGroupId(groupId: number) {
 }
 
 async function getTransactionByTransactionId(transactionId: number) {
-  const res = await prisma.transactions.findUnique({
+  const res = await prisma.transaction.findUnique({
     where: {
       id: transactionId,
     },
@@ -59,7 +55,7 @@ async function getTransactionByTransactionId(transactionId: number) {
 }
 
 async function deleteTransactionByTransactionId(transactionId: number) {
-  const res = await prisma.transactions.delete({
+  const res = await prisma.transaction.delete({
     where: {
       id: transactionId,
     },
@@ -72,7 +68,7 @@ async function deleteTransactionByTransactionId(transactionId: number) {
 }
 
 async function deleteTransactionsByGroupId(groupId: number) {
-  const res = await prisma.transactions.deleteMany({
+  const res = await prisma.transaction.deleteMany({
     where: {
       groupId: groupId,
     },
@@ -85,7 +81,7 @@ async function deleteTransactionsByGroupId(groupId: number) {
 }
 
 async function purgeTransactions() {
-  const res = await prisma.transactions.deleteMany({});
+  const res = await prisma.transaction.deleteMany({});
   return res;
 }
 

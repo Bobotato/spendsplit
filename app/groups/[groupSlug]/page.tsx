@@ -3,12 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import {
-  addNewGroup,
-  fetchGroup,
-  getGroupsByUserId,
-} from "@/services/groups/groups";
-import { fetchTransactions } from "@/services/transactions/transactions";
+import { fetchGroupTransactions } from "@/services/transactions/transactions";
 import {
   fetchGroupMembers,
   addNewGroupMember,
@@ -57,7 +52,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
 
   const fetchTransactions = async () => {
     try {
-      const data = await getTransactionsByGroupId(slugInt);
+      const data = await fetchGroupTransactions(slugInt);
       const json = await data?.json();
       const transactions = await json.response;
       return transactions;

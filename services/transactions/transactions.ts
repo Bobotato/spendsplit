@@ -1,4 +1,4 @@
-async function fetchTransactions(
+async function fetchGroupTransactions(
     groupId: number
   ) {
     try {
@@ -14,4 +14,4 @@ async function fetchTransactions(
     }
   }
 
-  export { fetchTransactions }
+  export { fetchGroupTransactions }
