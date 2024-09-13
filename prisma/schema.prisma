@@ -14,44 +14,43 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  username   String   @unique
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  username     String   @unique
   passwordHash String
-  
+
   transactionGroups TransactionGroup[]
 }
 
 model TransactionGroup {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
   groupTitle String
-  groupDesc String
+  groupDesc  String
 
   groupMembers Member[]
   transactions Transaction[]
 
-  createdBy User @relation(fields: [createdById], references: [id])
-  createdById Int 
+  createdBy   User @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdById Int
 }
 
 model Member {
-  id Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @db.VarChar(50)
 
-  transactionGroup TransactionGroup @relation(fields: [groupId], references: [id])
-  groupId Int 
+  transactionGroup TransactionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId          Int
 }
 
 model Transaction {
-  id    Int   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  
-  transactionItem String
+
+  transactionItem   String
   transactionAmount Int
-  transactionDate DateTime @default(now())
+  transactionDate   DateTime @default(now())
 
-  transactionGroup TransactionGroup @relation(fields: [groupId], references: [id])
-  groupId Int 
+  transactionGroup TransactionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId          Int
 }
-
