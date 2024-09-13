@@ -5,7 +5,7 @@ import { addMemberToGroup } from "@/app/api/services/groups/groups";
 async function POST(request: NextRequest) {
     try {
       const req = await request.json();
-      if (!req.groupId || !req.member) {
+      if (!req.member) {
         return NextResponse.json(
           { error: "Group details or member details were not supplied or were incomplete." },
           { status: 400 }
@@ -19,7 +19,7 @@ async function POST(request: NextRequest) {
       console.log(res)
   
       return NextResponse.json(
-        { message: "Admin: New group Added", member },
+        { message: "New group member added", member },
         { status: 200 }
       );
     } catch (e) {

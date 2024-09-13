@@ -6,13 +6,11 @@ import {
 } from "@/app/api/services/errors";
 
 async function addMemberToGroup(groupId: number, member: string) {
-  const res = await prisma.transactionGroup.update({
-    where: {
-      id: groupId,
-    },
+  const res = await prisma.member.create({
     data: {
-      groupMembers: {
-        push: member,
+      name: member,
+      transactionGroup: {
+        connect: {id: groupId},
       },
     },
   });

@@ -18,7 +18,8 @@ model User {
   createdAt DateTime @default(now())
   username   String   @unique
   passwordHash String
-  groups TransactionGroup[]
+  
+  transactionGroups TransactionGroup[]
 }
 
 model TransactionGroup {
@@ -26,11 +27,20 @@ model TransactionGroup {
   createdAt DateTime @default(now())
   groupTitle String
   groupDesc String
-  groupMembers String[]
+
+  groupMembers Member[]
   transactions Transaction[]
 
   createdBy User @relation(fields: [createdById], references: [id])
   createdById Int 
+}
+
+model Member {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(50)
+
+  transactionGroup TransactionGroup @relation(fields: [groupId], references: [id])
+  groupId Int 
 }
 
 model Transaction {
@@ -39,11 +49,9 @@ model Transaction {
   
   transactionItem String
   transactionAmount Int
-  transactionDate String
+  transactionDate DateTime @default(now())
 
-  createdBy String
-  splitters String[]
-
-  group TransactionGroup @relation(fields: [groupId], references: [id])
+  transactionGroup TransactionGroup @relation(fields: [groupId], references: [id])
   groupId Int 
 }
+

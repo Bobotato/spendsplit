@@ -34,8 +34,8 @@ export default function MemberList({ memberList, handleDeleteMember }: MemberLis
     handleDeleteMember(member);
   }
 
-  if (memberList.length === 0) {
-    return <Typography>There's nothing here.</Typography>;
+  if (!memberList || memberList.length === 0) {
+    return <Typography variant="body1">There are no members in this group yet. Add some using the form below.</Typography>;
   } else {
     return (
       <TableContainer>
@@ -60,14 +60,14 @@ export default function MemberList({ memberList, handleDeleteMember }: MemberLis
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  <Typography>{member}</Typography>
+                  <Typography>{member.name}</Typography>
                 </TableCell>
                 <TableCell component="th" scope="row" align="right">
                   <Button
                     variant="contained"
                     color="error"
                     endIcon={<DeleteForeverIcon />}
-                    onClick={() => handleClickDelete(member)}
+                    onClick={() => handleClickDelete(member.name)}
                   >
                     Delete
                   </Button>

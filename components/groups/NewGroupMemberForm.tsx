@@ -33,7 +33,7 @@ export default function NewGroupMemberForm({
   });
 
   function handleAddMember2(memberData: Member) {
-    console.log(memberData);
+    console.log(memberData.name);
   }
 
   return (
@@ -60,7 +60,7 @@ export default function NewGroupMemberForm({
             fullWidth
           ></TextField>
 
-          <Button type="submit" variant="contained" color={"primary"}>
+          <Button size="medium" type="submit" variant="contained" color={"primary"}>
             Add
           </Button>
         </Stack>
