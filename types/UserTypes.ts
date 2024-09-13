@@ -1,4 +1,5 @@
 interface Member {
+  id: number;
   name: string;
 }
 

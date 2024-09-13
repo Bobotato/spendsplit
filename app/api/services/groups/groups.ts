@@ -17,31 +17,10 @@ async function addMemberToGroup(groupId: number, member: string) {
   return res;
 }
 
-async function removeMemberFromGroup(groupId: number, member: string) {
-  const group = await prisma.transactionGroup.findUnique({
+async function removeMemberFromGroup(memberId: number) {
+  const res = await prisma.member.delete({
     where: {
-      id: groupId,
-    },
-    select: {
-      groupMembers: true,
-    },
-  });
-  if (!group) {
-    throw new GroupNotFoundError("No groups were found");
-  }
-  const members = group.groupMembers;
-
-  if (members.length === 0 || !members.includes(member)) {
-    throw new UserNotFoundError("No member was found");
-  }
-  const filteredMembers = members.filter((word: string) => word !== member);
-
-  const res = await prisma.transactionGroup.update({
-    where: {
-      id: groupId,
-    },
-    data: {
-      groupMembers: filteredMembers,
+      id: memberId
     },
   });
 

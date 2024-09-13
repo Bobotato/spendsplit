@@ -1,4 +1,4 @@
-async function getTransactionsByGroupId(
+async function fetchTransactions(
     groupId: number
   ) {
     try {
@@ -14,4 +14,4 @@ async function getTransactionsByGroupId(
     }
   }
 
-  export { getTransactionsByGroupId }
+  export { fetchTransactions }

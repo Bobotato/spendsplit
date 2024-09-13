@@ -10,19 +10,19 @@ import {
 async function POST(request: NextRequest) {
   try {
     const req = await request.json();
-    if (!req.groupId || !req.member) {
+    if (!req.memberId) {
       return NextResponse.json(
         {
           error:
-            "Group details or member details were not supplied or were incomplete.",
+            "Member details were not supplied or were incomplete.",
         },
         { status: 400 }
       );
     }
-    const result = await removeMemberFromGroup(req.groupId, req.member);
+    const result = await removeMemberFromGroup(req.memberId);
     return NextResponse.json(
       {
-        message: `Successfully removed ${req.member} from ${result.groupTitle}.`,
+        message: `Successfully removed member id: ${req.memberId}.`,
       },
       { status: 400 }
     );

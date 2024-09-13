@@ -3,6 +3,19 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+import {
+  addNewGroup,
+  fetchGroup,
+  getGroupsByUserId,
+} from "@/services/groups/groups";
+import { fetchTransactions } from "@/services/transactions/transactions";
+import {
+  fetchGroupMembers,
+  addNewGroupMember,
+  deleteGroupMember
+} from "@/services/members/members";
+import { useUserStore } from "@/app/context/userContext";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -17,16 +30,6 @@ import AppBar from "@/components/split/AppBar";
 import SummaryCard from "@/components/split/dashboard/SummaryCard";
 import TransactionTable from "@/components/split/transactions/TransactionTable";
 import AdminPanel from "@/components/groups/GroupAdmin";
-
-import {
-  addNewGroup,
-  fetchGroup,
-  getGroupsByUserId,
-} from "@/services/groups/groups";
-import { addNewGroupMemberByGroupId } from "@/services/groups/groups";
-import { getTransactionsByGroupId } from "@/services/transactions/transactions";
-import { fetchGroupMembers, addNewGroupMember } from "@/services/members/members";
-import { useUserStore } from "@/app/context/userContext";
 
 import { Transaction } from "@/types/TransactionTypes";
 
@@ -52,52 +55,45 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
 
   const userDetails = useUserStore((state) => state);
 
+  const fetchTransactions = async () => {
+    try {
+      const data = await getTransactionsByGroupId(slugInt);
+      const json = await data?.json();
+      const transactions = await json.response;
+      return transactions;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchMembers = async () => {
+    try {
+      const data = await fetchGroupMembers(slugInt);
+      const json = await data?.json();
+      const members = await json.response;
+      console.log(members)
+      return members;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchGroupDetails = async () => {
+    try {
+      const [transactions, members] = await Promise.all([
+        fetchTransactions(),
+        fetchMembers(),
+      ]);
+      console.log(transactions, members);
+      setTransactions(transactions);
+      setGroupMembers(members);
+      setIsLoadingGroupMembers(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchGroupDetails = async () => {
-      try {
-        const data = await fetchGroup(slugInt);
-        const json = await data?.json();
-        const groupDetails: Group = await json.response;
-        if (groupDetails.createdById !== userDetails.userDetails.id) {
-          console.log(groupDetails.createdById, userDetails.userDetails.id);
-          // router.push("/home");
-        }
-
-        const [transactions, members] = await Promise.all([
-          fetchTransactions(),
-          fetchMembers(),
-        ]);
-        console.log(transactions, members)
-        setTransactions(transactions);
-        setGroupMembers(members);
-        setIsLoadingGroupMembers(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const fetchTransactions = async () => {
-      try {
-        const data = await getTransactionsByGroupId(slugInt);
-        const json = await data?.json();
-        const transactions = await json.response;
-        return transactions;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const fetchMembers = async () => {
-      try {
-        const data = await fetchGroupMembers(slugInt);
-        const json = await data?.json();
-        const members = await json.response;
-        return members;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     fetchGroupDetails();
   }, []);
 
@@ -106,11 +102,22 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
   }
 
   function handleAddGroupMember(member: string, groupId: number) {
-    addNewGroupMember(member, groupId)
+    try {
+      addNewGroupMember(member, groupId);
+      fetchGroupDetails();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
-  function handleDeleteGroupMember(member: string) {
-    console.log("delete", member);
+  function handleDeleteGroupMember(memberId: number) {
+    try {
+      console.log("delete", memberId);
+      deleteGroupMember(memberId)
+      fetchGroupDetails();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   function handleDeleteGroup() {
@@ -193,7 +200,8 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             )}
 
             <NewGroupMemberForm
-              handleAddMember={handleAddGroupMember} groupId={slugInt}
+              handleAddMember={handleAddGroupMember}
+              groupId={slugInt}
             ></NewGroupMemberForm>
           </Container>
 

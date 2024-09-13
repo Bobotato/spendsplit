@@ -13,7 +13,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface MemberListProps {
   memberList: Member[];
-  handleDeleteMember: (member: string) => void;
+  handleDeleteMember: (memberId: number) => void;
 }
 
 interface TableColumn {
@@ -30,8 +30,8 @@ const tableColumns: TableColumn[] = [
 ];
 
 export default function MemberList({ memberList, handleDeleteMember }: MemberListProps) {
-  function handleClickDelete(member: string) {
-    handleDeleteMember(member);
+  function handleClickDelete(memberId: number) {
+    handleDeleteMember(memberId);
   }
 
   if (!memberList || memberList.length === 0) {
@@ -67,7 +67,7 @@ export default function MemberList({ memberList, handleDeleteMember }: MemberLis
                     variant="contained"
                     color="error"
                     endIcon={<DeleteForeverIcon />}
-                    onClick={() => handleClickDelete(member.name)}
+                    onClick={() => handleClickDelete(member.id)}
                   >
                     Delete
                   </Button>

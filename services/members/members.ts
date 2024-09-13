@@ -13,6 +13,20 @@ async function addNewGroupMember(name: string, groupId: number) {
   }
 }
 
+async function deleteGroupMember(memberId: number) {
+  try {
+    const response = await fetch("../api/split/members/deleteMemberByMemberName", {
+      method: "POST",
+      body: JSON.stringify({
+        memberId: memberId,
+      }),
+    });
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 async function fetchGroupMembers(groupId: number) {
   try {
     const response = await fetch(
@@ -30,4 +44,4 @@ async function fetchGroupMembers(groupId: number) {
   }
 }
 
-export { addNewGroupMember, fetchGroupMembers };
+export { addNewGroupMember, deleteGroupMember, fetchGroupMembers };
