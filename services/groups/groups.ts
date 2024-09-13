@@ -35,7 +35,7 @@ async function addNewGroupMemberByGroupId(groupId: number, member: string) {
   }
 }
 
-async function getGroupsByUserId(userId: number) {
+async function fetchCreatedGroups(userId: number) {
   try {
     const response = await fetch("../api/split/groups/getGroupsByCreatedById", {
       method: "POST",
@@ -49,7 +49,7 @@ async function getGroupsByUserId(userId: number) {
   }
 }
 
-async function getGroupDataByGroupId(groupId: number) {
+async function fetchGroup(groupId: number) {
   try {
     const response = await fetch("../api/split/groups/getGroupByGroupId", {
       method: "POST",
@@ -81,7 +81,7 @@ async function deleteGroupByGroupId(groupId: number) {
 export {
   addNewGroup,
   addNewGroupMemberByGroupId,
-  getGroupsByUserId,
-  getGroupDataByGroupId,
+  fetchCreatedGroups,
+  fetchGroup,
   deleteGroupByGroupId,
 };

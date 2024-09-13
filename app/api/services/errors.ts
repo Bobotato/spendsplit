@@ -47,6 +47,14 @@ export class GroupNotFoundError extends APIError {
   }
 }
 
+export class NoMembersFoundError extends APIError {
+  constructor(message: string) {
+    super(message);
+    this.name = "NoMembersFoundError"
+  }
+}
+
+
 export class TransactionNotFoundError extends APIError {
   constructor(message: string) {
     super(message);

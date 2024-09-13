@@ -15,11 +15,12 @@ import type { ReactElement } from "react";
 import type { Member } from "@/types/UserTypes";
 
 interface AddMemberFormProps {
-  handleAddMember: (member: string) => void;
+  handleAddMember: (member: string, groupId: number) => void;
+  groupId: number;
 }
 
 export default function NewGroupMemberForm({
-  handleAddMember,
+  handleAddMember, groupId
 }: AddMemberFormProps): ReactElement {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -32,8 +33,15 @@ export default function NewGroupMemberForm({
     resolver: zodResolver(AddMemberSchema),
   });
 
-  function handleAddMember2(memberData: Member) {
-    console.log(memberData.name);
+  function handleAddMemberSubmit(data: AddMemberSchema) {
+    try {
+      setIsLoading(true);
+      handleAddMember(data.name, groupId)
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -46,7 +54,7 @@ export default function NewGroupMemberForm({
         width: "100%",
       }}
     >
-      <form onSubmit={handleSubmit(handleAddMember2)}>
+      <form onSubmit={handleSubmit(handleAddMemberSubmit)}>
         <Stack
           spacing={2}
           direction="row"
