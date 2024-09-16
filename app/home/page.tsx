@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
@@ -14,7 +13,7 @@ import AppBar from "@/components/split/AppBar";
 import GroupList from "@/components/groups/GroupList";
 import NewGroupForm from "@/components/groups/NewGroupForm";
 
-import { addNewGroup, getGroupsByUserId } from "@/services/groups/groups";
+import { addNewGroup, fetchCreatedGroups } from "@/services/groups/groups";
 import { getUserDetailsFromJWT } from "@/services/user/user";
 import { useUserStore } from "@/app/context/userContext";
 
@@ -34,7 +33,7 @@ export default function MyGroupsPage(): ReactElement {
 
   useEffect(() => {
     const getGroups = async (id: number) => {
-      const data = await getGroupsByUserId(id);
+      const data = await fetchCreatedGroups(id);
       const json = await data?.json();
       const userGroups = await json.response;
       setGroups(userGroups);
@@ -60,7 +59,11 @@ export default function MyGroupsPage(): ReactElement {
   }, []);
 
   async function handleAddNewGroup(data: NewGroupSchema) {
-    const res = await addNewGroup(data.groupTitle, data.groupDesc, userDetails.userDetails.id);
+    const res = await addNewGroup(
+      data.groupTitle,
+      data.groupDesc,
+      userDetails.userDetails.id
+    );
     const group = await res.json();
     setGroups((groups) => [
       ...groups,
@@ -70,7 +73,7 @@ export default function MyGroupsPage(): ReactElement {
         groupTitle: group.response.groupTitle,
         groupDesc: group.response.groupDesc,
         createdById: group.response.createdById,
-        groupMembers: []
+        groupMembers: [],
       },
     ]);
   }

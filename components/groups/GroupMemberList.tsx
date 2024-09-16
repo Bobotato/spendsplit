@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface MemberListProps {
   memberList: Member[];
@@ -17,8 +18,9 @@ interface MemberListProps {
 }
 
 interface TableColumn {
-  id: "name" | "deleteButton";
+  id: "name" | "editButton" | "deleteButton";
   label: string;
+  fixedWidth?: number;
   minWidth?: number;
   align?: "right";
   format?: (value: number) => string;
@@ -26,16 +28,24 @@ interface TableColumn {
 
 const tableColumns: TableColumn[] = [
   { id: "name", label: "Name", minWidth: 170 },
-  { id: "deleteButton", label: "", minWidth: 170 },
+  { id: "editButton", label: "", fixedWidth: 100 },
+  { id: "deleteButton", label: "", fixedWidth: 100 },
 ];
 
-export default function MemberList({ memberList, handleDeleteMember }: MemberListProps) {
+export default function MemberList({
+  memberList,
+  handleDeleteMember,
+}: MemberListProps) {
   function handleClickDelete(memberId: number) {
     handleDeleteMember(memberId);
   }
 
   if (!memberList || memberList.length === 0) {
-    return <Typography variant="body1">There are no members in this group yet. Add some using the form below.</Typography>;
+    return (
+      <Typography variant="body1">
+        There are no members in this group yet. Add some using the form below.
+      </Typography>
+    );
   } else {
     return (
       <TableContainer>
@@ -46,7 +56,7 @@ export default function MemberList({ memberList, handleDeleteMember }: MemberLis
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.minWidth, width: column.fixedWidth }}
                 >
                   {column.label}
                 </TableCell>
@@ -61,6 +71,16 @@ export default function MemberList({ memberList, handleDeleteMember }: MemberLis
               >
                 <TableCell component="th" scope="row">
                   <Typography>{member.name}</Typography>
+                </TableCell>
+                <TableCell component="th" scope="row" align="right">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    endIcon={<EditIcon />}
+                    onClick={() => handleClickDelete(member.id)}
+                  >
+                    Edit
+                  </Button>
                 </TableCell>
                 <TableCell component="th" scope="row" align="right">
                   <Button

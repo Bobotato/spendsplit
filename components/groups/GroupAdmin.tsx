@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 
 interface AdminPanelProps {
   handleDeleteGroup: () => void;
-  handleResetTransactions: () => void;
+  handleResetTransactions: (groupId: number) => void;
 }
 
 export default function AdminPanel({
