@@ -48,6 +48,7 @@ model Transaction {
   createdAt DateTime @default(now())
 
   transactionItem   String
+  transactionDesc   String?
   transactionAmount Int
   transactionDate   Int
 

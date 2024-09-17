@@ -8,4 +8,11 @@ interface Transaction {
   addedBy: string;
 }
 
-export type { Transaction };
+interface NewTransaction {
+  transactionItem: string;
+  transactionDesc?: string;
+  transactionAmount: number;
+  transactionDate: number;
+}
+
+export type { Transaction, NewTransaction };

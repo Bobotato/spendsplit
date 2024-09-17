@@ -2,48 +2,74 @@
 import * as dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { TextFieldElement, AutocompleteElement } from "react-hook-form-mui";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
+import { AddTransactionSchema } from "@/schemas/forms/split/newTransactionForm";
 
 import type { ReactElement } from "react";
-import type { Splitter } from "@/types/UserTypes";
-import type { Transaction } from "@/types/TransactionTypes";
-import { Preview } from "@mui/icons-material";
+import type { Member } from "@/types/UserTypes";
+import type { NewTransaction } from "@/types/TransactionTypes";
 
-interface AddSplitterFormProps {
-  splitters: Splitter[];
-  handleAddTransaction: (transaction: Transaction) => void;
+interface AddTransactionFormProps {
+  members: Member[];
+  handleAddTransaction: (transaction: NewTransaction) => void;
 }
 
-interface SplitterOption {
+interface MemberOption {
   id: string;
   label: string;
 }
 
 export default function AddTransactionForm({
   handleAddTransaction,
-}: AddSplitterFormProps): ReactElement {
-  const [splitterOptions, setSplitterOptions] = useState<SplitterOption[]>([]);
-  const { control, handleSubmit } = useForm();
+}: AddTransactionFormProps): ReactElement {
+  const [memberOptions, setMemberOptions] = useState<MemberOption[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  function generateSplitterOptionList(splitterList: Splitter[]) {
-    splitterList.forEach((splitter) => {
-      setSplitterOptions((prev) => [
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AddTransactionSchema>({
+    mode: "all",
+    resolver: zodResolver(AddTransactionSchema),
+  });
+
+  function generateMemberOptionList(memberList: Member[]) {
+    memberList.forEach((member) => {
+      setMemberOptions((prev) => [
         ...prev,
         {
-          id: splitter.name,
-          label: splitter.name,
+          id: member.name,
+          label: member.name,
         },
       ]);
     });
   }
 
   useEffect(() => {
-    generateSplitterOptionList;
-  }, [splitterOptions]);
+    generateMemberOptionList;
+  }, [memberOptions]);
+
+  async function handleSubmitTransactionClick(transaction: NewTransaction) {
+    try {
+      setIsLoading(true);
+      console.log(transaction)
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <Box
@@ -61,47 +87,46 @@ export default function AddTransactionForm({
         spacing={2}
         sx={{ width: "100%" }}
       >
-        <form onSubmit={handleSubmit(handleAddTransaction)} noValidate>
+        <form onSubmit={handleSubmit(handleSubmitTransactionClick)} noValidate>
           <Stack
             spacing={2}
             direction="column"
             sx={{ justifyContent: "spread-between" }}
           >
-            <TextFieldElement
-              name={"item"}
-              label={"Item"}
-              control={control}
-              required
+            <TextField
+              {...register("transactionItem")}
+              label="Item Name *"
+              error={!!errors.transactionItem}
+              helperText={errors.transactionItem?.message}
               fullWidth
-            />
-
-            <TextFieldElement
-              name={"location"}
-              label={"Location"}
-              control={control}
-              required
+            ></TextField>
+            <TextField
+              {...register("transactionDesc")}
+              label="Description"
+              error={!!errors.transactionDesc}
+              helperText={errors.transactionDesc?.message}
               fullWidth
-            />
-
-            <TextFieldElement
-              name={"amount"}
-              label={"Amount"}
-              control={control}
-              required
+            ></TextField>
+            <TextField
+              {...register("transactionAmount")}
+              label="Amount *"
+              error={!!errors.transactionAmount}
+              helperText={errors.transactionAmount?.message}
               fullWidth
-            />
+            ></TextField>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker {...register("transactionDate")} label="Date *" />
+            </LocalizationProvider>
 
-            <AutocompleteElement
-              name={"owedBy"}
-              label={"Owed By"}
-              options={splitterOptions}
-              control={control}
-              multiple
-            ></AutocompleteElement>
-
-            <Button type="submit" variant="contained" color={"primary"}>
-              Add
-            </Button>
+            <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 4 }}
+          disabled={isLoading}
+        >
+          {isLoading ? <CircularProgress size={25} /> : "Add transaction"}
+        </Button>
           </Stack>
         </form>
       </Stack>

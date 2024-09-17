@@ -61,7 +61,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
       const data = await fetchGroup(groupId);
       const json = await data?.json();
       const group = await json.response;
-      return group
+      return group;
     } catch (error) {
       console.log(error);
     }
@@ -97,8 +97,8 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
         fetchTransactions(),
         fetchMembers(),
       ]);
-      setGroupName(groupDesc.groupTitle)
-      setGroupDesc(groupDesc.groupDesc)
+      setGroupName(groupDesc.groupTitle);
+      setGroupDesc(groupDesc.groupDesc);
       setTransactions(transactions);
       setGroupMembers(members);
       setIsLoadingGroupMembers(false);
@@ -171,8 +171,8 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             >
               Transactions:
             </Typography>
-            {/* <Stack spacing={4}>
-              {!transactions || transactions.length === 0 ? (
+            <Stack spacing={4}>
+              {/* {!transactions || transactions.length === 0 ? (
                 <Typography variant="body1">
                   There are currently no transactions to show. Add some
                   transactions using the add transaction form below.
@@ -181,15 +181,15 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
                 <TransactionTable
                   transactions={transactions}
                 ></TransactionTable>
-              )}
+              )} */}
               <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                 Add a new transaction:
               </Typography>
               <AddTransactionForm
-                splitters={splitters}
+                members={groupMembers}
                 handleAddTransaction={handleAddTransaction}
               ></AddTransactionForm>
-            </Stack> */}
+            </Stack>
           </Container>
 
           <Container>
@@ -198,7 +198,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
               color="primary"
               sx={{ fontWeight: "bold", mb: 2 }}
             >
-              Splitters:
+              Group members:
             </Typography>
             {isLoadingGroupMembers ? (
               <Box
