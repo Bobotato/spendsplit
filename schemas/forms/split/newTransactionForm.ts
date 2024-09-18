@@ -8,8 +8,8 @@ const AddTransactionSchema = z.object({
     .string()
     .optional(),
   transactionAmount: z
-    .number({ message: "Only numbers are accepted for amounts." })
-    .min(1, { message: "An amount for this transaction is required." }),
+    .number()
+    .min(0, { message: "Transaction must be more than $0." }),
   transactionDate: z
     .number()
     .min(1, { message: "A date for this transaction is required." }),

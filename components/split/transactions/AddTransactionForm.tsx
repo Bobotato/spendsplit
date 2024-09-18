@@ -1,12 +1,14 @@
 "use client";
+
 import * as dayjs from "dayjs";
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -38,6 +40,7 @@ export default function AddTransactionForm({
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<AddTransactionSchema>({
     mode: "all",
@@ -63,7 +66,7 @@ export default function AddTransactionForm({
   async function handleSubmitTransactionClick(transaction: NewTransaction) {
     try {
       setIsLoading(true);
-      console.log(transaction)
+      console.log(transaction);
     } catch (e) {
       console.error(e);
     } finally {
@@ -108,25 +111,43 @@ export default function AddTransactionForm({
               fullWidth
             ></TextField>
             <TextField
-              {...register("transactionAmount")}
+              {...register("transactionAmount", {
+                valueAsNumber: true,
+              })}
+              type="number"
               label="Amount *"
               error={!!errors.transactionAmount}
               helperText={errors.transactionAmount?.message}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">$</InputAdornment>
+                ),
+              }}
               fullWidth
             ></TextField>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker {...register("transactionDate")} label="Date *" />
+              <Controller
+                name="transactionDate"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <DatePicker
+                    value={value ?? dayjs()}
+                    onChange={onChange}
+                    label="Date *"
+                  />
+                )}
+              />
             </LocalizationProvider>
 
             <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 4 }}
-          disabled={isLoading}
-        >
-          {isLoading ? <CircularProgress size={25} /> : "Add transaction"}
-        </Button>
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 4 }}
+              disabled={isLoading}
+            >
+              {isLoading ? <CircularProgress size={25} /> : "Add transaction"}
+            </Button>
           </Stack>
         </form>
       </Stack>
