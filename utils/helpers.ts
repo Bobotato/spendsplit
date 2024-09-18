@@ -10,4 +10,8 @@ function convertPrismaDateToEpoch(date: number) {
   return dayjs(dateObj).format("x")
 }
 
-export { convertPrismaDateToDateString, convertPrismaDateToEpoch };
+function delay(duration: number) {
+  return new Promise(resolve => setTimeout(resolve, duration));
+}
+
+export { convertPrismaDateToDateString, convertPrismaDateToEpoch, delay };

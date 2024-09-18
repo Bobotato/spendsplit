@@ -4,8 +4,11 @@ import * as dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
+import useAlert from "@/hooks/useAlert";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -39,11 +42,13 @@ export default function AddTransactionForm({
 }: AddTransactionFormProps): ReactElement {
   const [memberOptions, setMemberOptions] = useState<MemberOption[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { showAlert, AlertComponent } = useAlert();
 
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<AddTransactionSchema>({
     mode: "all",
@@ -70,8 +75,19 @@ export default function AddTransactionForm({
     try {
       setIsLoading(true);
       handleAddTransaction(transaction);
+      reset();
+      showAlert(
+        "Success",
+        `Your transaction for ${transaction.transactionItem} was added successfully.`,
+        "success"
+      );
     } catch (e) {
       console.error(e);
+      showAlert(
+        "Error",
+        "Your transaction was not added. Please try again later.",
+        "error"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -136,6 +152,8 @@ export default function AddTransactionForm({
               )}
             />
           </LocalizationProvider>
+
+          <AlertComponent></AlertComponent>
 
           <Button
             type="submit"

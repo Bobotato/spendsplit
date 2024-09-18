@@ -19,7 +19,11 @@ export default function useAlert() {
       "success"
     );
 
-  function showAlert(title: string, message: string, severity: any) {
+  function showAlert(
+    title: string,
+    message: string,
+    severity: "success" | "info" | "warning" | "error"
+  ) {
     setMessage(message);
     setTitle(title);
     setSeverity(severity);
