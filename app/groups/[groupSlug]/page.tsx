@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { fetchGroup } from "@/services/groups/groups";
 import {
+  addNewTransaction,
   fetchGroupTransactions,
   purgeAllTransactions,
 } from "@/services/transactions/transactions";
@@ -30,7 +31,7 @@ import SummaryCard from "@/components/split/dashboard/SummaryCard";
 import TransactionTable from "@/components/split/transactions/TransactionTable";
 import AdminPanel from "@/components/groups/GroupAdmin";
 
-import { Transaction } from "@/types/TransactionTypes";
+import { NewTransaction, Transaction } from "@/types/TransactionTypes";
 
 import type { Group } from "@/types/GroupTypes";
 import type { Member } from "@/types/UserTypes";
@@ -111,16 +112,21 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
     fetchGroupDetails();
   }, []);
 
-  function handleAddTransaction() {
-    console.log("added");
-  }
-
   function handleAddGroupMember(member: string, groupId: number) {
     try {
       addNewGroupMember(member, groupId);
       fetchGroupDetails();
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  function handleAddTransaction(transaction: NewTransaction) {
+    try {
+      addNewTransaction(transaction, groupId);
+      fetchGroupDetails();
+    } catch (e) {
+      console.error(e);
     }
   }
 

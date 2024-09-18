@@ -4,6 +4,7 @@ import { TransactionNotFoundError } from "@/app/api/services/errors";
 
 async function createTransaction(
   transactionItem: string,
+  transactionDesc: string,
   transactionAmount: number,
   transactionDate: string,
   groupId: number
@@ -11,9 +12,12 @@ async function createTransaction(
   const res = await prisma.transaction.create({
     data: {
       transactionItem: transactionItem,
+      transactionDesc: transactionDesc,
       transactionAmount: transactionAmount,
       transactionDate: transactionDate,
-      groupId: groupId,
+      transactionGroup: {
+        connect: { id: groupId },
+      },
     },
   });
   return res;

@@ -18,6 +18,7 @@ async function POST(request: NextRequest) {
     }
     const res = await createTransaction(
       req.transactionItem,
+      req.transactionDesc,
       req.transactionAmount,
       req.transactionDate,
       req.groupId
@@ -41,7 +42,7 @@ async function POST(request: NextRequest) {
     }
     return NextResponse.json(
       {
-        error: "There was an error adding new member, check server logs.",
+        error: "There was an error creating a new transaction, check server logs.",
       },
       { status: 500 }
     );
