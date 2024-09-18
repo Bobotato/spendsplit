@@ -50,7 +50,7 @@ model Transaction {
   transactionItem   String
   transactionDesc   String?
   transactionAmount Int
-  transactionDate   String
+  transactionDate   Int
 
   transactionGroup TransactionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId          Int

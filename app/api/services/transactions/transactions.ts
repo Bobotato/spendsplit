@@ -6,7 +6,7 @@ async function createTransaction(
   transactionItem: string,
   transactionDesc: string,
   transactionAmount: number,
-  transactionDate: string,
+  transactionDate: number,
   groupId: number
 ) {
   const res = await prisma.transaction.create({
