@@ -1,11 +1,10 @@
 interface Transaction {
   id: number;
-  dateAdded: string;
-  dateIncurred: string;
-  name: string;
-  location: string;
-  amount: number;
-  addedBy: string;
+  createdAt: string;
+  transactionItem: string;
+  transactionDesc: string;
+  transactionAmount: number;
+  transactionDate: number;
 }
 
 interface NewTransaction {

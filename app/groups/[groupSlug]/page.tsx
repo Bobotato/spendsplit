@@ -178,7 +178,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
               Transactions:
             </Typography>
             <Stack spacing={4}>
-              {/* {!transactions || transactions.length === 0 ? (
+              {!transactions || transactions.length === 0 ? (
                 <Typography variant="body1">
                   There are currently no transactions to show. Add some
                   transactions using the add transaction form below.
@@ -187,7 +187,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
                 <TransactionTable
                   transactions={transactions}
                 ></TransactionTable>
-              )} */}
+              )}
               <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                 Add a new transaction:
               </Typography>
