@@ -17,10 +17,11 @@ import type { Member } from "@/types/UserTypes";
 interface AddMemberFormProps {
   handleAddMember: (member: string, groupId: number) => void;
   groupId: number;
+  disabled: boolean;
 }
 
 export default function NewGroupMemberForm({
-  handleAddMember, groupId
+  handleAddMember, groupId, disabled
 }: AddMemberFormProps): ReactElement {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -68,7 +69,7 @@ export default function NewGroupMemberForm({
             fullWidth
           ></TextField>
 
-          <Button size="medium" type="submit" variant="contained" color={"primary"}>
+          <Button size="medium" type="submit" variant="contained" color={"primary"} disabled={disabled}>
             Add
           </Button>
         </Stack>

@@ -5,7 +5,7 @@ import {
   convertUnixToDateString,
 } from "@/utils/helpers";
 
-import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -78,7 +78,7 @@ export default function TransactionTable({
   };
 
   return (
-    <Container sx={{ width: "100%", overflow: "hidden" }}>
+    <Box sx={{ width: "100%", overflow: "hidden" }}>
       {!transactions || transactions.length === 0 ? (
         <Typography variant="body1">
           There are currently no transactions to show. Add some transactions
@@ -143,6 +143,6 @@ export default function TransactionTable({
           />
         </>
       )}
-    </Container>
+    </Box>
   );
 }

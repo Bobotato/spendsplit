@@ -4,48 +4,72 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import {
+  deriveEqualSplit,
   deriveLargestTransaction,
   deriveTotalFromTransactions,
 } from "@/utils/split";
+import { Member } from "@/types/UserTypes";
 
 interface SummaryProps {
-  transactionList: Transaction[];
+  transactions: Transaction[];
+  members: Member[];
 }
 
-export default function Summary({ transactionList }: SummaryProps) {
-  const total = deriveTotalFromTransactions(transactionList);
+export default function Summary({ transactions, members }: SummaryProps) {
+  const total = deriveTotalFromTransactions(transactions);
 
   const largestTransactionSummary = () => {
-    if (transactionList && transactionList.length > 0) {
-      const largestTransaction = deriveLargestTransaction(transactionList);
+    if (transactions && transactions.length > 0) {
+      const largestTransaction = deriveLargestTransaction(transactions);
 
       return (
         <Typography variant="body1">
-          The biggest expense is: ${largestTransaction.amount} by{" "}
+          The biggest expense is: ${largestTransaction.transactionAmount} on{" "}
           <Typography
             variant="body1"
             component="span"
             sx={{ fontWeight: "bold" }}
           >
-            {largestTransaction.addedBy}
-          </Typography>{" "}
-          on{" "}
-          <Typography
-            variant="body1"
-            component="span"
-            sx={{ fontWeight: "bold" }}
-          >
-            {largestTransaction.name}.
+            {largestTransaction.transactionItem}.
           </Typography>
         </Typography>
       );
-    } else {
+    }
+  };
+
+  const equalSplitSummary = () => {
+    if (transactions && transactions.length > 0) {
+      const split = deriveEqualSplit(transactions, members);
+
       return (
         <Typography variant="body1">
-          There are currently no transactions.
+          Each person owes{" "}
+          <Typography
+            variant="body1"
+            component="span"
+            sx={{ fontWeight: "bold" }}
+          >
+            ${split}
+          </Typography>
+          .
         </Typography>
       );
     }
+  };
+
+  const totalSpendSummary = () => {
+    return (
+      <Typography variant="body1">
+        Your group has spent:{" "}
+        <Typography
+          variant="body1"
+          component="span"
+          sx={{ fontWeight: "bold" }}
+        >
+          ${total}
+        </Typography>
+      </Typography>
+    );
   };
 
   return (
@@ -53,21 +77,19 @@ export default function Summary({ transactionList }: SummaryProps) {
       color="primary.main"
       sx={{ border: 2, borderColor: "primary.main", borderRadius: 2, p: 4 }}
     >
+      <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
+        At a glance:
+      </Typography>
       <Stack direction="column" spacing={2}>
-        <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
-          At a glance:
-        </Typography>
-        <Typography variant="body1">
-          Your group has spent:{" "}
-          <Typography
-            variant="body1"
-            component="span"
-            sx={{ fontWeight: "bold" }}
-          >
-            ${total}
-          </Typography>
-        </Typography>
-        {largestTransactionSummary()}
+        {!transactions || transactions.length === 0 ? (
+          <Typography variant="body1">There are currently no transactions.</Typography>
+        ) : (
+          <>
+            {totalSpendSummary()}
+            {equalSplitSummary()}
+            {largestTransactionSummary()}
+          </>
+        )}
       </Stack>
     </Card>
   );

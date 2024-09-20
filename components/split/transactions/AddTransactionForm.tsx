@@ -28,6 +28,7 @@ import type { NewTransaction, Transaction } from "@/types/TransactionTypes";
 interface AddTransactionFormProps {
   members: Member[];
   handleAddTransaction: (transaction: NewTransaction) => void;
+  disabled: boolean;
 }
 
 interface MemberOption {
@@ -38,7 +39,7 @@ interface MemberOption {
 dayjs.extend(advancedFormat);
 
 export default function AddTransactionForm({
-  handleAddTransaction,
+  handleAddTransaction, disabled
 }: AddTransactionFormProps): ReactElement {
   const [memberOptions, setMemberOptions] = useState<MemberOption[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -160,7 +161,7 @@ export default function AddTransactionForm({
             fullWidth
             variant="contained"
             sx={{ mt: 4 }}
-            disabled={isLoading}
+            disabled={isLoading || disabled}
           >
             {isLoading ? <CircularProgress size={25} /> : "Add transaction"}
           </Button>

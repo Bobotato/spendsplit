@@ -30,6 +30,7 @@ import AppBar from "@/components/split/AppBar";
 import SummaryCard from "@/components/split/dashboard/SummaryCard";
 import TransactionTable from "@/components/split/transactions/TransactionTable";
 import AdminPanel from "@/components/groups/GroupAdmin";
+import SpinningLoader from "@/components/general/SpinningLoader"
 
 import { NewTransaction, Transaction } from "@/types/TransactionTypes";
 
@@ -50,6 +51,8 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [groupMembers, setGroupMembers] = useState<Member[]>([]);
   const [isLoadingGroupMembers, setIsLoadingGroupMembers] =
+    useState<boolean>(true);
+  const [isLoadingTransactions, setIsLoadingTransactions] =
     useState<boolean>(true);
 
   const router = useRouter();
@@ -103,6 +106,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
       setTransactions(transactions);
       setGroupMembers(members);
       setIsLoadingGroupMembers(false);
+      setIsLoadingTransactions(false);
     } catch (error) {
       console.log(error);
     }
@@ -167,7 +171,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             <Typography variant="body1">{groupDesc}</Typography>
           </Box>
           <Container>
-            <SummaryCard transactionList={transactions}></SummaryCard>
+            <SummaryCard transactions={transactions} members={groupMembers}></SummaryCard>
           </Container>
           <Container>
             <Typography
@@ -178,7 +182,9 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
               Transactions:
             </Typography>
             <Stack spacing={4}>
-              {!transactions || transactions.length === 0 ? (
+              {isLoadingTransactions ? (
+                <SpinningLoader message="Loading your transactions..."></SpinningLoader>
+              ) : !transactions || transactions.length === 0 ? (
                 <Typography variant="body1">
                   There are currently no transactions to show. Add some
                   transactions using the add transaction form below.
@@ -194,6 +200,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
               <AddTransactionForm
                 members={groupMembers}
                 handleAddTransaction={handleAddTransaction}
+                disabled={isLoadingGroupMembers || isLoadingTransactions}
               ></AddTransactionForm>
             </Stack>
           </Container>
@@ -207,21 +214,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
               Group members:
             </Typography>
             {isLoadingGroupMembers ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Stack
-                  spacing={4}
-                  sx={{ p: 4, justifyContent: "center", alignItems: "center" }}
-                >
-                  <CircularProgress />
-                  <Typography>Fetching group members...</Typography>
-                </Stack>
-              </Box>
+              <SpinningLoader message="Loading your group members..."></SpinningLoader>
             ) : (
               <GroupMemberList
                 memberList={groupMembers}
@@ -232,6 +225,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             <NewGroupMemberForm
               handleAddMember={() => handleAddGroupMember}
               groupId={groupId}
+              disabled={isLoadingGroupMembers || isLoadingTransactions}
             ></NewGroupMemberForm>
           </Container>
 
