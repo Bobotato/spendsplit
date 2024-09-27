@@ -13,7 +13,7 @@ import AppBar from "@/components/split/AppBar";
 import GroupList from "@/components/groups/GroupList";
 import NewGroupForm from "@/components/groups/NewGroupForm";
 
-import { addNewGroup, fetchCreatedGroups } from "@/services/groups/groups";
+import { addNewGroup, deleteGroup, fetchCreatedGroups } from "@/services/groups/groups";
 import { getUserDetailsFromJWT } from "@/services/user/user";
 import { useUserStore } from "@/app/context/userContext";
 
@@ -78,6 +78,14 @@ export default function MyGroupsPage(): ReactElement {
     ]);
   }
 
+  async function handleDeleteGroup(groupId: number) {
+    try {
+      deleteGroup(groupId)
+    } catch (e) {
+      console.log()
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -109,7 +117,7 @@ export default function MyGroupsPage(): ReactElement {
             color="primary"
             sx={{ fontWeight: "bold", textAlign: "center" }}
           >
-            {userDetails.userDetails.username}
+            {userDetails.userDetails.username}.
           </Typography>
         </Typography>
 
@@ -125,7 +133,7 @@ export default function MyGroupsPage(): ReactElement {
           </Box>
         ) : (
           <Box sx={{ display: "flex" }}>
-            <GroupList groups={groups} />
+            <GroupList groups={groups} handleDeleteGroup={handleDeleteGroup}/>
           </Box>
         )}
 

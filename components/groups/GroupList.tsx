@@ -1,8 +1,10 @@
 import { useState, useMemo, MouseEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+
+import { EnhancedTableToolbar } from "@/components/general/table/EnhancedTableToolbar";
+
 import useModal from "@/hooks/useModal";
 
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -13,14 +15,10 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
 
 import SendIcon from "@mui/icons-material/Send";
@@ -32,7 +30,6 @@ import {
   convertPrismaDateToDateString,
   convertPrismaDateToEpoch,
 } from "@/utils/helpers";
-import { deleteGroupByGroupId } from "@/services/groups/groups";
 
 import type { ReactNode } from "react";
 import type { Group } from "@/types/GroupTypes";
@@ -137,59 +134,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         ))}
       </TableRow>
     </TableHead>
-  );
-}
-
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-}
-
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
-  return (
-    <Toolbar
-      sx={[
-        {
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-        },
-        numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        },
-      ]}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          variant="h4"
-          color="primary"
-          id="tableTitle"
-          component="div"
-          sx={{ fontWeight: "bold", flex: "1 1 100%" }}
-        >
-          Your groups
-        </Typography>
-      )}
-      {numSelected > 0 && (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
   );
 }
 

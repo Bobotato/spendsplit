@@ -39,7 +39,7 @@ async function fetchGroupTransactions(
     groupId: number
   ) {
     try {
-      const response = await fetch("../api/split/transactions/getTransactionsByGroupId", {
+      const response = await fetch("../api/split/transactions/deleteAllTransactions", {
         method: "POST",
         body: JSON.stringify({
           groupId: groupId,

@@ -1,18 +1,24 @@
+"use client"
+
+import { useState } from "react";
+import useModal from "@/hooks/useModal";
+
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import useModal from "@/hooks/useModal";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 interface AdminPanelProps {
   handleDeleteGroup: () => void;
-  handleResetTransactions: (groupId: number) => void;
+  handleResetTransactions: () => void;
+  disabled: boolean;
 }
 
 export default function AdminPanel({
   handleDeleteGroup,
   handleResetTransactions,
+  disabled
 }: AdminPanelProps) {
   const {
     openModal: openResetTransactionModal,
@@ -24,6 +30,9 @@ export default function AdminPanel({
     closeModal: closeDeleteGroupModal,
     ModalComponent: DeleteGroupModalComponent,
   } = useModal();
+
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
   function ResetTransactionModal(): ReactNode {
     return (
@@ -78,8 +87,15 @@ export default function AdminPanel({
   }
 
   function handleConfirmResetTransactions() {
-    console.log("resetTrans");
-    closeResetTransactionModal();
+    try {
+      setIsSubmitting(true)
+      closeResetTransactionModal()
+      handleResetTransactions();
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   function handleConfirmDeleteGroup() {
@@ -113,6 +129,7 @@ export default function AdminPanel({
           variant="contained"
           color={"primary"}
           onClick={openDeleteGroupModal}
+          disabled={disabled || isSubmitting}
         >
           Delete Group
         </Button>
@@ -135,6 +152,7 @@ export default function AdminPanel({
           variant="contained"
           color={"primary"}
           onClick={openResetTransactionModal}
+          disabled={disabled || isSubmitting}
         >
           Reset Transactions
         </Button>

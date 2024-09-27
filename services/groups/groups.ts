@@ -63,7 +63,7 @@ async function fetchGroup(groupId: number) {
   }
 }
 
-async function deleteGroupByGroupId(groupId: number) {
+async function deleteGroup(groupId: number) {
   try {
     const response = await fetch("../api/split/groups/deleteGroupByGroupId", {
       method: "POST",
@@ -78,10 +78,20 @@ async function deleteGroupByGroupId(groupId: number) {
   }
 }
 
+
+// TBI
+async function deleteMultipleGroups(groupId: number[]) {
+  try {
+    console.log("To be implemented")
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export {
   addNewGroup,
   addNewGroupMemberByGroupId,
   fetchCreatedGroups,
   fetchGroup,
-  deleteGroupByGroupId,
+  deleteGroup,
 };

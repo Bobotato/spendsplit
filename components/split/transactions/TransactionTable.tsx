@@ -115,7 +115,6 @@ export default function TransactionTable({
                       >
                         {transactionTableColumns.map((column) => {
                           const value = transaction[column.id];
-                          console.log(value);
                           return (
                             <TableCell key={column.id} align={column.align}>
                               {column.formatDate

@@ -30,7 +30,7 @@ import AppBar from "@/components/split/AppBar";
 import SummaryCard from "@/components/split/dashboard/SummaryCard";
 import TransactionTable from "@/components/split/transactions/TransactionTable";
 import AdminPanel from "@/components/groups/GroupAdmin";
-import SpinningLoader from "@/components/general/SpinningLoader"
+import SpinningLoader from "@/components/general/SpinningLoader";
 
 import { NewTransaction, Transaction } from "@/types/TransactionTypes";
 
@@ -87,7 +87,6 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
       const data = await fetchGroupMembers(groupId);
       const json = await data?.json();
       const members = await json.response;
-      console.log(members);
       return members;
     } catch (error) {
       console.log(error);
@@ -149,9 +148,10 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
     router.push("/home");
   }
 
-  function handleResetTransactions(groupId: number) {
+  function handleResetTransactions() {
     try {
       purgeAllTransactions(groupId);
+      fetchGroupDetails();
     } catch (e) {
       console.log(e);
     }
@@ -171,7 +171,10 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             <Typography variant="body1">{groupDesc}</Typography>
           </Box>
           <Container>
-            <SummaryCard transactions={transactions} members={groupMembers}></SummaryCard>
+            <SummaryCard
+              transactions={transactions}
+              members={groupMembers}
+            ></SummaryCard>
           </Container>
           <Container>
             <Typography
@@ -239,7 +242,8 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             </Typography>
             <AdminPanel
               handleDeleteGroup={handleDeleteGroup}
-              handleResetTransactions={() => handleResetTransactions(groupId)}
+              handleResetTransactions={handleResetTransactions}
+              disabled={isLoadingGroupMembers || isLoadingTransactions}
             />
           </Container>
         </Stack>
