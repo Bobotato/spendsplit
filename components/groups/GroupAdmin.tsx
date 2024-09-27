@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import useModal from "@/hooks/useModal";
@@ -18,7 +18,7 @@ interface AdminPanelProps {
 export default function AdminPanel({
   handleDeleteGroup,
   handleResetTransactions,
-  disabled
+  disabled,
 }: AdminPanelProps) {
   const {
     openModal: openResetTransactionModal,
@@ -31,8 +31,7 @@ export default function AdminPanel({
     ModalComponent: DeleteGroupModalComponent,
   } = useModal();
 
-
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   function ResetTransactionModal(): ReactNode {
     return (
@@ -88,19 +87,23 @@ export default function AdminPanel({
 
   function handleConfirmResetTransactions() {
     try {
-      setIsSubmitting(true)
-      closeResetTransactionModal()
+      setIsSubmitting(true);
+      closeResetTransactionModal();
       handleResetTransactions();
     } catch (e) {
-      console.log(e)
+      console.log(e);
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
 
   function handleConfirmDeleteGroup() {
-    console.log("deleteGroup");
-    closeDeleteGroupModal();
+    try {
+      handleDeleteGroup();
+      closeDeleteGroupModal();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (

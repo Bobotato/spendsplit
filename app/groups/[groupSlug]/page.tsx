@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { fetchGroup } from "@/services/groups/groups";
+import { fetchGroup, deleteGroup } from "@/services/groups/groups";
 import {
   addNewTransaction,
   fetchGroupTransactions,
@@ -143,9 +143,14 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
     }
   }
 
-  function handleDeleteGroup() {
-    console.log("Deletegroup");
-    router.push("/home");
+  async function handleDeleteGroup() {
+    try {
+      await deleteGroup(groupId);
+    } catch (e) {
+      console.log();
+    } finally {
+      router.push("/home")
+    }
   }
 
   function handleResetTransactions() {
