@@ -13,7 +13,11 @@ import AppBar from "@/components/split/AppBar";
 import GroupList from "@/components/groups/GroupList";
 import NewGroupForm from "@/components/groups/NewGroupForm";
 
-import { addNewGroup, deleteGroup, fetchCreatedGroups } from "@/services/groups/groups";
+import {
+  addNewGroup,
+  deleteGroup,
+  fetchCreatedGroups,
+} from "@/services/groups/groups";
 import { getUserDetailsFromJWT } from "@/services/user/user";
 import { useUserStore } from "@/app/context/userContext";
 
@@ -35,7 +39,7 @@ export default function MyGroupsPage(): ReactElement {
     const data = await fetchCreatedGroups(id);
     const json = await data?.json();
     const userGroups = await json.response;
-    return userGroups
+    return userGroups;
   };
 
   useEffect(() => {
@@ -46,8 +50,8 @@ export default function MyGroupsPage(): ReactElement {
         updateUserDetails(newUserDetails);
         if (newUserDetails.id) {
           const groups = await getGroups(newUserDetails.id);
-          setGroups(groups)
-          setIsLoading(false)
+          setGroups(groups);
+          setIsLoading(false);
         }
       } catch (error) {
         if (error instanceof UnauthorisedError) {
@@ -60,35 +64,32 @@ export default function MyGroupsPage(): ReactElement {
   }, []);
 
   async function handleAddNewGroup(data: NewGroupSchema) {
-    const res = await addNewGroup(
-      data.groupTitle,
-      data.groupDesc,
-      userDetails.userDetails.id
-    );
-    const group = await res.json();
-    setGroups((groups) => [
-      ...groups,
-      {
-        id: group.response.id,
-        createdAt: group.response.createdAt,
-        groupTitle: group.response.groupTitle,
-        groupDesc: group.response.groupDesc,
-        createdById: group.response.createdById,
-        groupMembers: [],
-      },
-    ]);
+    try {
+      setIsLoading(true);
+      await addNewGroup(
+        data.groupTitle,
+        data.groupDesc,
+        userDetails.userDetails.id
+      );
+      const newGroups = await getGroups(userDetails.userDetails.id);
+      setGroups(newGroups);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   async function handleDeleteGroup(groupId: number) {
     try {
-      setIsLoading(true)
-      await deleteGroup(groupId)
-      const newGroups = await getGroups(userDetails.userDetails.id)
-      setGroups(newGroups)
+      setIsLoading(true);
+      await deleteGroup(groupId);
+      const newGroups = await getGroups(userDetails.userDetails.id);
+      setGroups(newGroups);
     } catch (e) {
-      console.log()
+      console.log();
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -139,7 +140,7 @@ export default function MyGroupsPage(): ReactElement {
           </Box>
         ) : (
           <Box sx={{ display: "flex" }}>
-            <GroupList groups={groups} handleDeleteGroup={handleDeleteGroup}/>
+            <GroupList groups={groups} handleDeleteGroup={handleDeleteGroup} />
           </Box>
         )}
 
