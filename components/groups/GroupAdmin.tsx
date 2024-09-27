@@ -12,13 +12,15 @@ import type { ReactNode } from "react";
 interface AdminPanelProps {
   handleDeleteGroup: () => void;
   handleResetTransactions: () => void;
-  disabled: boolean;
+  deleteGroupDisabled: boolean;
+  deleteTransactionsDisabled: boolean;
 }
 
 export default function AdminPanel({
   handleDeleteGroup,
   handleResetTransactions,
-  disabled,
+  deleteGroupDisabled,
+  deleteTransactionsDisabled,
 }: AdminPanelProps) {
   const {
     openModal: openResetTransactionModal,
@@ -99,10 +101,13 @@ export default function AdminPanel({
 
   function handleConfirmDeleteGroup() {
     try {
+      setIsSubmitting(true);
       handleDeleteGroup();
       closeDeleteGroupModal();
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -132,7 +137,7 @@ export default function AdminPanel({
           variant="contained"
           color={"primary"}
           onClick={openDeleteGroupModal}
-          disabled={disabled || isSubmitting}
+          disabled={deleteGroupDisabled || isSubmitting}
         >
           Delete Group
         </Button>
@@ -155,7 +160,7 @@ export default function AdminPanel({
           variant="contained"
           color={"primary"}
           onClick={openResetTransactionModal}
-          disabled={disabled || isSubmitting}
+          disabled={deleteTransactionsDisabled || isSubmitting}
         >
           Reset Transactions
         </Button>

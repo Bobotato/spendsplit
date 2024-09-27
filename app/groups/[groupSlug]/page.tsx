@@ -248,7 +248,8 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             <AdminPanel
               handleDeleteGroup={handleDeleteGroup}
               handleResetTransactions={handleResetTransactions}
-              disabled={isLoadingGroupMembers || isLoadingTransactions}
+              deleteGroupDisabled={isLoadingGroupMembers}
+              deleteTransactionsDisabled={isLoadingTransactions || !transactions || transactions.length == 0}
             />
           </Container>
         </Stack>
