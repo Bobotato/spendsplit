@@ -82,7 +82,7 @@ export default function MyGroupsPage(): ReactElement {
   async function handleDeleteGroup(groupId: number) {
     try {
       setIsLoading(true)
-      deleteGroup(groupId)
+      await deleteGroup(groupId)
       const newGroups = await getGroups(userDetails.userDetails.id)
       setGroups(newGroups)
     } catch (e) {

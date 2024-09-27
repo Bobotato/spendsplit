@@ -10,7 +10,7 @@ async function addMemberToGroup(groupId: number, member: string) {
     data: {
       name: member,
       transactionGroup: {
-        connect: {id: groupId},
+        connect: { id: groupId },
       },
     },
   });
@@ -20,7 +20,7 @@ async function addMemberToGroup(groupId: number, member: string) {
 async function removeMemberFromGroup(memberId: number) {
   const res = await prisma.member.delete({
     where: {
-      id: memberId
+      id: memberId,
     },
   });
 
@@ -85,6 +85,7 @@ async function deleteGroupByGroupId(groupId: number) {
       id: groupId,
     },
   });
+  return res;
 }
 
 async function purgeGroups() {
