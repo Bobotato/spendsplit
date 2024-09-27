@@ -31,22 +31,23 @@ export default function MyGroupsPage(): ReactElement {
   const userDetails = useUserStore((state) => state);
   const updateUserDetails = useUserStore((state) => state.updateUserDetails);
 
-  useEffect(() => {
-    const getGroups = async (id: number) => {
-      const data = await fetchCreatedGroups(id);
-      const json = await data?.json();
-      const userGroups = await json.response;
-      setGroups(userGroups);
-      setIsLoading(false);
-    };
+  const getGroups = async (id: number) => {
+    const data = await fetchCreatedGroups(id);
+    const json = await data?.json();
+    const userGroups = await json.response;
+    return userGroups
+  };
 
+  useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const data = await getUserDetailsFromJWT();
         const newUserDetails = await data?.json();
         updateUserDetails(newUserDetails);
         if (newUserDetails.id) {
-          await getGroups(newUserDetails.id);
+          const groups = await getGroups(newUserDetails.id);
+          setGroups(groups)
+          setIsLoading(false)
         }
       } catch (error) {
         if (error instanceof UnauthorisedError) {
@@ -80,9 +81,14 @@ export default function MyGroupsPage(): ReactElement {
 
   async function handleDeleteGroup(groupId: number) {
     try {
+      setIsLoading(true)
       deleteGroup(groupId)
+      const newGroups = await getGroups(userDetails.userDetails.id)
+      setGroups(newGroups)
     } catch (e) {
       console.log()
+    } finally {
+      setIsLoading(false)
     }
   }
 

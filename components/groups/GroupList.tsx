@@ -26,7 +26,10 @@ interface GroupListProps {
   handleDeleteGroup: (groupId: number) => void;
 }
 
-export default function GroupList({ groups }: GroupListProps): ReactNode {
+export default function GroupList({
+  groups,
+  handleDeleteGroup,
+}: GroupListProps): ReactNode {
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof Data>("createdAt");
   const [selected, setSelected] = useState<readonly number[]>([]);
@@ -93,8 +96,12 @@ export default function GroupList({ groups }: GroupListProps): ReactNode {
     setPage(0);
   }
 
-  function handleDeleteGroup(groupId: number) {
-    console.log("Delete group", groupId);
+  function handleConfirmDeleteGroup(groupId: number) {
+    try {
+      handleDeleteGroup(groupId);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
@@ -129,7 +136,7 @@ export default function GroupList({ groups }: GroupListProps): ReactNode {
                       isItemSelected={isItemSelected}
                       labelId={labelId}
                       handleClick={handleClick}
-                      handleDeleteGroup={handleDeleteGroup}
+                      handleDeleteGroup={handleConfirmDeleteGroup}
                     />
                   );
                 })}
