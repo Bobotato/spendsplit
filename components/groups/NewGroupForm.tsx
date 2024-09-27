@@ -35,6 +35,7 @@ export default function NewGroupForm({ handleAddNewGroup }: NewGroupFormProps) {
     try {
       setIsLoading(true);
       handleAddNewGroup(data)
+      reset()
     } catch (e) {
       console.error(e);
     } finally {
