@@ -1,6 +1,6 @@
 import type { HeadCell } from "@/types/TableTypes";
 
-const headCells: readonly HeadCell[] = [
+const headCells: HeadCell[] = [
     {
       id: "createdAt",
       numeric: true,
