@@ -1,6 +1,7 @@
 import { useState, useMemo, MouseEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 
+import { EnhancedTableHead } from "@/components/general/table/EnhancedTableHead";
 import { EnhancedTableToolbar } from "@/components/general/table/EnhancedTableToolbar";
 
 import useModal from "@/hooks/useModal";
@@ -11,20 +12,17 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Checkbox from "@mui/material/Checkbox";
-import { visuallyHidden } from "@mui/utils";
-
 import SendIcon from "@mui/icons-material/Send";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import { getComparator } from "@/utils/table";
+import { headCells } from "@/app/data/GroupList/headCells";
 
 import {
   convertPrismaDateToDateString,
@@ -33,109 +31,7 @@ import {
 
 import type { ReactNode } from "react";
 import type { Group } from "@/types/GroupTypes";
-import type { Data, Order, HeadCell } from "@/types/TableTypes";
-
-const headCells: readonly HeadCell[] = [
-  {
-    id: "createdAt",
-    numeric: true,
-    disablePadding: true,
-    label: "Created At",
-  },
-  {
-    id: "groupTitle",
-    numeric: false,
-    disablePadding: false,
-    label: "Group Name",
-  },
-  {
-    id: "groupDesc",
-    numeric: false,
-    disablePadding: false,
-    label: "Description",
-  },
-  {
-    id: "goButton",
-    numeric: false,
-    disablePadding: false,
-    label: "",
-  },
-  {
-    id: "deleteButton",
-    numeric: false,
-    disablePadding: false,
-    label: "",
-  },
-];
-
-interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data
-  ) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
-  const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {/* TODO: implement mass delete using checkbox */}
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all groups",
-            }}
-          />
-        </TableCell>
-
-        {/* map tablecell to headcell array */}
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align="right"
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
+import type { Data, Order } from "@/types/TableTypes";
 
 interface EnhancedTableRowWithModalButtonsProps {
   row: Group;
@@ -346,6 +242,7 @@ export default function GroupList({ groups }: GroupListProps) {
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
               <EnhancedTableHead
+                headCells={headCells}
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
