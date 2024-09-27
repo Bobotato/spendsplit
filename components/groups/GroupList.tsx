@@ -30,7 +30,7 @@ export default function GroupList({
   groups,
   handleDeleteGroup,
 }: GroupListProps): ReactNode {
-  const [order, setOrder] = useState<Order>("asc");
+  const [order, setOrder] = useState<Order>("desc");
   const [orderBy, setOrderBy] = useState<keyof Data>("createdAt");
   const [selected, setSelected] = useState<readonly number[]>([]);
   const [page, setPage] = useState<number>(0);
