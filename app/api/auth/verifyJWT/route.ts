@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken";
+import { JWTInvalid, JWTExpired } from "jose/errors";
 
 import { decryptAccessToken } from "@/app/api/lib/jwt/jwt";
 
@@ -10,7 +10,10 @@ async function POST() {
     const access_token = cookies().get("access_token");
     if (access_token?.value) {
       const payload = decryptAccessToken(access_token.value);
-      return NextResponse.json({ username: payload.username, id: payload.userId });
+      return NextResponse.json({
+        username: payload.username,
+        id: payload.userId,
+      });
     } else {
       return NextResponse.json(
         { error: "No token was supplied. Please supply a token." },
@@ -18,7 +21,7 @@ async function POST() {
       );
     }
   } catch (e) {
-    if (e instanceof TokenExpiredError) {
+    if (e instanceof JWTExpired) {
       return NextResponse.json(
         {
           error:
@@ -27,7 +30,7 @@ async function POST() {
         { status: 401 }
       );
     }
-    if (e instanceof JsonWebTokenError) {
+    if (e instanceof JWTInvalid) {
       return NextResponse.json(
         { error: "The token is invalid. Please login again." },
         { status: 401 }
