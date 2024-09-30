@@ -38,6 +38,9 @@ export default function Summary({ transactions, members }: SummaryProps) {
   };
 
   const equalSplitSummary = () => {
+    if (!members || members.length <= 0) {
+      return
+    }
     if (transactions && transactions.length > 0) {
       const split = deriveEqualSplit(transactions, members);
 
@@ -66,7 +69,7 @@ export default function Summary({ transactions, members }: SummaryProps) {
           component="span"
           sx={{ fontWeight: "bold" }}
         >
-          ${total}
+          ${total}.
         </Typography>
       </Typography>
     );
