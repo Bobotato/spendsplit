@@ -9,10 +9,9 @@ async function POST() {
   try {
     const access_token = cookies().get("access_token");
     if (access_token?.value) {
-      const payload = decryptAccessToken(access_token.value);
+      const payload = await decryptAccessToken(access_token.value);
       return NextResponse.json({
-        username: payload.username,
-        id: payload.userId,
+        data: payload,
       });
     } else {
       return NextResponse.json(

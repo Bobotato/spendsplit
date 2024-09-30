@@ -46,10 +46,14 @@ export default function MyGroupsPage(): ReactElement {
     const fetchUserDetails = async () => {
       try {
         const data = await getUserDetailsFromJWT();
-        const newUserDetails = await data?.json();
-        updateUserDetails(newUserDetails);
-        if (newUserDetails.id) {
-          const groups = await getGroups(newUserDetails.id);
+        const jsonData = await data?.json();
+        const userDetails = {
+          username: jsonData.data.payload.username,
+          id: jsonData.data.payload.userId,
+        };
+        updateUserDetails(userDetails);
+        if (userDetails.id) {
+          const groups = await getGroups(userDetails.id);
           setGroups(groups);
           setIsLoading(false);
         }

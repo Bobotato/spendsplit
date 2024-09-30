@@ -7,17 +7,20 @@ interface accessTokenData {
 }
 
 async function decryptAccessToken(accessToken: string) {
-  if (process.env.JWT_SECRET && process.env.JWT_ALGO) {
-    const secret = base64url.decode(process.env.JWT_SECRET);
-    const payload = await jwtVerify(accessToken, secret);
-    return payload;
-  } else {
-    throw new MissingEnvError("Env missing");
+  try {
+    if (process.env.JWT_SECRET && process.env.JWT_ALGO) {
+      const secret = base64url.decode(process.env.JWT_SECRET);
+      const payload = await jwtVerify(accessToken, secret);
+      return payload;
+    } else {
+      throw new MissingEnvError("Env missing");
+    }
+  } catch (e) {
+    console.log(e)
   }
 }
 
 async function generateAccessToken(payload: accessTokenData) {
-  console.log(payload);
   if (
     !process.env.JWT_SECRET ||
     !process.env.JWT_EXPIRY ||
