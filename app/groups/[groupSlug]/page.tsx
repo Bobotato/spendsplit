@@ -214,6 +214,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
           </Container>
 
           <Container>
+            <Stack spacing={4}>
             <Typography
               variant="h4"
               color="primary"
@@ -235,6 +236,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
               groupId={groupId}
               disabled={isLoadingGroupMembers || isLoadingTransactions}
             ></NewGroupMemberForm>
+            </Stack>
           </Container>
 
           <Container>

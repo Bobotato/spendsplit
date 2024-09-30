@@ -77,7 +77,7 @@ export default function Summary({ transactions, members }: SummaryProps) {
       color="primary.main"
       sx={{ border: 2, borderColor: "primary.main", borderRadius: 2, p: 4 }}
     >
-      <Typography variant="h4" color="primary" sx={{ fontWeight: "bold" }}>
+      <Typography variant="h4" color="primary" sx={{ fontWeight: "bold", mb: 2 }}>
         At a glance:
       </Typography>
       <Stack direction="column" spacing={2}>
