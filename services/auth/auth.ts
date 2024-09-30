@@ -1,16 +1,13 @@
+import { decryptAccessToken } from "@/app/api/lib/jwt/jwt";
+
 import { UnauthorisedError } from "@/services/errors";
 
-async function verifyJWT() {
+async function verifyJWT(token: string) {
   try {
-    const response = await fetch("http://localhost:3000/api/auth/verifyJWT", {
-      method: "POST",
-    });
-    if (response.status) {
-      if (response.status === 401) {
-        throw new UnauthorisedError("JWT not found or expired.");
-      } else {
-        throw new UnauthorisedError("Something went wrong with verification.");
-      }
+    if (token) {
+      decryptAccessToken(token);
+    } else {
+      throw new UnauthorisedError("Token was not supplied.");
     }
   } catch (e) {
     throw e;

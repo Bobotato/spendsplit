@@ -1,25 +1,23 @@
-import { Secret, sign, verify } from "jsonwebtoken";
-import { MissingEnvError } from "./errors";
-import type { Algorithm } from "jsonwebtoken";
+import { MissingEnvError } from "@/app/api/lib/jwt/errors";
+import { jwtVerify, base64url, SignJWT } from "jose";
 
 interface accessTokenData {
   username: string;
   userId: number;
 }
 
-function decryptAccessToken(accessToken: string) {
+async function decryptAccessToken(accessToken: string) {
   if (process.env.JWT_SECRET && process.env.JWT_ALGO) {
-    const payload = verify(accessToken, process.env.JWT_SECRET as Secret, {
-      algorithms: [process.env.JWT_ALGO as Algorithm],
-    });
+    const secret = base64url.decode(process.env.JWT_SECRET);
+    const payload = await jwtVerify(accessToken, secret);
     return payload;
   } else {
     throw new MissingEnvError("Env missing");
   }
 }
 
-function generateAccessToken(data: accessTokenData) {
-  console.log(data)
+async function generateAccessToken(payload: accessTokenData) {
+  console.log(payload);
   if (
     !process.env.JWT_SECRET ||
     !process.env.JWT_EXPIRY ||
@@ -27,11 +25,16 @@ function generateAccessToken(data: accessTokenData) {
   ) {
     throw new MissingEnvError("Env missing");
   } else {
-    const token = sign(data, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRY as string,
-      algorithm: process.env.JWT_ALGO as Algorithm,
-    });
-    return token;
+    const secret = base64url.decode(process.env.JWT_SECRET);
+    const jwt = await new SignJWT({
+      username: payload.username,
+      userId: payload.userId,
+    })
+      .setProtectedHeader({ alg: process.env.JWT_ALGO })
+      .setIssuedAt()
+      .setExpirationTime("2h")
+      .sign(secret);
+    return jwt;
   }
 }
 
