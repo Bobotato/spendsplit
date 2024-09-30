@@ -1,22 +1,23 @@
 import { NextResponse, NextRequest } from "next/server";
 
+import { verifyJWT } from "@/services/auth/auth";
+import { UnauthorisedError } from "@/services/errors";
+
 async function middleware(request: NextRequest) {
   console.log("middleware running");
   try {
-    const user = await fetch("http://localhost:3000/api/auth/verifyJWT", {
-      method: "POST",
-    })
+    await verifyJWT();
   } catch (e) {
-    console.log("redirecting");
-    console.log(e);
-    return NextResponse.redirect(new URL("/login", request.url));
+    if (e instanceof UnauthorisedError) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/home"],
+  matcher: ["/home", "/groups/:path*"],
 };
 
 export { middleware };
