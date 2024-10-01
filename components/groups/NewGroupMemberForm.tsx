@@ -12,7 +12,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AddMemberSchema } from "@/schemas/forms/split/newMemberForm";
 
 import type { ReactElement } from "react";
-import type { Member } from "@/types/UserTypes";
 
 interface AddMemberFormProps {
   handleAddMember: (member: string, groupId: number) => void;

@@ -13,6 +13,7 @@ import {
   fetchGroupMembers,
   addNewGroupMember,
   deleteGroupMember,
+  updateGroupMember,
 } from "@/services/members/members";
 import { useUserStore } from "@/app/context/userContext";
 
@@ -25,7 +26,7 @@ import Stack from "@mui/material/Stack";
 
 import AddTransactionForm from "@/components/split/transactions/AddTransactionForm";
 import NewGroupMemberForm from "@/components/groups/NewGroupMemberForm";
-import GroupMemberList from "@/components/groups/GroupMemberList";
+import GroupMemberList from "@/components/groups/groupMemberList/GroupMemberList";
 import AppBar from "@/components/split/AppBar";
 import SummaryCard from "@/components/split/dashboard/SummaryCard";
 import TransactionTable from "@/components/split/transactions/TransactionTable";
@@ -167,6 +168,19 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
     }
   }
 
+  async function handleUpdateGroupMember(id: number, member: Member) {
+    try {
+      setIsLoadingGroupMembers(true);
+      await updateGroupMember(id, member);
+      await fetchGroupDetails();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoadingGroupMembers(false)
+    }
+  }
+
+
   return (
     <Box>
       <AppBar></AppBar>
@@ -232,6 +246,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             ) : (
               <GroupMemberList
                 memberList={groupMembers}
+                handleUpdateMember={handleUpdateGroupMember}
                 handleDeleteMember={handleDeleteGroupMember}
               ></GroupMemberList>
             )}
