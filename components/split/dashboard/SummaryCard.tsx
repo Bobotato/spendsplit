@@ -16,7 +16,7 @@ interface SummaryProps {
 }
 
 export default function Summary({ transactions, members }: SummaryProps) {
-  const total = deriveTotalFromTransactions(transactions);
+  const total = deriveTotalFromTransactions(transactions).toFixed(2);
 
   const largestTransactionSummary = () => {
     if (transactions && transactions.length > 0) {
@@ -24,7 +24,7 @@ export default function Summary({ transactions, members }: SummaryProps) {
 
       return (
         <Typography variant="body1">
-          The biggest expense is: ${largestTransaction.transactionAmount} on{" "}
+          The biggest expense is: ${largestTransaction.transactionAmount.toFixed(2)} on{" "}
           <Typography
             variant="body1"
             component="span"
@@ -42,7 +42,7 @@ export default function Summary({ transactions, members }: SummaryProps) {
       return
     }
     if (transactions && transactions.length > 0) {
-      const split = deriveEqualSplit(transactions, members);
+      const split = deriveEqualSplit(transactions, members).toFixed(2);
 
       return (
         <Typography variant="body1">

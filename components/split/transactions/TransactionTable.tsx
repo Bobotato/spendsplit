@@ -33,20 +33,20 @@ interface TransactionTableColumn {
   label: string;
   minWidth?: number;
   align?: "left" | "center" | "right";
-  formatDate?: "prisma" | "unix";
+  format?: "prismaDate" | "unixDate" | "currency"
   prefix?: string;
 }
 
 const transactionTableColumns: TransactionTableColumn[] = [
-  { id: "createdAt", label: "Date Added", minWidth: 100, formatDate: "prisma" },
+  { id: "createdAt", label: "Date Added", minWidth: 100, format: "prismaDate" },
   { id: "transactionItem", label: "Item", minWidth: 170 },
   { id: "transactionDesc", label: "Description", minWidth: 170 },
-  { id: "transactionAmount", label: "Amount", minWidth: 100, prefix: "$" },
+  { id: "transactionAmount", label: "Amount", minWidth: 100, format: "currency", prefix: "$" },
   {
     id: "transactionDate",
     label: "Date Incurred",
     minWidth: 100,
-    formatDate: "unix",
+    format: "unixDate",
   },
 ];
 
@@ -68,12 +68,16 @@ export default function TransactionTable({
   };
 
   const formatValue = (column: TransactionTableColumn, value: any) => {
-    switch (column.formatDate) {
-      case "prisma":
+    switch (column.format) {
+      case "prismaDate":
         return convertPrismaDateToDateString(value);
 
-      case "unix":
+      case "unixDate":
         return convertUnixToDateString(value);
+
+
+      case "currency":
+        return value.toFixed(2)
     }
   };
 
@@ -117,10 +121,9 @@ export default function TransactionTable({
                           const value = transaction[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {column.formatDate
+                              {column.prefix ?? column.prefix}
+                              {column.format
                                 ? formatValue(column, value)
-                                : column.prefix
-                                ? `${column.prefix}${value}`
                                 : value}
                             </TableCell>
                           );

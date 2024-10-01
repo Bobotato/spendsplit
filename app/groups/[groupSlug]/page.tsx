@@ -95,6 +95,8 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
 
   const fetchGroupDetails = async () => {
     try {
+      setIsLoadingGroupMembers(true);
+      setIsLoadingTransactions(true);
       const [groupDesc, transactions, members] = await Promise.all([
         fetchGroupDesc(),
         fetchTransactions(),
@@ -115,12 +117,15 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
     fetchGroupDetails();
   }, []);
 
-  function handleAddGroupMember(member: string, groupId: number) {
+  async function handleAddGroupMember(member: string, groupId: number) {
     try {
-      addNewGroupMember(member, groupId);
-      fetchGroupDetails();
+      setIsLoadingGroupMembers(true);
+      await addNewGroupMember(member, groupId);
+      await fetchGroupDetails();
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsLoadingGroupMembers(false)
     }
   }
 
@@ -232,7 +237,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
             )}
 
             <NewGroupMemberForm
-              handleAddMember={() => handleAddGroupMember}
+              handleAddMember={handleAddGroupMember}
               groupId={groupId}
               disabled={isLoadingGroupMembers || isLoadingTransactions}
             ></NewGroupMemberForm>
