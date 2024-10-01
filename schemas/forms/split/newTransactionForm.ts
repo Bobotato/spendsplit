@@ -6,8 +6,27 @@ const AddTransactionSchema = z.object({
     .min(1, { message: "A name for this transaction is required." }),
   transactionDesc: z.string().optional(),
   transactionAmount: z
-    .number()
-    .min(0, { message: "Transaction must be more than $0." }),
+    .number({
+      message:
+        "Amounts must be in numbers, in the format '10.00', without the currency symbol.",
+    })
+    .min(0.009, { message: "Transaction must be more than $0." })
+    .max(999999999999999, {
+      message: "Please split large transactions into multiple smaller ones.",
+    })
+    .multipleOf(0.01, {
+      message: "Amounts must be in numbers, in the format '10.00'.",
+    })
+    .refine(
+      (value) => {
+        const decimalPlaces = value.toString().split(".")[1]?.length || 0;
+        console.log(decimalPlaces)
+        return decimalPlaces <= 2;
+      },
+      {
+        message: "Amounts must be in numbers, in the format '10.00'.",
+      }
+    ),
   transactionDate: z
     .number({
       required_error: "Date is required",
@@ -15,7 +34,6 @@ const AddTransactionSchema = z.object({
     })
     .int()
     .min(0, { message: "Invalid date" }),
-  // .min(1, { message: "A date for this transaction is required." }),
 });
 
 export { AddTransactionSchema };
