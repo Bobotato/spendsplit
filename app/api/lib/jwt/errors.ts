@@ -6,4 +6,12 @@ class MissingEnvError extends Error {
   }
 }
 
-export { MissingEnvError };
+class InvalidJWTError extends Error {
+  constructor(message: string) {
+    super(message)
+
+    Object.setPrototypeOf(this, InvalidJWTError.prototype);
+  }
+}
+
+export { MissingEnvError, InvalidJWTError };

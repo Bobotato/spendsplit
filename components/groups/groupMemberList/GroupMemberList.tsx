@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import { EditableMemberRow } from "@/components/groups/groupMemberList/editableMemberRow";
 
 import Button from "@mui/material/Button";
@@ -8,7 +12,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -37,22 +40,32 @@ const tableColumns: TableColumn[] = [
 
 export default function MemberList({
   memberList,
+  handleUpdateMember,
   handleDeleteMember,
 }: MemberListProps) {
+  const [editingId, setEditingId] = useState<number | null>(null);
+
+  function handleApplyEdit(memberId: number, editedMember: Member) {
+    try {
+      console.log(memberId, editedMember);
+      handleUpdateMember(memberId, editedMember);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  function handleCancelEdit() {
+    setEditingId(null);
+    console.log("Cancelled");
+  }
+
   function handleClickEdit(memberId: number) {
+    setEditingId(memberId);
     console.log("editing", memberId);
   }
 
   function handleClickDelete(memberId: number) {
     handleDeleteMember(memberId);
-  }
-
-  function handleUpdateMember(memberId: number, editedMember: Member) {
-    console.log(memberId, editedMember);
-  }
-
-  function handleCancelEdit() {
-    console.log("Cancelled");
   }
 
   if (!memberList || memberList.length === 0) {
@@ -83,41 +96,45 @@ export default function MemberList({
           </TableHead>
           <TableBody>
             {memberList.map((member, index) => (
-              <>
-                <TableRow
-                  key={index}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    <Typography>{member.name}</Typography>
-                  </TableCell>
-                  <TableCell component="th" scope="row" align="right">
-                    <Button
-                      variant="contained"
-                      color="success"
-                      endIcon={<EditIcon />}
-                      onClick={() => handleClickEdit(member.id)}
-                    >
-                      Edit
-                    </Button>
-                  </TableCell>
-                  <TableCell component="th" scope="row" align="right">
-                    <Button
-                      variant="contained"
-                      color="error"
-                      endIcon={<DeleteForeverIcon />}
-                      onClick={() => handleClickDelete(member.id)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <EditableMemberRow
-                  handleUpdateMember={handleUpdateMember}
-                  handleCancelEdit={handleCancelEdit}
-                  memberId={member.id}
-                />
-              </>
+              <TableRow
+                key={index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                {editingId == member.id ? (
+                  <EditableMemberRow
+                    handleApplyEdit={handleApplyEdit}
+                    handleCancelEdit={handleCancelEdit}
+                    member={member}
+                    index={index}
+                  />
+                ) : (
+                  <>
+                    <TableCell component="th" scope="row">
+                      <Typography>{member.name}</Typography>
+                    </TableCell>
+                    <TableCell component="th" scope="row" align="right">
+                      <Button
+                        variant="contained"
+                        color="success"
+                        endIcon={<EditIcon />}
+                        onClick={() => handleClickEdit(member.id)}
+                      >
+                        Edit
+                      </Button>
+                    </TableCell>
+                    <TableCell component="th" scope="row" align="right">
+                      <Button
+                        variant="contained"
+                        color="error"
+                        endIcon={<DeleteForeverIcon />}
+                        onClick={() => handleClickDelete(member.id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </>
+                )}
+              </TableRow>
             ))}
           </TableBody>
         </Table>

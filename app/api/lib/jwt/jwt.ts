@@ -1,5 +1,6 @@
-import { MissingEnvError } from "@/app/api/lib/jwt/errors";
+import { InvalidJWTError, MissingEnvError } from "@/app/api/lib/jwt/errors";
 import { jwtVerify, base64url, SignJWT } from "jose";
+import { JWSSignatureVerificationFailed, JWTExpired } from "jose/errors";
 
 interface accessTokenData {
   username: string;
@@ -13,10 +14,15 @@ async function decryptAccessToken(accessToken: string) {
       const payload = await jwtVerify(accessToken, secret);
       return payload;
     } else {
-      throw new MissingEnvError("Env missing");
+      throw new MissingEnvError("Env variables missing.");
     }
   } catch (e) {
-    console.log(e)
+    if (e instanceof JWTExpired) {
+      throw new InvalidJWTError("JWT has expired. Log in again.");
+    }
+    if (e instanceof JWSSignatureVerificationFailed) {
+      throw new InvalidJWTError("JWT is invalid.");
+    }
   }
 }
 

@@ -126,7 +126,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
     } catch (e) {
       console.log(e);
     } finally {
-      setIsLoadingGroupMembers(false)
+      setIsLoadingGroupMembers(false);
     }
   }
 
@@ -155,7 +155,7 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
     } catch (e) {
       console.log();
     } finally {
-      router.push("/home")
+      router.push("/home");
     }
   }
 
@@ -171,15 +171,15 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
   async function handleUpdateGroupMember(id: number, member: Member) {
     try {
       setIsLoadingGroupMembers(true);
+      console.log(id, member);
       await updateGroupMember(id, member);
       await fetchGroupDetails();
     } catch (e) {
       console.log(e);
     } finally {
-      setIsLoadingGroupMembers(false)
+      setIsLoadingGroupMembers(false);
     }
   }
-
 
   return (
     <Box>
@@ -234,28 +234,28 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
 
           <Container>
             <Stack spacing={4}>
-            <Typography
-              variant="h4"
-              color="primary"
-              sx={{ fontWeight: "bold", mb: 2 }}
-            >
-              Group members:
-            </Typography>
-            {isLoadingGroupMembers ? (
-              <SpinningLoader message="Loading your group members..."></SpinningLoader>
-            ) : (
-              <GroupMemberList
-                memberList={groupMembers}
-                handleUpdateMember={handleUpdateGroupMember}
-                handleDeleteMember={handleDeleteGroupMember}
-              ></GroupMemberList>
-            )}
+              <Typography
+                variant="h4"
+                color="primary"
+                sx={{ fontWeight: "bold", mb: 2 }}
+              >
+                Group members:
+              </Typography>
+              {isLoadingGroupMembers ? (
+                <SpinningLoader message="Loading your group members..."></SpinningLoader>
+              ) : (
+                <GroupMemberList
+                  memberList={groupMembers}
+                  handleUpdateMember={handleUpdateGroupMember}
+                  handleDeleteMember={handleDeleteGroupMember}
+                ></GroupMemberList>
+              )}
 
-            <NewGroupMemberForm
-              handleAddMember={handleAddGroupMember}
-              groupId={groupId}
-              disabled={isLoadingGroupMembers || isLoadingTransactions}
-            ></NewGroupMemberForm>
+              <NewGroupMemberForm
+                handleAddMember={handleAddGroupMember}
+                groupId={groupId}
+                disabled={isLoadingGroupMembers || isLoadingTransactions}
+              ></NewGroupMemberForm>
             </Stack>
           </Container>
 
@@ -271,7 +271,11 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
               handleDeleteGroup={handleDeleteGroup}
               handleResetTransactions={handleResetTransactions}
               deleteGroupDisabled={isLoadingGroupMembers}
-              deleteTransactionsDisabled={isLoadingTransactions || !transactions || transactions.length == 0}
+              deleteTransactionsDisabled={
+                isLoadingTransactions ||
+                !transactions ||
+                transactions.length == 0
+              }
             />
           </Container>
         </Stack>

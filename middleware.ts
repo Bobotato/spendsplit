@@ -15,12 +15,12 @@ export const config = {
 async function middleware(request: NextRequest) {
   const token = request.cookies.get("access_token")?.value;
 
+  if (!token) {
+    throw new UnauthorisedError("Token was not supplied.");
+  }
+
   try {
-    if (token) {
-      await verifyJWT(token);
-    } else {
-      throw new UnauthorisedError("Token was not supplied.");
-    }
+    await verifyJWT(token);
   } catch (e) {
     if (e instanceof UnauthorisedError) {
       if (request.nextUrl.pathname.startsWith("/api/")) {

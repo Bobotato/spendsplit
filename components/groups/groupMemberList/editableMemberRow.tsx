@@ -1,33 +1,30 @@
-"use client";
-
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
-import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
+import TableCell from "@mui/material/TableCell";
 import TextField from "@mui/material/TextField";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddMemberSchema } from "@/schemas/forms/split/newMemberForm";
 
 import type { ReactElement } from "react";
+import type { Member } from "@/types/UserTypes";
 
 interface EditableMemberRowProps {
-  handleUpdateMember: (member: string, groupId: number) => void;
+  handleApplyEdit: (memberId: number, editedMember: Member) => void;
   handleCancelEdit: () => void;
-  memberId: number;
+  member: Member;
+  index: number;
 }
 
 export function EditableMemberRow({
-  handleUpdateMember,
+  handleApplyEdit,
   handleCancelEdit,
-  memberId,
+  member,
 }: EditableMemberRowProps): ReactElement {
-
   const {
     register,
     handleSubmit,
@@ -38,26 +35,20 @@ export function EditableMemberRow({
     resolver: zodResolver(AddMemberSchema),
   });
 
-  function handleClickApply() {
-    console.log("Applied");
+  function handleClickApply(data: AddMemberSchema) {
+    const memberDetails = { id: member.id, name: data.name };
+    handleApplyEdit(member.id, memberDetails);
+    reset();
   }
 
   function handleClickCancel() {
     reset();
-    handleCancelEdit()
+    handleCancelEdit();
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        width: "100%",
-        mt: 2,
-        bgcolor: "black"
-      }}
-    >
-      <form onSubmit={handleSubmit(handleClickApply)}>
+    <TableCell component="th" scope="row">
+      <form onSubmit={handleSubmit(handleClickApply)} className="w-full">
         <Stack
           spacing={2}
           direction="row"
@@ -76,7 +67,6 @@ export function EditableMemberRow({
             type="submit"
             color="success"
             endIcon={<DoneIcon />}
-            onClick={() => handleClickApply()}
           ></Button>
           <Button
             variant="contained"
@@ -86,6 +76,6 @@ export function EditableMemberRow({
           ></Button>
         </Stack>
       </form>
-    </Box>
+    </TableCell>
   );
 }
