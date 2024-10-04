@@ -9,9 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
+import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import MenuItem from "@mui/material/MenuItem";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
@@ -31,17 +33,13 @@ interface AddTransactionFormProps {
   disabled: boolean;
 }
 
-interface MemberOption {
-  id: string;
-  label: string;
-}
-
 dayjs.extend(advancedFormat);
 
 export default function AddTransactionForm({
-  handleAddTransaction, disabled
+  members,
+  handleAddTransaction,
+  disabled,
 }: AddTransactionFormProps): ReactElement {
-  const [memberOptions, setMemberOptions] = useState<MemberOption[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { showAlert, AlertComponent } = useAlert();
 
@@ -55,22 +53,6 @@ export default function AddTransactionForm({
     mode: "all",
     resolver: zodResolver(AddTransactionSchema),
   });
-
-  function generateMemberOptionList(memberList: Member[]) {
-    memberList.forEach((member) => {
-      setMemberOptions((prev) => [
-        ...prev,
-        {
-          id: member.name,
-          label: member.name,
-        },
-      ]);
-    });
-  }
-
-  useEffect(() => {
-    generateMemberOptionList;
-  }, [memberOptions]);
 
   async function onSubmitNewTransaction(transaction: NewTransaction) {
     try {
@@ -93,6 +75,8 @@ export default function AddTransactionForm({
       setIsLoading(false);
     }
   }
+
+  const names = ["alex", "lotus", "marhsall", "ali"];
 
   return (
     <Box
@@ -153,6 +137,33 @@ export default function AddTransactionForm({
               )}
             />
           </LocalizationProvider>
+
+          <Autocomplete
+            sx={{ m: 1, width: '100%' }}
+            multiple
+            options={members}
+            getOptionLabel={(member) => member.name}
+            disableCloseOnSelect
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Splitters"
+                placeholder="Splitters"
+              />
+            )}
+            renderOption={(props, option, { selected }) => (
+              <MenuItem
+                {...props}
+                key={option.id}
+                value={option.name}
+                sx={{ justifyContent: "space-between" }}
+              >
+                {option.name}
+                {selected ? <CheckIcon color="info" /> : null}
+              </MenuItem>
+            )}
+          />
 
           <AlertComponent></AlertComponent>
 
