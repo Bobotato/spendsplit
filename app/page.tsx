@@ -1,8 +1,9 @@
 import Box from "@mui/material/Box";
 
-import Hero from "@/components/landing/hero";
-import Instructions from "@/components/landing/instructions";
+import HeroBanner from "@/components/landing/HeroBanner";
+import Instructions from "@/components/landing/Instructions";
 import AppBar from "@/components/home/Homebar";
+import Footer from "@/components/general/footer/Footer";
 
 import type { ReactElement } from "react";
 
@@ -11,9 +12,11 @@ export default function LandingPage(): ReactElement {
     <Box>
       <AppBar></AppBar>
 
-      <Hero />
+      <HeroBanner />
 
       <Instructions></Instructions>
+
+      <Footer />
     </Box>
   );
 }

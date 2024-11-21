@@ -6,7 +6,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import GroupsIcon from "@mui/icons-material/Groups";
 import AddCardIcon from "@mui/icons-material/AddCard";
 
-import InstructionsCard from "@/components/landing/instructionsCard";
+import InstructionsCard from "@/components/landing/InstructionsCard";
 
 const instructions = [
   {

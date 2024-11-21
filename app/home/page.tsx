@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -98,79 +99,78 @@ export default function MyGroupsPage(): ReactElement {
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <Box>
       <AppBar></AppBar>
-      <Stack
-        spacing={4}
-        sx={{
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          p: 4,
-        }}
-      >
-        <Typography
-          variant="h4"
-          color="primary"
-          sx={{ fontWeight: "bold", textAlign: "center" }}
+
+      <Container maxWidth="lg">
+        <Stack
+          spacing={4}
+          sx={{
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            p: 4,
+          }}
         >
-          Welcome back,{" "}
           <Typography
-            component="span"
             variant="h4"
             color="primary"
-            sx={{ fontWeight: "bold", textAlign: "center" }}
+            sx={{ fontWeight: "bold" }}
           >
-            {userDetails.userDetails.username}.
+            Welcome back,{" "}
+            <Typography
+              component="span"
+              variant="h4"
+              color="primary"
+              sx={{ fontWeight: "bold"}}
+            >
+              {userDetails.userDetails.username}.
+            </Typography>
           </Typography>
-        </Typography>
 
-        {isLoading ? (
-          <Box sx={{ display: "flex" }}>
-            <Stack
-              spacing={4}
-              sx={{ p: 4, justifyContent: "center", alignItems: "center" }}
-            >
-              <CircularProgress />
-              <Typography>Loading your groups...</Typography>
-            </Stack>
-          </Box>
-        ) : (
-          <Box sx={{ display: "flex" }}>
-            <GroupList groups={groups} handleDeleteGroup={handleDeleteGroup} />
-          </Box>
-        )}
-
-        <Box sx={{ width: "100%" }}>
-          <Paper sx={{ width: "100%", p: 4 }}>
-            <Stack
-              direction="column"
-              spacing={4}
-              sx={{
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <Typography
-                variant="h4"
-                color="primary"
-                sx={{ fontWeight: "bold", textAlign: "center" }}
+          {isLoading ? (
+            <Box sx={{ display: "flex" }}>
+              <Stack
+                spacing={4}
+                sx={{ p: 4, justifyContent: "center", alignItems: "center" }}
               >
-                Add a new group:
-              </Typography>
-              <NewGroupForm handleAddNewGroup={handleAddNewGroup} />
-            </Stack>
-          </Paper>
-        </Box>
-      </Stack>
+                <CircularProgress />
+                <Typography>Loading your groups...</Typography>
+              </Stack>
+            </Box>
+          ) : (
+            <Box>
+              <GroupList
+                groups={groups}
+                handleDeleteGroup={handleDeleteGroup}
+              />
+            </Box>
+          )}
+
+          <Box sx={{ width: "100%" }}>
+            <Paper sx={{ width: "100%", p: 4 }}>
+              <Stack
+                direction="column"
+                spacing={4}
+                sx={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  color="primary"
+                  sx={{ fontWeight: "bold", textAlign: "center" }}
+                >
+                  Add a new group:
+                </Typography>
+                <NewGroupForm handleAddNewGroup={handleAddNewGroup} />
+              </Stack>
+            </Paper>
+          </Box>
+        </Stack>
+      </Container>
     </Box>
   );
 }

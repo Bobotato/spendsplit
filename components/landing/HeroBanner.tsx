@@ -8,7 +8,6 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 
-import GithubIcon from "@/public/icons/GithubIcon.svg";
 import { subtitles } from "@/utils/heroSubtitle";
 
 export default function Hero() {
@@ -75,19 +74,6 @@ export default function Hero() {
           Register
         </Button>
       </Stack>
-
-      <Link
-        href="https://www.github.com/bobotato/spendsplit"
-        className="absolute bottom-10"
-      >
-        <Image
-          className="hover:filter-green"
-          src={GithubIcon}
-          alt="Spendsplit Logo"
-          width={50}
-          height={50}
-        />
-      </Link>
     </Stack>
   );
 }

@@ -23,7 +23,7 @@ import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 import AddTransactionForm from "@/components/transactions/AddTransactionForm";
 import NewGroupMemberForm from "@/components/groups/NewGroupMemberForm";
@@ -185,17 +185,18 @@ export default function GroupTransactions({ params }: GroupTransactionsProps) {
   return (
     <Box>
       <AppBar></AppBar>
-      <Typography>{groupId}</Typography>
 
-      <Container maxWidth="md" sx={{ py: 2 }}>
-        <Button variant="text" startIcon={<ChevronLeftIcon />} href="/groups">Back to home</Button>
-      </Container>
+      <Container maxWidth="lg" sx={{ pt: 2, pb: 14 }}>
+        <Box sx={{ py: 2 }}>
+          <Button variant="text" startIcon={<ChevronLeftIcon />} href="/groups">
+            Back to home
+          </Button>
+        </Box>
 
-      <Container maxWidth="md">
-        <Stack spacing={6}>
+        <Stack spacing={6} sx={{ border: 2 }}>
           <Box>
             <Typography variant="h2" sx={{ fontWeight: "bold", mb: 2 }}>
-              {groupName}
+              {groupName} ({groupId})
             </Typography>
             <Typography variant="body1">{groupDesc}</Typography>
           </Box>
