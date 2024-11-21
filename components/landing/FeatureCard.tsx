@@ -16,12 +16,12 @@ interface FeatureCard {
 
 export default function FeatureCard({ featureCard }: FeatureCardProps) {
   return (
-    <Box height={300} width={350}>
+    <Box height={300}>
       <Card sx={{ height: 1, width: 1, p: 2 }}>
         <CardContent>
-          <Stack>
-            <Typography>{featureCard.title}</Typography>
-            <Typography>{featureCard.description}</Typography>
+          <Stack gap={4}>
+            <Typography variant="h6" color="primary" textAlign={"center"}>{featureCard.title}</Typography>
+            <Typography color="text.secondary" textAlign={"center"}>{featureCard.description}</Typography>
           </Stack>
         </CardContent>
       </Card>

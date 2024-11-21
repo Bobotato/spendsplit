@@ -28,8 +28,7 @@ export default function Hero() {
       sx={{
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center",
-        p: 8,
+        alignItems: "center"
       }}
     >
       <Stack spacing={1}>

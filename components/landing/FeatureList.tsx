@@ -1,6 +1,7 @@
 import FeatureCard from "@/components/landing/FeatureCard";
 
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid2";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
@@ -14,7 +15,7 @@ const features = [
   },
   {
     featureNumber: 2,
-    title: "Create and categorise transactions with as multiple splitters",
+    title: "Create and group transactions with multiple splitters",
     description: "A group can be for an event or any occassion.",
   },
   {
@@ -31,22 +32,17 @@ const features = [
 
 export default function FeatureList(): ReactElement {
   return (
-    <Box maxWidth="lg">
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "center",
-        }}
-      >
+    <Box>
+      <Grid container spacing={2}>
         {features.map((feature) => (
-          <FeatureCard
-            featureCard={feature}
-            key={feature.featureNumber}
-          ></FeatureCard>
+          <Grid size={4}>
+            <FeatureCard
+              featureCard={feature}
+              key={feature.featureNumber}
+            ></FeatureCard>
+          </Grid>
         ))}
-      </Box>
+      </Grid>
     </Box>
   );
 }

@@ -29,7 +29,7 @@ export default function InstructionsCard({
           <Typography variant="h6" color="primary">
             {title}
           </Typography>
-          <Typography color="text.secondary">{description}</Typography>
+          <Typography color="text.secondary" textAlign={"center"}>{description}</Typography>
         </Stack>
       </CardContent>
     </Card>
