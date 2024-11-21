@@ -59,12 +59,6 @@ export default function LoginPage() {
 
       <Login></Login>
 
-      <Container maxWidth="xs">
-        <Button href="/groups" variant="contained" fullWidth>
-          Try as Guest
-        </Button>
-      </Container>
-
       <Container maxWidth="xs" sx={{ textAlign: "center", mt: 4 }}>
         <Typography variant="body1">Don't have an account?</Typography>
         <Typography variant="body1">
