@@ -29,7 +29,6 @@ export default function Hero() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        mt: 12,
         p: 8,
       }}
     >

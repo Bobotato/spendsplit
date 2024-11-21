@@ -11,16 +11,19 @@ import InstructionsCard from "@/components/landing/InstructionsCard";
 const instructions = [
   {
     icon: <PersonIcon />,
+    stepNumber: 1,
     title: "Create an account",
     description: "Login or register so we can remember you.",
   },
   {
     icon: <GroupsIcon />,
+    stepNumber: 2,
     title: "Create a group",
     description: "A group can be for an event or any occassion.",
   },
   {
     icon: <AddCardIcon />,
+    stepNumber: 3,
     title: "Start adding transactions!",
     description: "Start getting back the money people owe you.",
   },
@@ -33,17 +36,8 @@ export default function Instructions() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        p: 8,
       }}
-    >
-      <Stack spacing={4}>
-        <Typography
-          variant="h4"
-          color="primary"
-          sx={{ fontWeight: "bold", textAlign: "center" }}
-        >
-          Instructions:
-        </Typography>
+    >        
         <Stack
           direction="row"
           justifyContent="center"
@@ -56,10 +50,10 @@ export default function Instructions() {
               icon={item.icon}
               title={item.title}
               description={item.description}
+              key={item.stepNumber}
             />
           ))}
         </Stack>
-      </Stack>
     </Box>
   );
 }
