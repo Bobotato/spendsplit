@@ -1,4 +1,5 @@
 import SocialsStack from "@/components/general/SocialsStack";
+import FooterLinks from "@/components/general/footer/FooterLinks";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -21,11 +22,11 @@ export default function Footer(): ReactElement {
         backgroundColor: "primary.main",
         display: "flex",
         justifyContent: "space-between",
-        p: 8
+        p: 8,
       }}
     >
-      <Stack gap={4}>
-        <Stack>
+      <Stack gap={4} direction={"column"}>
+        <Stack direction={"column"}>
           <Box sx={{ py: 2, ml: -1 }}>
             <Link href="/">
               <Image
@@ -60,6 +61,10 @@ export default function Footer(): ReactElement {
 
         <SocialsStack />
       </Stack>
+
+      <Box>
+        <FooterLinks />
+      </Box>
     </Box>
   );
 }
